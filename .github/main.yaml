@@ -1,0 +1,17 @@
+name: Report
+description: File a report
+title: "[]: "
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 개선 사항
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
