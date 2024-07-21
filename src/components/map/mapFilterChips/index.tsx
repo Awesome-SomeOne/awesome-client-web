@@ -4,12 +4,12 @@ import * as S from "./styles";
 
 const MapFilterChips = () => {
   const [chipIndex, setChipIndex] = useState<number>(0);
-  console.log(chipIndex);
+
   return (
     <S.ChipWrapper>
       {MAP_FILTER_CHIP_LIST.map((chip, index) => {
         return (
-          <div key={index} style={{ height: "50px" }}>
+          <div key={index}>
             <S.Chip type="radio" id={chip} radioGroup="mapChip" name="mapChip" />
             <S.ChipLabel
               htmlFor={chip}
