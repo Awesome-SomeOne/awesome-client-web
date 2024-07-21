@@ -22,7 +22,7 @@ export const LineButtonContainer = styled.button<{ size: "sm" | "lg"; primarysty
   }
 
   :active {
-    background-color: ${(props) => (props.primarystyle ? Theme.colors.Border_Primary_Strong : Theme.colors.Fill_Light)};
+    background-color: ${(props) => (props.primarystyle ? Theme.colors.Fill_Primary_Lighter : Theme.colors.Fill_Light)};
   }
 
   :disabled {
