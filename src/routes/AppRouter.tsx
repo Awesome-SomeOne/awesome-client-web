@@ -1,6 +1,7 @@
 import App from "../App";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { PATH } from "../constants/path";
+import MapPage from "../pages/map/MapPage";
 
 const AppRouter = () => {
   const router = createBrowserRouter([
@@ -13,7 +14,7 @@ const AppRouter = () => {
           children: [
             {
               path: PATH.MAP,
-              element: <div>지도페이지</div>
+              element: <MapPage />
             }
           ]
         }
