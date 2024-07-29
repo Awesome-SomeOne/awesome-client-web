@@ -1,7 +1,8 @@
 import { css } from "@emotion/react";
 
-const typoCreator = (fontSize: string, fontWeight: number, lineHeight: string) => {
+const typoCreator = (fontFamily: string, fontSize: string, fontWeight: number, lineHeight: string) => {
   return css`
+    font-family: ${fontFamily};
     font-size: ${fontSize};
     font-weight: ${fontWeight};
     line-height: ${lineHeight};
@@ -48,23 +49,23 @@ export const Theme = {
     Surface_Primary_Gradient_Dim: "linear-gradient(180deg, #2E333880 0%, ##2E333800 100%)"
   },
   typo: {
-    Display_S: typoCreator("36px", 600, "44px"),
-    Display_M: typoCreator("48px", 600, "56px"),
-    Display_L: typoCreator("56px", 600, "64px"),
-    Headline_L: typoCreator("28px", 700, "38px"),
-    Headline_M: typoCreator("26px", 700, "34px"),
-    Headline_S: typoCreator("24px", 700, "32px"),
-    Title_L: typoCreator("22px", 600, "34px"),
-    Title_M: typoCreator("20px", 600, "30px"),
-    Title_S: typoCreator("18px", 600, "26px"),
-    Title_XS: typoCreator("16px", 600, "24px"),
-    Body_XL: typoCreator("18px", 400, "28px"),
-    Body_L: typoCreator("16px", 400, "24px"),
-    Body_M: typoCreator("14px", 400, "22px"),
-    Body_S: typoCreator("12px", 400, "18px"),
-    Label_L: typoCreator("14px", 600, "18px"),
-    Label_M: typoCreator("12px", 600, "16px"),
-    Label_S: typoCreator("10px", 600, "14px")
+    Display_S: typoCreator("Pretendard-SemiBold", "36px", 600, "44px"),
+    Display_M: typoCreator("Pretendard-SemiBold", "48px", 600, "56px"),
+    Display_L: typoCreator("Pretendard-SemiBold", "56px", 600, "64px"),
+    Headline_L: typoCreator("Pretendard-Bold", "28px", 700, "38px"),
+    Headline_M: typoCreator("Pretendard-Bold", "26px", 700, "34px"),
+    Headline_S: typoCreator("Pretendard-Bold", "24px", 700, "32px"),
+    Title_L: typoCreator("Pretendard-Bold", "22px", 600, "34px"),
+    Title_M: typoCreator("Pretendard-Bold", "20px", 600, "30px"),
+    Title_S: typoCreator("Pretendard-Bold", "18px", 600, "26px"),
+    Title_XS: typoCreator("Pretendard-Bold", "16px", 600, "24px"),
+    Body_XL: typoCreator("Pretendard-Regular", "18px", 400, "28px"),
+    Body_L: typoCreator("Pretendard-Regular", "16px", 400, "24px"),
+    Body_M: typoCreator("Pretendard-Regular", "14px", 400, "22px"),
+    Body_S: typoCreator("Pretendard-Medium", "12px", 400, "18px"),
+    Label_L: typoCreator("Pretendard-SemiBold", "14px", 600, "18px"),
+    Label_M: typoCreator("Pretendard-SemiBold", "12px", 600, "16px"),
+    Label_S: typoCreator("Pretendard-SemiBold", "10px", 600, "14px")
   }
 };
 
