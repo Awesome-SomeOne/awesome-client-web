@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Theme } from "../../../styles/theme";
 import { motion } from "framer-motion";
 
-export const BackDrop = styled.div`
+export const BackDrop = styled(motion.div)`
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -13,7 +13,7 @@ export const BackDrop = styled.div`
   left: 0;
   top: 0;
 
-  background-color: transparent;
+  background-color: ${Theme.colors.Dim_Default};
   z-index: 9;
 `;
 

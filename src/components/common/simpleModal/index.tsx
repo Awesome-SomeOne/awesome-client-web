@@ -49,7 +49,7 @@ const SimpleModal = ({
     <AnimatePresence>
       {isOpen && (
         <Portal>
-          <S.BackDrop onClick={close}>
+          <S.BackDrop onClick={close} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <S.SimpleModalContainer
               initial="hidden"
               animate="visible"
