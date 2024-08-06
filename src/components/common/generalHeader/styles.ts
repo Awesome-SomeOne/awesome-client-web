@@ -3,6 +3,9 @@ import { Theme } from "../../../styles/theme";
 
 export const GeneralHeaderContainer = styled.div<{ spacingSize: "sm" | "md" }>`
   padding: ${(props) => (props.spacingSize === "sm" ? "8px" : "12px")} 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 `;
 
 export const TopSection = styled.div`
