@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { PATH } from "../constants/path";
 import MyTripListPage from "../pages/myTripList/MyTripListPage";
 import MapPage from "../pages/map/MapPage";
+import MyTripRecordPage from "../pages/myTripRecord/MyTripRecordPage";
 
 const AppRouter = () => {
   const router = createBrowserRouter([
@@ -16,6 +17,10 @@ const AppRouter = () => {
             {
               path: PATH.MY_TRIP_LIST,
               element: <MyTripListPage />
+            },
+            {
+              path: PATH.MY_TRIP_RECORD(),
+              element: <MyTripRecordPage />
             },
             {
               path: PATH.MAP,
