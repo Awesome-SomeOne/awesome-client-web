@@ -66,6 +66,9 @@ export const Theme = {
     Label_L: typoCreator("Pretendard-SemiBold", "14px", 600, "18px"),
     Label_M: typoCreator("Pretendard-SemiBold", "12px", 600, "16px"),
     Label_S: typoCreator("Pretendard-SemiBold", "10px", 600, "14px")
+  },
+  shadow: {
+    Neutral_Basic_L: "0px 0px 32px rgba(59, 62, 67, 0.08)"
   }
 };
 

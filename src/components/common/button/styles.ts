@@ -6,6 +6,7 @@ export const ButtonContainer = styled.button<{ size: "sm" | "lg"; tertiary: bool
   justify-content: center;
   align-items: center;
   gap: 4px;
+  width: ${(props) => (props.size === "lg" ? "100%" : "auto")};
   padding: ${(props) => (props.size === "lg" ? "12px 16px 12px 16px" : "6px 16px 6px 16px")};
   border: none;
   outline: none;
