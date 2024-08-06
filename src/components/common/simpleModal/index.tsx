@@ -18,6 +18,22 @@ interface ISimpleModalProps {
   close: () => void;
 }
 
+/**
+ * SimpleModal
+ * @param image 이미지
+ * @param title 타이틀
+ * @param content 내용
+ * @param extraContent 추가 내용
+ * @param firstButtonText 첫번째 버튼 텍스트 (UI위치상)
+ * @param secondButtonText 두번째 버튼 텍스트 (UI위치상)
+ * @param firstButtonOnClick 첫번째 버튼 클릭 이벤트
+ * @param secondButtonOnClick 두번째 버튼 클릭 이벤트
+ * @param isVertical 버튼이 세로로 배치되는 경우 true
+ * @param isFilled 두번째 버튼이 채워진 스타일인 경우 true
+ * @param isOpen 모달 오픈 여부 (useOverlay hook 사용하기)
+ * @param close 모달 닫기 함수 (useOverlay hook 사용하기)
+ */
+
 const SimpleModal = ({
   image,
   title,
