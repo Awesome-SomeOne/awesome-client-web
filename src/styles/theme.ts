@@ -69,6 +69,9 @@ export const Theme = {
   },
   shadow: {
     Neutral_Basic_L: "0px 0px 32px rgba(59, 62, 67, 0.08)"
+  },
+  size: {
+    Header_Height: "56px"
   }
 };
 
