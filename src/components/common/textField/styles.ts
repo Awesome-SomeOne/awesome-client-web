@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 export const OutContainer = styled.div<{ size: "sm" | "lg" }>`
   display: flex;
   flex-direction: column;
-  width: 312px;
+  width: 100%;
   height: ${({ size }) => (size === "sm" ? "70px" : "78px")};
   gap: 4px;
 `;

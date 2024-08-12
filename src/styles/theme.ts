@@ -68,7 +68,8 @@ export const Theme = {
     Label_S: typoCreator("Pretendard-SemiBold", "10px", 600, "14px")
   },
   shadow: {
-    Neutral_Basic_L: "0px 0px 32px rgba(59, 62, 67, 0.08)"
+    Neutral_Basic_L: "0px 0px 32px rgba(59, 62, 67, 0.08)",
+    Shadow_Md: "0px 0px 8px rgba(0, 0, 0, 0.04)"
   },
   size: {
     Header_Height: "56px"
