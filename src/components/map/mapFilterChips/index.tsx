@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { MAP_FILTER_CHIP_LIST } from "../../../constants/mapPageConstants";
+
 import * as S from "./styles";
+import { MAP_FILTER_CHIP_LIST } from "@/constants/mapPageConstants";
+
 
 const MapFilterChips = () => {
   const [chipIndex, setChipIndex] = useState<number>(0);

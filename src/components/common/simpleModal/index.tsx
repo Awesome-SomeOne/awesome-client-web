@@ -1,7 +1,8 @@
 import { AnimatePresence } from "framer-motion";
+
+import * as S from "./styles";
 import Button from "../button";
 import Portal from "../portal";
-import * as S from "./styles";
 
 interface ISimpleModalProps {
   image?: string;

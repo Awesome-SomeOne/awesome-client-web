@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import { Theme } from "../../../styles/theme";
+
+import { Theme } from "@/styles/theme";
 
 export const GeneralHeaderContainer = styled.div<{ spacingSize: "sm" | "md" }>`
   padding: ${(props) => (props.spacingSize === "sm" ? "8px" : "12px")} 20px;

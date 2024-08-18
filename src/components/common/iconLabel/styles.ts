@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import { Theme } from "../../../styles/theme";
+
+import { Theme } from "@/styles/theme";
 
 export const LabelContainer = styled.div<{ labelColor: string; selected: boolean }>`
   width: 20px;
@@ -8,8 +9,8 @@ export const LabelContainer = styled.div<{ labelColor: string; selected: boolean
     props.selected
       ? Theme.colors.Fill_Primary_Default
       : props.labelColor
-      ? props.labelColor
-      : Theme.colors.Label_Assitive};
+        ? props.labelColor
+        : Theme.colors.Label_Assitive};
   border-radius: 99px;
   display: inline-flex;
   align-items: center;

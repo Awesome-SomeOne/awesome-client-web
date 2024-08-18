@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
+
 import * as S from "./styles";
 
 const DaySelectScroll = () => {

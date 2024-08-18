@@ -1,4 +1,5 @@
 import { InputHTMLAttributes, useRef, useState } from "react";
+
 import * as S from "./styles";
 
 interface TextAreaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
@@ -12,7 +13,6 @@ interface TextAreaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
 }
 
 function TextArea({
-  size,
   label,
   placeholder,
   disable,

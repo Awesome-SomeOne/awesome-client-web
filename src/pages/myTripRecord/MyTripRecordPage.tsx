@@ -1,13 +1,14 @@
 import { useState } from "react";
-import BackIcon from "../../assets/icons/BackIcon";
-import Appbar from "../../components/common/header/Appbar";
-import TabAnatomy from "../../components/common/tabAnatomy";
-import TextArea from "../../components/common/textArea";
-import TextField from "../../components/common/textField/TextField";
-import * as S from "./styles";
-import SpotCard from "../../components/myTripRecord/SpotCard";
-import BottomCompleteButton from "../../components/myTripRecord/BottomCompleteButton";
 import { useNavigate } from "react-router-dom";
+
+import * as S from "./styles";
+import BackIcon from "@/assets/icons/BackIcon";
+import Appbar from "@/components/common/header/Appbar";
+import TabAnatomy from "@/components/common/tabAnatomy";
+import TextArea from "@/components/common/textArea";
+import TextField from "@/components/common/textField/TextField";
+import BottomCompleteButton from "@/components/myTripRecord/BottomCompleteButton";
+import SpotCard from "@/components/myTripRecord/SpotCard";
 
 const MyTripRecordPage = () => {
   const [selectedTab, setSelectedTab] = useState("1");

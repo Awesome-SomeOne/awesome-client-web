@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
+
+import * as S from "./styles";
 import { PATH } from "../../../constants/path";
 import LineButton from "../../common/lineButton";
-import * as S from "./styles";
 
 interface ITripCardProps {
   id: number;

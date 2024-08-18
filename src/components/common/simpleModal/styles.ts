@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
-import { Theme } from "../../../styles/theme";
 import { motion } from "framer-motion";
+
+import { Theme } from "@/styles/theme";
 
 export const BackDrop = styled(motion.div)`
   width: 100vw;

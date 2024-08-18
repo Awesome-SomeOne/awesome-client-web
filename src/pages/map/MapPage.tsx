@@ -1,6 +1,8 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import MapFilterChips from "../../components/map/mapFilterChips";
+
 import * as S from "./styles";
+import MapFilterChips from "@/components/map/mapFilterChips";
+
 
 const MapPage = () => {
   return (

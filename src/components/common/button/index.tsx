@@ -1,7 +1,9 @@
-import { ReactNode, ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
+
 import * as S from "./styles";
-import LoadingSpinner from "../../../assets/icons/LoadingSpinner";
-import { Theme } from "../../../styles/theme";
+import LoadingSpinner from "@/assets/icons/LoadingSpinner";
+import { Theme } from "@/styles/theme";
+
 
 interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;

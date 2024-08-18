@@ -1,6 +1,7 @@
-import styled from "@emotion/styled";
-import { Theme } from "../../../styles/theme";
 import { ReactNode } from "react";
+import styled from "@emotion/styled";
+
+import { Theme } from "@/styles/theme";
 
 export const OutContainer = styled.div<{ size?: "string" }>`
   display: flex;
@@ -24,8 +25,8 @@ export const TextArea = styled.textarea<{ error?: boolean; hasValue?: boolean; m
     error
       ? "1px solid " + Theme.colors.Status_Negative
       : hasValue
-      ? "1px solid " + Theme.colors.Border_Primary_Default
-      : "1px solid #70737c"};
+        ? "1px solid " + Theme.colors.Border_Primary_Default
+        : "1px solid #70737c"};
   color: ${({ error }) => (error ? Theme.colors.Status_Negative : Theme.colors.Label_Default)};
   outline: none;
   ${Theme.typo.Body_L}

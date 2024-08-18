@@ -1,6 +1,6 @@
-import Button from "../../common/button";
-import CheckBox from "../../common/controller/CheckBox";
 import * as S from "./styles";
+import Button from "@/components/common/button";
+import CheckBox from "@/components/common/controller/CheckBox";
 
 const BottomCompleteButton = () => {
   return (

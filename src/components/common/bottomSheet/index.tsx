@@ -1,13 +1,14 @@
-import Portal from "../portal";
-import * as S from "./styles";
 import { AnimatePresence } from "framer-motion";
+
+import * as S from "./styles";
+import Portal from "../portal";
 
 interface IBottomSheetProps extends React.HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
   close: () => void;
 }
 
-const BottomSheet = ({ children, isOpen, close, ...props }: IBottomSheetProps) => {
+const BottomSheet = ({ children, isOpen, close }: IBottomSheetProps) => {
   const previewVariants = {
     hidden: { y: 200 },
     visible: { y: 0 },
