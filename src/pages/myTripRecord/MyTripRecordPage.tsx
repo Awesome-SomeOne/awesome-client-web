@@ -1,22 +1,36 @@
 import { useState } from "react";
 import BackIcon from "../../assets/icons/BackIcon";
-import DaySelectScroll from "../../components/common/daySelectScroll";
 import Appbar from "../../components/common/header/Appbar";
 import TabAnatomy from "../../components/common/tabAnatomy";
 import TextArea from "../../components/common/textArea";
 import TextField from "../../components/common/textField/TextField";
 import * as S from "./styles";
 import SpotCard from "../../components/myTripRecord/SpotCard";
+import BottomCompleteButton from "../../components/myTripRecord/BottomCompleteButton";
+import { useNavigate } from "react-router-dom";
 
 const MyTripRecordPage = () => {
   const [selectedTab, setSelectedTab] = useState("1");
+  const navigate = useNavigate();
   const handleTab = (e: any) => {
     setSelectedTab(e.target.innerText);
   };
 
   return (
     <>
-      <Appbar title="추억 기록하기" textAlign="center" leftIcon={<BackIcon />} />
+      <Appbar
+        title="추억 기록하기"
+        textAlign="center"
+        leftIcon={
+          <button
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <BackIcon />{" "}
+          </button>
+        }
+      />
       <S.MyTripRecordPageContainer>
         <S.DescriptionTextBox>여행이 어땠는 지 구체적으로 기록해보세요</S.DescriptionTextBox>
         <S.WritingTextContainer>
@@ -60,10 +74,11 @@ const MyTripRecordPage = () => {
           </S.ImageContainer>
         </S.PhotoContainer>
 
-        <DaySelectScroll />
         <TabAnatomy tabs={["1", "2", "3"]} selectedTab={selectedTab} onClick={handleTab} />
 
         <SpotCard />
+
+        <BottomCompleteButton />
       </S.MyTripRecordPageContainer>
     </>
   );

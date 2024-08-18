@@ -52,7 +52,7 @@ export const TagText = styled.span`
   ${Theme.typo.Label_M}
 `;
 
-export const ChangeSpotButton = styled.button`
+export const DetailSpotText = styled.span`
   text-align: start;
   color: ${Theme.colors.Label_Assitive};
   ${Theme.typo.Label_M}

@@ -12,7 +12,7 @@ const SpotCard = () => {
                 산선암
                 <S.TagText>관광명소</S.TagText>
               </S.SpotTitleBox>
-              <S.ChangeSpotButton>장소 변경</S.ChangeSpotButton>
+              <S.DetailSpotText>울릉도 뭐시기</S.DetailSpotText>
             </S.ColumnFlexWrapper>
           </S.SpotWrapper>
           <S.ChangeReviewButton>리뷰편집</S.ChangeReviewButton>
