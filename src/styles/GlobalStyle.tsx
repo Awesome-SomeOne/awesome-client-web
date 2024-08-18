@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { Global, css } from "@emotion/react";
-import PretendardBold from "../assets/fonts/Pretendard-Bold.ttf";
-import PretendardSemiBold from "../assets/fonts/Pretendard-SemiBold.ttf";
-import PretendardMedium from "../assets/fonts/Pretendard-Medium.ttf";
-import PretendardRegular from "../assets/fonts/Pretendard-Regular.ttf";
+import { css, Global } from "@emotion/react";
+
+import PretendardBold from "@/assets/fonts/Pretendard-Bold.ttf";
+import PretendardMedium from "@/assets/fonts/Pretendard-Medium.ttf";
+import PretendardRegular from "@/assets/fonts/Pretendard-Regular.ttf";
+import PretendardSemiBold from "@/assets/fonts/Pretendard-SemiBold.ttf";
 
 export const GlobalStyle = () => (
   <Global

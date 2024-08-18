@@ -1,10 +1,11 @@
 import "./App.css";
+
 import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <h1>My App</h1>
+      {/* <div>웹뷰 하이</div> */}
       <Outlet />
     </>
   );

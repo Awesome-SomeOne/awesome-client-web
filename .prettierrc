@@ -10,5 +10,8 @@
   "bracketSpacing": true,
   "jsxBracketSameLine": false,
   "arrowParens": "always",
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "importOrder": ["^react$", "^react-dom$", "<THIRD_PARTY_MODULES>", "^@/", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

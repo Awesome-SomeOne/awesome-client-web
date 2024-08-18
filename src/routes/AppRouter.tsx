@@ -1,8 +1,10 @@
-import App from "../App";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { PATH } from "../constants/path";
-import MyTripListPage from "../pages/myTripList/MyTripListPage";
-import MapPage from "../pages/map/MapPage";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import App from "@/App";
+import { PATH } from "@/constants/path";
+import MapPage from "@/pages/map/MapPage";
+import MyTripListPage from "@/pages/myTripList/MyTripListPage";
+import MyTripRecordPage from "@/pages/myTripRecord/MyTripRecordPage";
 
 const AppRouter = () => {
   const router = createBrowserRouter([

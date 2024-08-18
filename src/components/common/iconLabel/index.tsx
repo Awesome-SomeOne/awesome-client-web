@@ -1,8 +1,10 @@
 import * as React from "react";
 import { ReactNode } from "react";
-import PersonIcon from "../../../assets/icons/PersonIcon";
-import { Theme } from "../../../styles/theme";
+
 import * as S from "./styles";
+import PersonIcon from "@/assets/icons/PersonIcon";
+import { Theme } from "@/styles/theme";
+
 
 interface IIconLabelProps {
   icon?: ReactNode;

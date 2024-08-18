@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import { Theme } from "../../../styles/theme";
+
+import { Theme } from "@/styles/theme";
 
 export const TextLabelContainer = styled.div<{
   size: "sm" | "lg";
@@ -18,7 +19,7 @@ export const TextLabelContainer = styled.div<{
   gap: 2px;
 `;
 
-const getBgColor = (color) => {
+const getBgColor = (color: string) => {
   switch (color) {
     case "success":
       return "#CAFCE8";
@@ -29,7 +30,7 @@ const getBgColor = (color) => {
   }
 };
 
-const getColor = (color, fill) => {
+const getColor = (color: string, fill: boolean) => {
   switch (color) {
     case "success":
       return Theme.colors.Status_Success;

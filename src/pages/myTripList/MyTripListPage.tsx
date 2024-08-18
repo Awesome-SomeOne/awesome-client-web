@@ -1,4 +1,7 @@
-import LineButton from "../../components/common/lineButton";
+import Button from "@/components/common/button";
+import Appbar from "@/components/common/header/Appbar";
+import TripCard from "@/components/myTripList/TripCard";
+
 import * as S from "./styles";
 
 const MyTripListPage = () => {

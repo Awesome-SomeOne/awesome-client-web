@@ -1,24 +1,24 @@
 import { ReactNode } from "react";
 import styled from "@emotion/styled";
 
-import { Theme } from "../../../styles/theme";
+import { Theme } from "@/styles/theme";
 
-export const OutContainer = styled.div<{ size: "sm" | "lg" }>`
+export const OutContainer = styled.div<{ size?: "string" }>`
   display: flex;
   flex-direction: column;
-  width: 312px;
-  height: ${({ size }) => (size === "sm" ? "70px" : "78px")};
+  width: 100%;
+
   gap: 4px;
 `;
 
 export const Label = styled.label<{ children: ReactNode; disable?: boolean; error?: boolean }>`
   ${Theme.typo.Label_L}
   color: ${({ disable, error }) =>
-    disable ? Theme.colors.Label_Disable : error ? Theme.colors.Status_Negative : Theme.colors.Label_Alternative}}
+    disable ? Theme.colors.Label_Disable : error ? Theme.colors.Status_Negative : Theme.colors.Label_Alternative}
 `;
 
-export const Input = styled.input<{ error?: boolean; hasValue?: boolean }>`
-  height: 100%;
+export const TextArea = styled.textarea<{ error?: boolean; hasValue?: boolean; minHeight?: string }>`
+  min-height: ${({ minHeight }) => minHeight || "134px"};
   padding: 4px 16px;
   border-radius: 16px;
   border: ${({ error, hasValue }) =>
@@ -39,4 +39,10 @@ export const Input = styled.input<{ error?: boolean; hasValue?: boolean }>`
   :error {
     border: 1px solid ${Theme.colors.Status_Negative};
   }
+`;
+
+export const MaxLengthText = styled.span<{ error?: boolean }>`
+  padding-right: 16px;
+  text-align: end;
+  ${Theme.typo.Body_M}
 `;

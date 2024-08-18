@@ -1,7 +1,9 @@
 import { useState } from "react";
-import DropdownIcon from "../../../assets/icons/DropdownIcon";
-import { Theme } from "../../../styles/theme";
+
 import * as S from "./styles";
+import DropdownIcon from "@/assets/icons/DropdownIcon";
+import { Theme } from "@/styles/theme";
+
 
 interface IDropdownProps {
   text?: string;

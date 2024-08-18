@@ -1,11 +1,11 @@
 import { StrictMode } from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
 import { ThemeProvider } from "@emotion/react";
+import ReactDOM from "react-dom/client";
 import { RecoilRoot } from "recoil";
+
 import AppRouter from "./routes/AppRouter";
-import { Theme } from "./styles/theme";
 import { GlobalStyle } from "./styles/GlobalStyle";
+import { Theme } from "./styles/theme";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
