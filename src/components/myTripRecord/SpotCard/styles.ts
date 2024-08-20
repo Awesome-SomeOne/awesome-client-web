@@ -13,6 +13,7 @@ export const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
   margin: 8px 0;
   border-radius: 8px;
   border: 1px solid ${Theme.colors.Border_Default};
@@ -31,6 +32,7 @@ export const SpotWrapper = styled.div`
   display: flex;
   gap: 13px;
   align-items: center;
+  min-width: 176px;
 `;
 
 export const ColumnFlexWrapper = styled.div`

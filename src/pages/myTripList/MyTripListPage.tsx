@@ -3,7 +3,6 @@ import Appbar from "@/components/common/header/Appbar";
 import TripCard from "@/components/myTripList/TripCard";
 
 import * as S from "./styles";
-import TripCard from "../../components/myTripList/TripCard";
 
 const MyTripListPage = () => {
   return (
