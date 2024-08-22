@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import { Theme } from "../../../styles/theme";
+import { Theme } from "@/styles/theme";
 
 export const ChipContainer = styled.button<{
   type: "round" | "box";
@@ -9,6 +9,7 @@ export const ChipContainer = styled.button<{
   background-color: ${(props) => getColor(props.hierarchy, props).bgColor};
   color: ${(props) => getColor(props.hierarchy, props).color};
   height: 36px;
+  width: min-content;
   padding: 8px 12px;
   border: 1px solid ${(props) => getColor(props.hierarchy, props).borderColor};
   border-radius: ${(props) => (props.type === "round" ? "9999px" : "8px")};
@@ -18,11 +19,18 @@ export const ChipContainer = styled.button<{
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
   cursor: pointer;
 
   :disabled {
     cursor: default;
   }
+`;
+
+export const Left = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 export const getColor = (hierarchy: "primary" | "secondary", props) => {
