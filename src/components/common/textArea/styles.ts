@@ -20,13 +20,14 @@ export const Label = styled.label<{ children: ReactNode; disable?: boolean; erro
 export const TextArea = styled.textarea<{ error?: boolean; hasValue?: boolean; minHeight?: string }>`
   min-height: ${({ minHeight }) => minHeight || "134px"};
   padding: 4px 16px;
+  background-color: ${Theme.colors.Surface_Alternative};
   border-radius: 16px;
   border: ${({ error, hasValue }) =>
     error
       ? "1px solid " + Theme.colors.Status_Negative
       : hasValue
         ? "1px solid " + Theme.colors.Border_Primary_Default
-        : "1px solid #70737c"};
+        : "1px solid" + Theme.colors.Border_Default};
   color: ${({ error }) => (error ? Theme.colors.Status_Negative : Theme.colors.Label_Default)};
   outline: none;
   ${Theme.typo.Body_L}
@@ -44,5 +45,6 @@ export const TextArea = styled.textarea<{ error?: boolean; hasValue?: boolean; m
 export const MaxLengthText = styled.span<{ error?: boolean }>`
   padding-right: 16px;
   text-align: end;
-  ${Theme.typo.Body_M}
+  color: ${Theme.colors.Label_Assitive};
+  ${Theme.typo.Body_M};
 `;
