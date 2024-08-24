@@ -2,7 +2,6 @@ import * as S from "./styles";
 import Button from "@/components/common/button";
 import CheckBox from "@/components/common/controller/CheckBox";
 
-
 const BottomCompleteButton = () => {
   return (
     <S.BottomCompleteButtonWrapper>

@@ -5,7 +5,7 @@ import { Theme } from "../../../styles/theme";
 export const OutContainer = styled.div`
   display: flex;
   width: 100vw;
-  height: 56px;
+  height: ${Theme.size.Header_Height};
   z-index: 9999;
   position: fixed;
   top: 0;

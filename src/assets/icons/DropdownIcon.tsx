@@ -1,6 +1,6 @@
 import { Theme } from "../../styles/theme";
 
-const DropdownIcon = ({ color = Theme.colors.Label_Assertive, open = false }: { color?: string; open?: boolean }) => {
+const DropdownIcon = ({ color = Theme.colors.Label_Assitive, open = false }: { color?: string; open?: boolean }) => {
   return open ? (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path

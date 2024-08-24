@@ -140,6 +140,21 @@ export const GlobalStyle = () => (
         border-collapse: collapse;
         border-spacing: 0;
       }
+      ul,
+      li {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      button {
+        background: inherit;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+        overflow: visible;
+        cursor: pointer;
+      }
       @font-face {
         font-family: Pretendard-Bold;
         src: url(${PretendardBold});

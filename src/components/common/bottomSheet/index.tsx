@@ -8,7 +8,7 @@ interface IBottomSheetProps extends React.HTMLAttributes<HTMLDivElement> {
   close: () => void;
 }
 
-const BottomSheet = ({ children, isOpen, close }: IBottomSheetProps) => {
+const BottomSheet = ({ children, isOpen, close, style }: IBottomSheetProps) => {
   const previewVariants = {
     hidden: { y: 200 },
     visible: { y: 0 },
@@ -33,6 +33,7 @@ const BottomSheet = ({ children, isOpen, close }: IBottomSheetProps) => {
               exit="exit"
               variants={previewVariants}
               transition={transition}
+              style={style}
             >
               {children}
             </S.BottomSheetContainer>

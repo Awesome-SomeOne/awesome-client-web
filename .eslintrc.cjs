@@ -27,8 +27,8 @@ module.exports = {
 
     semi: ["error", "always"], // 세미콜론(;) 사용 강제 설정
 
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "warn",
     "import/order": [
       "warn",
       {

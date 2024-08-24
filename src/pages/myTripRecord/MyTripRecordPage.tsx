@@ -10,7 +10,6 @@ import TextField from "@/components/common/textField/TextField";
 import BottomCompleteButton from "@/components/myTripRecord/BottomCompleteButton";
 import SpotCard from "@/components/myTripRecord/SpotCard";
 
-
 const MyTripRecordPage = () => {
   const [selectedTab, setSelectedTab] = useState("1");
   const navigate = useNavigate();
