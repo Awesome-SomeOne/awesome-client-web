@@ -2,11 +2,11 @@ import styled from "@emotion/styled";
 
 import { Theme } from "@/styles/theme";
 
-export const DropdownContainer = styled.button<{ size: "sm" | "md"; color: string; props }>`
+export const DropdownContainer = styled.button<{ size: "sm" | "md"; color: string }>`
   background-color: ${Theme.colors.Bg_Default};
-  color: ${(props) => props.color};
+  color: ${({ color }) => color};
   border: none;
-  height: ${(props) => (props.size === "sm" ? "36px" : "48px")};
+  height: ${({ size }) => (size === "sm" ? "36px" : "48px")};
   padding: 8px 12px;
   display: inline-flex;
   align-items: center;
