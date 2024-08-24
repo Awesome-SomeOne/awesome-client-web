@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import * as S from "./styles";
-import BackIcon from "@/assets/icons/BackIcon";
 import Appbar from "@/components/common/header/Appbar";
 import TabAnatomy from "@/components/common/tabAnatomy";
 import TextArea from "@/components/common/textArea";
 import TextField from "@/components/common/textField/TextField";
 import BottomCompleteButton from "@/components/myTripRecord/BottomCompleteButton";
 import SpotCard from "@/components/myTripRecord/SpotCard";
+import Clear from "@/assets/icons/Clear";
+import OrderDisplayCircleChips from "@/components/common/orderDisplayCircleChips";
 
 const MyTripRecordPage = () => {
   const [selectedTab, setSelectedTab] = useState("1");
@@ -22,17 +23,19 @@ const MyTripRecordPage = () => {
       <Appbar
         title="추억 기록하기"
         textAlign="center"
-        leftIcon={
+        rightIcon1={
           <button
             onClick={() => {
               navigate(-1);
             }}
           >
-            <BackIcon />{" "}
+            <Clear />
           </button>
         }
       />
       <S.MyTripRecordPageContainer>
+        <OrderDisplayCircleChips totalNumber={2} currentNumber={2} style={{ padding: "0 20px" }} />
+
         <S.DescriptionTextBox>여행이 어땠는 지 구체적으로 기록해보세요</S.DescriptionTextBox>
         <S.WritingTextContainer>
           <TextField label="한줄평 작성" placeholder="(선택) 한줄평을 작성해주세요" size="sm" />
