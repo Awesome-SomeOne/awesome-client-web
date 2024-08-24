@@ -36,7 +36,7 @@ const SearchBar = ({
   onBlur,
   ...props
 }: ISearchBarProps) => {
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [value, setValue] = useState(externalValue);
   const [showButton, setShowButton] = useState(false);
@@ -50,7 +50,7 @@ const SearchBar = ({
     else setShowButton(false);
   }, [value, isTyping]);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     onChange && onChange(event.target.value);
   };
@@ -65,7 +65,7 @@ const SearchBar = ({
     onBlur && onBlur();
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!value) {
       return;
@@ -75,7 +75,7 @@ const SearchBar = ({
   };
 
   return (
-    <S.SearchField isFocused={isTyping} isFilled={value} onSubmit={handleSubmit} {...props}>
+    <S.SearchField isFocused={isTyping} isFilled={!!value} onSubmit={handleSubmit} {...props}>
       <S.SearchInput
         ref={inputRef}
         autoFocus={autoFocus}

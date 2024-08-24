@@ -2,17 +2,21 @@ import styled from "@emotion/styled";
 
 import { Theme } from "@/styles/theme";
 
-export const ChipContainer = styled.button<{
-  type: "round" | "box";
+interface ChipContainerProps {
+  shape: "round" | "box";
   hierarchy: "primary" | "secondary";
-}>`
-  background-color: ${(props) => getColor(props.hierarchy, props).bgColor};
-  color: ${(props) => getColor(props.hierarchy, props).color};
+  disabled?: boolean;
+  selected?: boolean;
+}
+
+export const ChipContainer = styled.button<ChipContainerProps>`
+  background-color: ${(props) => getColor(props).bgColor};
+  color: ${(props) => getColor(props).color};
   height: 36px;
   width: min-content;
   padding: 8px 12px;
-  border: 1px solid ${(props) => getColor(props.hierarchy, props).borderColor};
-  border-radius: ${(props) => (props.type === "round" ? "9999px" : "8px")};
+  border: 1px solid ${(props) => getColor(props).borderColor};
+  border-radius: ${({ shape }) => (shape === "round" ? "9999px" : "8px")};
   font-size: 14px;
   font-weight: 600;
   vertical-align: middle;
@@ -33,8 +37,10 @@ export const Left = styled.div`
   gap: 4px;
 `;
 
-export const getColor = (hierarchy: "primary" | "secondary", props) => {
-  if (props.disabled) {
+export const Icon = styled.div``;
+
+export const getColor = ({ hierarchy, disabled, selected }: Omit<ChipContainerProps, "shape">) => {
+  if (disabled) {
     return {
       bgColor: Theme.colors.Fill_Disable,
       color: Theme.colors.Label_Disable,
@@ -42,7 +48,7 @@ export const getColor = (hierarchy: "primary" | "secondary", props) => {
     };
   }
 
-  if (props.selected) {
+  if (selected) {
     if (hierarchy === "primary")
       return {
         bgColor: Theme.colors.Fill_Primary_Default,
