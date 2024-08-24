@@ -3,7 +3,7 @@ import * as S from "./styles";
 interface ITabAnatomyProps {
   tabs: string[];
   selectedTab: string;
-  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 /**
@@ -15,7 +15,7 @@ interface ITabAnatomyProps {
  */
 
 const TabAnatomy = ({ tabs, selectedTab, onClick }: ITabAnatomyProps) => {
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (onClick) {
       onClick(event);
     }

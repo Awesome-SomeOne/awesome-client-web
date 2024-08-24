@@ -1,6 +1,6 @@
-import { Theme } from "../../styles/theme";
+import { Theme } from "@/styles/theme";
 
-const PersonIcon = ({ color = Theme.colors.Label_Inverse }: { color: string }) => {
+const PersonIcon = ({ color = Theme.colors.Label_Inverse }: { color?: string }) => {
   return (
     <svg width="16" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path

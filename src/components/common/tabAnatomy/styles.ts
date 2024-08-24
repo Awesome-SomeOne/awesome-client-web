@@ -20,7 +20,7 @@ export const TabAnatomy = styled.div`
   }
 `;
 
-export const Tab = styled.span<{ selected?: boolean }>`
+export const Tab = styled.button<{ selected?: boolean }>`
   color: ${(props) => (props.selected ? Theme.colors.Label_Default : Theme.colors.Label_Assitive)};
   width: 100%;
   height: 42px;
