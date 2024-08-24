@@ -6,5 +6,5 @@ export const MyTripListPageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 70px 20px 0;
+  padding: 70px 20px 8px;
 `;

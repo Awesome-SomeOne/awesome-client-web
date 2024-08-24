@@ -12,6 +12,9 @@ export const MyTripRecordPageContainer = styled.div`
 `;
 
 export const DescriptionTextBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   width: 100%;
   padding: 8px 20px;
   ${Theme.typo.Title_XS}
@@ -38,10 +41,21 @@ export const Text = styled.span`
     color: ${Theme.colors.Label_Alternative};
     ${Theme.typo.Label_L}
   }
+  &.subtitle {
+    color: ${Theme.colors.Label_Alternative};
+    ${Theme.typo.Body_M}
+  }
 `;
 
 export const ImageContainer = styled.div`
   display: flex;
   gap: 8px;
   overflow-x: auto;
+`;
+
+export const GoToGalleryButtonWrapper = styled.button`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 8px 20px;
 `;
