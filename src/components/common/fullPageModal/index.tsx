@@ -5,16 +5,17 @@ import * as S from "./styles";
 import { PropsWithChildren } from "react";
 
 interface FullPageModalProps extends PropsWithChildren {
+  title?: string;
   isOpen?: boolean;
   close: () => void;
 }
 
-const FullPageModal = ({ children, close }: FullPageModalProps) => {
+const FullPageModal = ({ children, close, title = "" }: FullPageModalProps) => {
   return (
     <Portal>
       <S.FullPageModalContainer>
         <Appbar
-          title=""
+          title={title}
           textAlign="center"
           rightIcon1={
             <button
