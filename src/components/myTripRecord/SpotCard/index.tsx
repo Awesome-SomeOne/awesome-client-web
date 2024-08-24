@@ -1,6 +1,7 @@
-import useOverlay from "@/hooks/useOverlay";
-import * as S from "./styles";
 import ReviewFullPageModal from "../ReviewFullPageModal";
+import useOverlay from "@/hooks/useOverlay";
+
+import * as S from "./styles";
 
 interface SpotCardProps {
   isShowReview?: boolean;

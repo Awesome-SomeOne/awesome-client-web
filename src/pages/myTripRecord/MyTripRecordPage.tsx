@@ -2,15 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import * as S from "./styles";
+import Clear from "@/assets/icons/Clear";
+import Button from "@/components/common/button";
 import Appbar from "@/components/common/header/Appbar";
+import OrderDisplayCircleChips from "@/components/common/orderDisplayCircleChips";
 import TabAnatomy from "@/components/common/tabAnatomy";
 import TextArea from "@/components/common/textArea";
 import TextField from "@/components/common/textField/TextField";
 import BottomCompleteButton from "@/components/myTripRecord/BottomCompleteButton";
 import SpotCard from "@/components/myTripRecord/SpotCard";
-import Clear from "@/assets/icons/Clear";
-import OrderDisplayCircleChips from "@/components/common/orderDisplayCircleChips";
-import Button from "@/components/common/button";
 
 const MyTripRecordPage = () => {
   const [pageOrder, setPageOrder] = useState(0);

@@ -1,8 +1,10 @@
-import Clear from "@/assets/icons/Clear";
+import { PropsWithChildren } from "react";
+
 import Appbar from "../header/Appbar";
+import Clear from "@/assets/icons/Clear";
+
 import Portal from "../portal";
 import * as S from "./styles";
-import { PropsWithChildren } from "react";
 
 interface FullPageModalProps extends PropsWithChildren {
   title?: string;

@@ -1,5 +1,6 @@
-import { Theme } from "@/styles/theme";
 import styled from "@emotion/styled";
+
+import { Theme } from "@/styles/theme";
 
 export const MyTripRecordDetailPageContainer = styled.div`
   display: flex;

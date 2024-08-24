@@ -1,5 +1,6 @@
-import { Theme } from "@/styles/theme";
 import styled from "@emotion/styled";
+
+import { Theme } from "@/styles/theme";
 
 interface OrderDisplayCircleChipsProps extends React.HTMLAttributes<HTMLDivElement> {
   totalNumber: number;

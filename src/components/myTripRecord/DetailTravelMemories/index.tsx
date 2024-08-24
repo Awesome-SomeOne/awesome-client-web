@@ -1,5 +1,5 @@
-import Divider from "@/components/common/divider";
 import * as S from "./styles";
+import Divider from "@/components/common/divider";
 
 const DetailTravelMemories = () => {
   return (
