@@ -37,8 +37,8 @@ const Chip = ({
   trailingIcon,
   onClick,
   trailingIconOnClick,
-  disabled,
-  selected,
+  disabled = false,
+  selected = false,
   ...props
 }: IChipProps) => {
   const color = S.getColor({ hierarchy, disabled, selected }).color;
@@ -46,12 +46,12 @@ const Chip = ({
     trailingIcon && React.isValidElement(trailingIcon) ? React.cloneElement(trailingIcon, { color }) : trailingIcon;
 
   return (
-    <S.ChipContainer shape={shape} hierarchy={hierarchy} disabled selected {...props}>
+    <S.ChipContainer shape={shape} hierarchy={hierarchy} disabled={disabled} selected={selected} {...props}>
       <S.Left onClick={onClick}>
         {leadingIcon}
         {text}
       </S.Left>
-      <S.Icon onClick={trailingIconOnClick || onClick}>{coloredTrailingIcon}</S.Icon>
+      {trailingIcon && <S.Icon onClick={trailingIconOnClick || onClick}>{coloredTrailingIcon}</S.Icon>}
     </S.ChipContainer>
   );
 };
