@@ -1,4 +1,5 @@
 import Divider from "@/components/common/divider";
+
 import SpotCard from "../SpotCard";
 import * as S from "./styles";
 

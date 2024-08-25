@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import Button from "../button/index";
+
 import * as S from "./styles";
+import Button from "../button/index";
 
 interface ISearchBarProps {
   autoFocus?: boolean;

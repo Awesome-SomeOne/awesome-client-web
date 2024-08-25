@@ -1,9 +1,15 @@
-import FullPageModal from "@/components/common/fullPageModal";
-import * as S from "./styles";
-import TextArea from "@/components/common/textArea";
 import Button from "@/components/common/button";
+import FullPageModal from "@/components/common/fullPageModal";
+import StarRate from "@/components/common/starRate";
+import TextArea from "@/components/common/textArea";
 
-const ReviewFullPageModal = ({ close }: any) => {
+import * as S from "./styles";
+import { useStarRate } from "@/components/common/starRate/starRateContext";
+
+const ReviewFullPageModal = ({ close }: { close: () => void }) => {
+  const { starRate } = useStarRate();
+  console.log("starRate", starRate); // TODO: 나중에 api 연결에 사용될 데이터
+
   return (
     <FullPageModal close={close} title={"리뷰 작성"}>
       <S.Container>
@@ -20,6 +26,7 @@ const ReviewFullPageModal = ({ close }: any) => {
 
         <S.RateSection>
           <S.Text className="section-description">다녀오신 장소는 어떠셨나요?</S.Text>
+          <StarRate />
         </S.RateSection>
 
         <TextArea label="장소 리뷰" placeholder="리뷰를 자세히 남겨주세요" maxLength={500} isShowLength />
@@ -34,6 +41,7 @@ const ReviewFullPageModal = ({ close }: any) => {
       </S.Container>
       <S.ButtonWrapper>
         <Button
+          disabled={starRate === -1}
           text="리뷰 작성하기"
           size="lg"
           onClick={() => {
