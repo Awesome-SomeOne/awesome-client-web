@@ -1,12 +1,13 @@
 interface StarIconProps {
   fill: boolean;
+  size?: number;
 }
 
-const StarIcon = ({ fill }: StarIconProps) => {
+const StarIcon = ({ fill, size = 33 }: StarIconProps) => {
   return (
     <>
       {fill ? (
-        <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width={size} height={size} viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <mask
             id="mask0_484_26744"
             style={{ maskType: "alpha" }}
