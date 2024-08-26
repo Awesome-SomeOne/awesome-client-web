@@ -21,7 +21,7 @@ const BottomSheet = ({
 }: IBottomSheetProps) => {
   const [height, setHeight] = useState("50%");
 
-  const handleDrag = (event: MouseEvent | PointerEvent | TouchEvent, info: PanInfo) => {
+  const handleDrag = (_: unknown, info: PanInfo) => {
     if (info.offset.y > 100) {
       close();
     } else if (info.offset.y < -100) {
