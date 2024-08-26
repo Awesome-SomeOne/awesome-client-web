@@ -25,8 +25,19 @@ export const BottomSheetContainer = styled(motion.div)`
   flex-direction: column;
   width: 100%;
   height: fit-content;
-  max-height: 80%;
   background-color: ${Theme.colors.Fill_White};
   border-radius: 16px 16px 0 0;
   z-index: 10;
+`;
+
+export const BottomSheetHandleBar = styled(motion.div)`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  border-radius: 3px;
+  background-color: #a0a3ae;
+  margin: 16px auto;
+  z-index: 2;
 `;

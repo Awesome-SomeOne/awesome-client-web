@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import * as S from "./styles";
 import Clear from "@/assets/icons/Clear";
 import MoreIcon from "@/assets/icons/MoreIcon";
 import BottomSheet from "@/components/common/bottomSheet";
@@ -10,6 +9,8 @@ import TabAnatomy from "@/components/common/tabAnatomy";
 import DetailSchedule from "@/components/myTripRecord/DetailSchedule";
 import DetailTravelMemories from "@/components/myTripRecord/DetailTravelMemories";
 import useOverlay from "@/hooks/useOverlay";
+
+import * as S from "./styles";
 
 const MyTripRecordDetailPage = () => {
   const [selectedTab, setSelectedTab] = useState("여행 추억");
