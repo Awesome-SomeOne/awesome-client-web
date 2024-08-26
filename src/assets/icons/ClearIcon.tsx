@@ -1,8 +1,16 @@
 import { Theme } from "../../styles/theme";
 
-const ClearIcon = ({ color = Theme.colors.Label_Default }: { color: string }) => {
+const ClearIcon = ({
+  width = "16",
+  height = "16",
+  color = Theme.colors.Label_Default
+}: {
+  width?: string;
+  height?: stirng;
+  color?: string;
+}) => {
   return (
-    <svg width="16" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={width} height={height} viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
