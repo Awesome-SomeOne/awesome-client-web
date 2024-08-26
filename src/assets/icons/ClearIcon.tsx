@@ -6,7 +6,7 @@ const ClearIcon = ({
   color = Theme.colors.Label_Default
 }: {
   width?: string;
-  height?: stirng;
+  height?: string;
   color?: string;
 }) => {
   return (
