@@ -12,6 +12,8 @@ interface ISearchBarProps {
   onChange?: (value: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  showBackIcon?: boolean;
+  BackIconOnClick?: () => void;
 }
 
 /**
@@ -23,6 +25,8 @@ interface ISearchBarProps {
  * @param onChange 입력된 검색어를 전달합니다.
  * @param onFocus
  * @param onBlur
+ * @param showBackIcon
+ * @param BackIconOnClick
  * @returns
  */
 
@@ -35,6 +39,8 @@ const SearchBar = ({
   onChange,
   onFocus,
   onBlur,
+  showBackIcon,
+  BackIconOnClick,
   ...props
 }: ISearchBarProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -76,19 +82,22 @@ const SearchBar = ({
   };
 
   return (
-    <S.SearchField isFocused={isTyping} isFilled={!!value} onSubmit={handleSubmit} {...props}>
-      <S.SearchInput
-        ref={inputRef}
-        autoFocus={autoFocus}
-        type="text"
-        value={value}
-        placeholder={placeholder}
-        onFocus={handleInputFocus}
-        onBlur={handleInputBlur}
-        onChange={handleInputChange}
-      />
-      {showButton && <Button text={buttonText} type="submit" style={{ height: "32px" }} />}
-    </S.SearchField>
+    <S.SearchLayout>
+      {showBackIcon && <S.BackIcon src="/src/assets/icons/BackIcon.svg" onClick={BackIconOnClick} />}
+      <S.SearchField isFocused={isTyping} isFilled={!!value} onSubmit={handleSubmit} {...props}>
+        <S.SearchInput
+          ref={inputRef}
+          autoFocus={autoFocus}
+          type="text"
+          value={value}
+          placeholder={placeholder}
+          onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
+          onChange={handleInputChange}
+        />
+        {showButton && <Button text={buttonText} type="submit" style={{ height: "32px" }} />}
+      </S.SearchField>
+    </S.SearchLayout>
   );
 };
 

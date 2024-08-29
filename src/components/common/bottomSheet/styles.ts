@@ -15,7 +15,7 @@ export const BackDrop = styled(motion.div)`
   top: 0;
 
   background-color: ${Theme.colors.Dim_Default};
-  z-index: 9;
+  z-index: 9999;
 `;
 
 export const BottomSheetContainer = styled(motion.div)`

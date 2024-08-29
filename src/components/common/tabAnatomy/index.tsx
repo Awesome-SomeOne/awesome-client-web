@@ -14,14 +14,14 @@ interface ITabAnatomyProps {
  * @returns
  */
 
-const TabAnatomy = ({ tabs, selectedTab, onClick }: ITabAnatomyProps) => {
+const TabAnatomy = ({ tabs, selectedTab, onClick, ...props }: ITabAnatomyProps) => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (onClick) {
       onClick(event);
     }
   };
   return (
-    <S.TabAnatomyContainer>
+    <S.TabAnatomyContainer {...props}>
       <S.TabAnatomy>
         {tabs?.map((tab) => (
           <S.Tab key={tab} selected={selectedTab === tab} onClick={handleClick}>
