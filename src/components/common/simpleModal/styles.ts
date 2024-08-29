@@ -15,7 +15,7 @@ export const BackDrop = styled(motion.div)`
   top: 0;
 
   background-color: ${Theme.colors.Dim_Default};
-  z-index: 9999;
+  z-index: 2000;
 `;
 
 export const SimpleModalContainer = styled(motion.div)`
@@ -29,7 +29,7 @@ export const SimpleModalContainer = styled(motion.div)`
   background-color: ${Theme.colors.Fill_White};
   box-shadow: ${Theme.shadow.Neutral_Basic_L};
   border-radius: 16px;
-  z-index: 10;
+  z-index: 1000;
 `;
 
 export const ContentContainer = styled.div`
