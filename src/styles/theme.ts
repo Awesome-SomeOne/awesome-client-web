@@ -45,6 +45,7 @@ export const Theme = {
     Status_Negative: "#FF4262",
     Dim_Default: "#2E333880",
     Dim_Primary: "#1A80E580",
+    Dim_Primary_Gradient: "linear-gradient(180deg, rgba(3, 25, 48, 0) 22.46%, rgba(3, 25, 48, 0.6) 93.84%)",
     Surface_Gradient_Dim: "linear-gradient(180deg, #03193000 0%, #03193099 100%)",
     Surface_Primary_Gradient_Dim: "linear-gradient(180deg, #2E333880 0%, ##2E333800 100%)"
   },
