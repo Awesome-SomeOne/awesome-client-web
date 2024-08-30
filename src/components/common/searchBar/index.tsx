@@ -3,13 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import * as S from "./styles";
 import Button from "../button/index";
 
-interface ISearchBarProps {
+interface ISearchBarProps extends React.HTMLAttributes<HTMLFormElement> {
   autoFocus?: boolean;
   placeholder?: string;
   buttonText?: string;
   value?: string;
-  onSubmit?: (value: string) => void;
-  onChange?: (value: string) => void;
+  onSearch?: (value: string) => void;
+  onValueChange?: (value: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   showBackIcon?: boolean;
@@ -19,14 +19,14 @@ interface ISearchBarProps {
 /**
  * SearchBar
  * @param autoFocus 검색창 autoFocus (기본 true)
- * @param placeholder 검색창 placeholder
- * @buttonText 검색 버튼 텍스트
- * @param onSubmit 입력된 검색어를 전달합니다.
- * @param onChange 입력된 검색어를 전달합니다.
- * @param onFocus
- * @param onBlur
- * @param showBackIcon
- * @param BackIconOnClick
+ * @param placeholder 검색창 placeholder ("검색내용을 입력해주세요")
+ * @buttonText 검색 버튼 텍스트 ("검색")
+ * @param onSearch 검색할 때
+ * @param onValueChange 검색창 값 바뀔 때
+ * @param onFocus 검색창 focus 상태일 때
+ * @param onBlur 검색창 blur 상태일 때
+ * @param showBackIcon 뒤로가기 아이콘 (검색창 왼쪽)
+ * @param BackIconOnClick 뒤로가기 아이콘 눌렀을 때
  * @returns
  */
 
@@ -35,8 +35,8 @@ const SearchBar = ({
   placeholder = "검색내용을 입력해주세요",
   buttonText = "검색",
   value: externalValue = "",
-  onSubmit,
-  onChange,
+  onSearch,
+  onValueChange,
   onFocus,
   onBlur,
   showBackIcon,
@@ -59,7 +59,7 @@ const SearchBar = ({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
-    onChange && onChange(event.target.value);
+    onValueChange && onValueChange(event.target.value);
   };
 
   const handleInputFocus = () => {
@@ -78,7 +78,7 @@ const SearchBar = ({
       return;
     }
     inputRef.current?.blur();
-    onSubmit && onSubmit(value);
+    onSearch && onSearch(value);
   };
 
   return (
