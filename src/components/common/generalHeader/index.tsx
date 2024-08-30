@@ -1,3 +1,4 @@
+import { Theme } from "@/styles/theme";
 import * as S from "./styles";
 
 interface IGeneralHeaderProps {
@@ -26,15 +27,15 @@ const GeneralHeader = ({
   description,
   titleSize = "xs",
   spacingSize = "sm",
-  subColor
+  subColor = Theme.colors.Label_Alternative
 }: IGeneralHeaderProps) => {
   return (
     <S.GeneralHeaderContainer spacingSize={spacingSize}>
       <S.TopSection>
         <S.Title titleSize={titleSize}>{title}</S.Title>
-        {sub?.length && <S.Sub color={subColor}>{sub}</S.Sub>}
+        {sub && <S.Sub color={subColor}>{sub}</S.Sub>}
       </S.TopSection>
-      {description?.length && <S.Description titleSize={titleSize}>{description}</S.Description>}
+      {description && <S.Description titleSize={titleSize}>{description}</S.Description>}
     </S.GeneralHeaderContainer>
   );
 };

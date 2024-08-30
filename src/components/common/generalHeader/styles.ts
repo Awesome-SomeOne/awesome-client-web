@@ -46,8 +46,8 @@ export const Title = styled.span<{ titleSize: "xs" | "sm" | "md" | "lg" }>`
   }};
 `;
 
-export const Sub = styled.span<{ color?: string }>`
-  color: ${({ color }) => (color ? color : Theme.colors.Label_Alternative)};
+export const Sub = styled.span<{ color: string }>`
+  color: ${({ color }) => color};
   font-size: 14px;
   cursor: pointer;
 `;
