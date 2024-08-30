@@ -16,13 +16,13 @@ interface IDropdownProps {
  * Dropdown
  * @param text 텍스트
  * @param size 사이즈(sm, md)
- * @param open 열림/닫힘 상태
+ * @param open 클릭 없이 열림/닫힘 상태 변경 필요할 때 사용
  * @param selected
  * @param disabled
  * @returns
  */
 
-const Dropdown = ({ text, size = "sm", open, selected, disabled }: IDropdownProps) => {
+const Dropdown = ({ text, size = "sm", open = false, selected, disabled }: IDropdownProps) => {
   const [opened, setOpened] = useState(open);
   const color = getColor({ selected, disabled });
 
