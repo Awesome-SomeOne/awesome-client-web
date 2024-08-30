@@ -14,9 +14,9 @@ interface ITabAnatomyProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "o
  * @returns
  */
 
-const TabAnatomy = ({ tabs, selectedTab, onClick }: ITabAnatomyProps) => {
+const TabAnatomy = ({ tabs, selectedTab, onClick, ...props }: ITabAnatomyProps) => {
   return (
-    <S.TabAnatomyContainer>
+    <S.TabAnatomyContainer {...props}>
       <S.TabAnatomy>
         {tabs?.map((tab) => (
           <S.Tab key={tab} selected={selectedTab === tab} onClick={onClick}>
