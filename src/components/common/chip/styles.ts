@@ -37,8 +37,6 @@ export const Left = styled.div`
   gap: 4px;
 `;
 
-export const Icon = styled.div``;
-
 export const getColor = ({ hierarchy, disabled, selected }: Omit<ChipContainerProps, "shape">) => {
   if (disabled) {
     return {

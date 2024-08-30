@@ -10,8 +10,6 @@ export const SearchLayout = styled.div`
   gap: 8px;
 `;
 
-export const BackIcon = styled.img``;
-
 export const SearchField = styled.form<{ isFocused: boolean; isFilled: boolean }>`
   background: ${Theme.colors.Surface_Alternative};
   color: ${Theme.colors.Label_Assitive};

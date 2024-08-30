@@ -51,7 +51,7 @@ const Chip = ({
         {leadingIcon}
         {text}
       </S.Left>
-      {trailingIcon && <S.Icon onClick={trailingIconOnClick || onClick}>{coloredTrailingIcon}</S.Icon>}
+      {trailingIcon && <div onClick={trailingIconOnClick || onClick}>{coloredTrailingIcon}</div>}
     </S.ChipContainer>
   );
 };

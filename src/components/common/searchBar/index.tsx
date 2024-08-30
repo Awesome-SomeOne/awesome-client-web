@@ -83,7 +83,7 @@ const SearchBar = ({
 
   return (
     <S.SearchLayout>
-      {showBackIcon && <S.BackIcon src="/src/assets/icons/BackIcon.svg" onClick={BackIconOnClick} />}
+      {showBackIcon && <img src="/src/assets/icons/BackIcon.svg" onClick={BackIconOnClick} />}
       <S.SearchField isFocused={isTyping} isFilled={!!value} onSubmit={handleSubmit} {...props}>
         <S.SearchInput
           ref={inputRef}
