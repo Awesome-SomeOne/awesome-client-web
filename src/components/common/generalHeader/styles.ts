@@ -46,12 +46,13 @@ export const Title = styled.span<{ titleSize: "xs" | "sm" | "md" | "lg" }>`
   }};
 `;
 
-export const Sub = styled.span`
-  color: ${Theme.colors.Label_Alternative};
+export const Sub = styled.span<{ color: string }>`
+  color: ${({ color }) => color};
   font-size: 14px;
+  cursor: pointer;
 `;
 
 export const Description = styled.p<{ titleSize: "xs" | "sm" | "md" | "lg" }>`
   color: ${Theme.colors.Label_Alternative};
-  font-size: ${(props) => (props.titleSize === "xs" ? "14px" : "16px")};
+  font-size: ${({ titleSize }) => (titleSize === "xs" ? "14px" : "16px")};
 `;

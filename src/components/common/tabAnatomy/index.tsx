@@ -1,6 +1,6 @@
 import * as S from "./styles";
 
-interface ITabAnatomyProps {
+interface ITabAnatomyProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onClick"> {
   tabs: string[];
   selectedTab: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -15,16 +15,11 @@ interface ITabAnatomyProps {
  */
 
 const TabAnatomy = ({ tabs, selectedTab, onClick }: ITabAnatomyProps) => {
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (onClick) {
-      onClick(event);
-    }
-  };
   return (
     <S.TabAnatomyContainer>
       <S.TabAnatomy>
         {tabs?.map((tab) => (
-          <S.Tab key={tab} selected={selectedTab === tab} onClick={handleClick}>
+          <S.Tab key={tab} selected={selectedTab === tab} onClick={onClick}>
             {tab}
           </S.Tab>
         ))}

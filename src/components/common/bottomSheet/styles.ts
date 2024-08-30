@@ -15,7 +15,7 @@ export const BackDrop = styled(motion.div)`
   top: 0;
 
   background-color: ${Theme.colors.Dim_Default};
-  z-index: 9;
+  z-index: 2000;
 `;
 
 export const BottomSheetContainer = styled(motion.div)`
@@ -27,7 +27,7 @@ export const BottomSheetContainer = styled(motion.div)`
   height: fit-content;
   background-color: ${Theme.colors.Fill_White};
   border-radius: 16px 16px 0 0;
-  z-index: 10;
+  z-index: 3000;
 `;
 
 export const BottomSheetHandleBar = styled(motion.div)`
@@ -39,5 +39,5 @@ export const BottomSheetHandleBar = styled(motion.div)`
   border-radius: 3px;
   background-color: #a0a3ae;
   margin: 16px auto;
-  z-index: 2;
+  z-index: 1000;
 `;

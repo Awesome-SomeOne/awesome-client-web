@@ -6,7 +6,7 @@ export const OutContainer = styled.div`
   display: flex;
   width: 100vw;
   height: ${Theme.size.Header_Height};
-  z-index: 9999;
+  z-index: 1000;
   position: fixed;
   top: 0;
   justify-content: space-between;
