@@ -8,6 +8,7 @@ export const TextLabelContainer = styled.div<{
   fill: boolean;
 }>`
   height: ${(props) => (props.size === "sm" ? "24px" : "30px")};
+  width: max-content;
   padding: ${(props) => (props.fill ? (props.size === "sm" ? "4px 8px" : "6px 16px") : "6px 0")};
   border-radius: 9999px;
   background-color: ${(props) => (props.fill ? getBgColor(props.color) : "none")};
