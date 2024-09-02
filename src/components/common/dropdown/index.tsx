@@ -6,6 +6,8 @@ import { Theme } from "@/styles/theme";
 
 interface IDropdownProps {
   text?: string;
+  text2?: string;
+  content?: string;
   size?: "sm" | "md";
   open?: boolean;
   selected?: boolean;
@@ -15,6 +17,8 @@ interface IDropdownProps {
 /**
  * Dropdown
  * @param text 텍스트
+ * @param text2 열렸을 때 텍스트
+ * @param content 열렸을 때 보이는 내용
  * @param size 사이즈(sm, md)
  * @param open 클릭 없이 열림/닫힘 상태 변경 필요할 때 사용
  * @param selected
@@ -22,7 +26,7 @@ interface IDropdownProps {
  * @returns
  */
 
-const Dropdown = ({ text, size = "sm", open = false, selected, disabled }: IDropdownProps) => {
+const Dropdown = ({ text, text2, content, size = "sm", open = false, selected, disabled }: IDropdownProps) => {
   const [opened, setOpened] = useState(open);
   const color = getColor({ selected, disabled });
 
@@ -31,10 +35,13 @@ const Dropdown = ({ text, size = "sm", open = false, selected, disabled }: IDrop
   }, [open]);
 
   return (
-    <S.DropdownContainer size={size} color={color} onClick={() => setOpened(!opened)}>
-      <S.DropdownText>{text}</S.DropdownText>
-      <DropdownIcon color={color} open={opened} />
-    </S.DropdownContainer>
+    <>
+      <S.DropdownContainer size={size} color={color} onClick={() => setOpened(!opened)}>
+        <S.DropdownText>{opened ? text2 || text : text}</S.DropdownText>
+        <DropdownIcon color={color} open={opened} />
+      </S.DropdownContainer>
+      {content && opened && <S.DropdownContent>{content}</S.DropdownContent>}
+    </>
   );
 };
 

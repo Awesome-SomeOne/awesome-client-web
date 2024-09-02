@@ -8,6 +8,7 @@ interface IGeneralHeaderProps {
   titleSize?: "xs" | "sm" | "md" | "lg";
   spacingSize?: "sm" | "md";
   subColor?: string;
+  subOnClick?: () => void;
 }
 
 /**
@@ -18,6 +19,7 @@ interface IGeneralHeaderProps {
  * @param titleSize 타이틀 사이즈(xs, sm, md, lg)
  * @param spacingSize padding 사이즈(sm, md)
  * @param subColor 타이틀 옆 글자 컬러
+ * @param subOnClick 타이틀 옆 글자 onClick
  * @returns
  */
 
@@ -27,13 +29,18 @@ const GeneralHeader = ({
   description,
   titleSize = "xs",
   spacingSize = "sm",
-  subColor = Theme.colors.Label_Alternative
+  subColor = Theme.colors.Label_Alternative,
+  subOnClick
 }: IGeneralHeaderProps) => {
   return (
     <S.GeneralHeaderContainer spacingSize={spacingSize}>
       <S.TopSection>
         <S.Title titleSize={titleSize}>{title}</S.Title>
-        {sub && <S.Sub color={subColor}>{sub}</S.Sub>}
+        {sub && (
+          <S.Sub color={subColor} onClick={subOnClick}>
+            {sub}
+          </S.Sub>
+        )}
       </S.TopSection>
       {description && <S.Description titleSize={titleSize}>{description}</S.Description>}
     </S.GeneralHeaderContainer>

@@ -9,7 +9,7 @@ interface IChipProps {
   hierarchy?: "primary" | "secondary";
   leadingIcon?: ReactNode;
   trailingIcon?: ReactElement<{ color?: string }>;
-  onClick?: () => void;
+  onChipClick?: () => void;
   trailingIconOnClick?: () => void;
   disabled?: boolean;
   selected?: boolean;
@@ -22,7 +22,7 @@ interface IChipProps {
  * @param hierarchy 계층(primary, secondary)
  * @param leadingIcon 앞 아이콘
  * @param trailingIcon 뒤 아이콘
- * @param onClick chip 클릭 이벤트
+ * @param onChipClick chip 클릭 이벤트
  * @param trailingIconClick 뒤 아이콘 클릭 이벤트
  * @param disabled
  * @param selected
@@ -35,7 +35,7 @@ const Chip = ({
   hierarchy = "secondary",
   leadingIcon,
   trailingIcon,
-  onClick,
+  onChipClick,
   trailingIconOnClick,
   disabled = false,
   selected = false,
@@ -45,13 +45,25 @@ const Chip = ({
   const coloredTrailingIcon =
     trailingIcon && React.isValidElement(trailingIcon) ? React.cloneElement(trailingIcon, { color }) : trailingIcon;
 
+  const handleTrailingIconClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    trailingIconOnClick && trailingIconOnClick();
+  };
+
   return (
-    <S.ChipContainer shape={shape} hierarchy={hierarchy} disabled={disabled} selected={selected} {...props}>
-      <S.Left onClick={onClick}>
+    <S.ChipContainer
+      shape={shape}
+      hierarchy={hierarchy}
+      disabled={disabled}
+      selected={selected}
+      onClick={onChipClick}
+      {...props}
+    >
+      <S.Left>
         {leadingIcon}
         {text}
       </S.Left>
-      {trailingIcon && <div onClick={trailingIconOnClick || onClick}>{coloredTrailingIcon}</div>}
+      {trailingIcon && <div onClick={handleTrailingIconClick}>{coloredTrailingIcon}</div>}
     </S.ChipContainer>
   );
 };
