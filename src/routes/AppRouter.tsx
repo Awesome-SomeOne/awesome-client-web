@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "@/App";
 import { PATH } from "@/constants/path";
+import CommunityPage from "@/pages/community/CommunityPage";
 import MapPage from "@/pages/map/MapPage";
 import MyTripListPage from "@/pages/myTripList/MyTripListPage";
 import MyTripRecordPage from "@/pages/myTripRecord/MyTripRecordPage";
@@ -31,6 +32,10 @@ const AppRouter = () => {
             {
               path: PATH.MAP,
               element: <MapPage />
+            },
+            {
+              path: PATH.COMMUNITY,
+              element: <CommunityPage />
             }
           ]
         }
