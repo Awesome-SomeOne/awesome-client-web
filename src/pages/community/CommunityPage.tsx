@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 
+import * as S from "./styles";
 import SearchIcon from "@/assets/icons/SearchIcon";
 import Appbar from "@/components/common/header/Appbar";
 import MyActivityRecord from "@/components/community/MyActivityRecord";
 import PopularMemory from "@/components/community/PopularMemory";
+import PostList from "@/components/community/PostList";
 import { Theme } from "@/styles/theme";
-
-import * as S from "./styles";
 
 const CommunityPage = () => {
   return (
@@ -32,6 +32,7 @@ const CommunityPage = () => {
           <S.TitleText className="title">게시글</S.TitleText>
           <S.TextButton>전체보기</S.TextButton>
         </S.TitleWrapper>
+        <PostList />
       </CommunityPageWrapper>
     </>
   );
