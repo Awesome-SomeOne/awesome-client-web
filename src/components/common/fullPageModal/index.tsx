@@ -1,8 +1,8 @@
 import { PropsWithChildren } from "react";
 
-import Appbar from "../header/Appbar";
 import Clear from "@/assets/icons/Clear";
 
+import Appbar from "../header/Appbar";
 import Portal from "../portal";
 import * as S from "./styles";
 
