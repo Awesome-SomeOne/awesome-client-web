@@ -3,7 +3,7 @@ import { ReactElement, ReactNode } from "react";
 
 import * as S from "./styles";
 
-interface IChipProps {
+interface IChipProps extends React.HTMLAttributes<HTMLButtonElement> {
   text?: string;
   shape?: "round" | "box";
   hierarchy?: "primary" | "secondary";
@@ -47,7 +47,7 @@ const Chip = ({
 
   const handleTrailingIconClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    trailingIconOnClick && trailingIconOnClick();
+    trailingIconOnClick ? trailingIconOnClick() : onChipClick && onChipClick();
   };
 
   return (
@@ -63,7 +63,7 @@ const Chip = ({
         {leadingIcon}
         {text}
       </S.Left>
-      {trailingIcon && <div onClick={handleTrailingIconClick}>{coloredTrailingIcon}</div>}
+      {trailingIcon && <S.Icon onClick={handleTrailingIconClick}>{coloredTrailingIcon}</S.Icon>}
     </S.ChipContainer>
   );
 };

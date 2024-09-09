@@ -1,0 +1,35 @@
+.rdrMonthAndYearWrapper {
+  display: none;
+}
+
+.rdrMonthName {
+  display: none;
+}
+
+.rdrDay {
+  height: 44px;
+}
+
+.rdrStartEdge,
+.rdrDayStartOfWeek .rdrInRange,
+.rdrDayStartOfMonth .rdrInRange,
+.rdrDayStartOfWeek .rdrEndEdge,
+.rdrDayStartOfMonth .rdrEndEdge {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.rdrEndEdge,
+.rdrDayEndOfWeek .rdrInRange,
+.rdrDayEndOfMonth .rdrInRange,
+.rdrDayEndOfWeek .rdrStartEdge,
+.rdrDayEndOfMonth .rdrStartEdge {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.rdrDayStartPreview,
+.rdrDayInPreview,
+.rdrDayEndPreview {
+  display: none;
+}
