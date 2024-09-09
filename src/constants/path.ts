@@ -6,7 +6,8 @@ export const PATH = {
   MAP: "/map", // 지도 페이지
   MY_TRIP_GENERATE: "/my-trip", // 내 여행 생성 페이지
   MY_TRIP: (tripId?: number) => `/my-trip/${tripId ?? ":tripId"}`, // 내 여행 조회 페이지
-  COMMUNITY: "/community" // 커뮤니티 페이지
+  COMMUNITY: "/community", // 커뮤니티 페이지
+  MY_TRIP_RECORD_LIST: "/my-trip-record-list" // 추억 모아보기
 };
 
 Object.freeze(PATH);
