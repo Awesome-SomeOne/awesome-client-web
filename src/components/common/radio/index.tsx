@@ -1,6 +1,6 @@
 import * as S from "./styles";
 
-interface IRadioProps {
+interface IRadioProps extends React.HtmlHTMLAttributes<HTMLInputElement> {
   text?: string;
   name?: string;
   value?: string;

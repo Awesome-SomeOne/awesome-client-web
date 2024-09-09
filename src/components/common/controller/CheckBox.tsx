@@ -2,10 +2,10 @@ import * as S from "./styles";
 
 interface CheckBoxProps {
   size: "sm" | "md";
-  name: string;
+  name?: string;
   disabled?: boolean;
   checked?: boolean;
-  children: string;
+  children?: string;
 }
 
 const CheckBox = ({ size, name, disabled, checked, children }: CheckBoxProps) => {
