@@ -2,12 +2,9 @@ import styled from "@emotion/styled";
 import { Theme } from "@/styles/theme";
 import { motion } from "framer-motion";
 
-export const BottomSection = styled.div`
-  /* background: ${Theme.colors.Bg_Default}; */
+export const BottomSection = styled.div<{ recommended: boolean }>`
   width: 100%;
-  height: min-content;
-  max-height: calc(60% - 64px);
-  /* max-height: calc(60% - 64px + 52px); */
+  max-height: ${({ recommended }) => (recommended ? "calc(60% - 64px + 52px)" : "calc(60% - 64px)")};
   position: absolute;
   bottom: 0;
   display: flex;
