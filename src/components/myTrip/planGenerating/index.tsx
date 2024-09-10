@@ -148,7 +148,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
 
   return (
     <>
-      <S.BottomSection>
+      <S.BottomSection recommended={recommendedPlaces.length > 0}>
         {recommendedPlaces?.length > 0 && (
           <S.ChipsContainer>
             {recommendedPlaces.map((place, index) => (
