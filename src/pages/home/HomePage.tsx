@@ -10,6 +10,7 @@ import Weather from "@/components/home/Weather/index";
 import { useState } from "react";
 import DetailPage from "./detail/DetailPage";
 import LikePage from "./like/LikePage";
+import LocationPage from "./location/LocationPage";
 import NotificationPage from "./notification/NotificationPage";
 import PopularPlacePage from "./popularPlace/PopularPlacePage";
 import RecommendPlacePage from "./recommendPlace/RecommendPlacePage";
@@ -28,7 +29,7 @@ const HomePage = () => {
       {step === "home" && (
         <S.HomeLayout>
           <S.AppBar>
-            <CurrentLocation />
+            <CurrentLocation onClick={handleClick} />
             <AppBarIcons onClick={handleClick} />
           </S.AppBar>
           <Weather />
@@ -40,6 +41,7 @@ const HomePage = () => {
           <Ship />
         </S.HomeLayout>
       )}
+      {step === "location" && <LocationPage onClose={() => setStep("home")} />}
       {step === "search" && <SearchPage onClose={() => setStep("home")} />}
       {step === "like" && <LikePage onClose={() => setStep("home")} />}
       {step === "notification" && <NotificationPage onClose={() => setStep("home")} />}
