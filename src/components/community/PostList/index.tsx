@@ -9,7 +9,7 @@ const PostList = () => {
   const TABS = ["전체", "봉사", "나눔", "추천", "모임", "기타"];
   const [selectedTab, setSelectedTab] = useState<string>("전체");
   return (
-    <>
+    <S.BackgroundWrapper>
       <TabAnatomy
         tabs={TABS}
         selectedTab={selectedTab}
@@ -19,6 +19,7 @@ const PostList = () => {
             setSelectedTab(tabName);
           }
         }}
+        style={{ background: "white", width: "100%" }}
       />
       <S.CardListWrapper>
         <CardForPost
@@ -39,9 +40,9 @@ const PostList = () => {
           commentCount={1}
           saveCount={1}
         />
-        <S.ShowAllButton>전체 보기</S.ShowAllButton>
       </S.CardListWrapper>
-    </>
+      <S.ShowAllButton>전체 보기</S.ShowAllButton>
+    </S.BackgroundWrapper>
   );
 };
 
