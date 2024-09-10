@@ -1,10 +1,17 @@
+import { useNavigate } from "react-router-dom";
+
+import * as S from "./styles";
+import { useGetMyTripList } from "@/apis/travel/travel.queries";
 import Button from "@/components/common/button";
 import Appbar from "@/components/common/header/Appbar";
 import TripCard from "@/components/myTripList/TripCard";
-
-import * as S from "./styles";
+import { PATH } from "@/constants/path";
 
 const MyTripListPage = () => {
+  const navigate = useNavigate();
+  const { data: myTripListData } = useGetMyTripList();
+  console.log(myTripListData);
+
   return (
     <>
       <Appbar title="내 여행 목록" textAlign="center" />
@@ -19,7 +26,13 @@ const MyTripListPage = () => {
           endDate="2021.09.05"
         />
 
-        <Button text="새로 만들기" size="lg" />
+        <Button
+          text="새로 만들기"
+          size="lg"
+          onClick={() => {
+            navigate(PATH.MY_TRIP_GENERATE);
+          }}
+        />
       </S.MyTripListPageWrapper>
     </>
   );
