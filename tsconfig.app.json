@@ -23,7 +23,7 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
 
-    "types": ["kakao.maps.d.ts"],
+    "types": ["kakao.maps.d.ts", "node"],
 
     "baseUrl": ".",
     "paths": {
