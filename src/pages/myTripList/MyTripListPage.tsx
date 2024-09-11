@@ -9,8 +9,8 @@ import { PATH } from "@/constants/path";
 
 const MyTripListPage = () => {
   const navigate = useNavigate();
-  const { data: myTripListData } = useGetMyTripList();
-  console.log(myTripListData);
+  // const { data: myTripListData } = useGetMyTripList();
+  // console.log(myTripListData);
 
   return (
     <>
