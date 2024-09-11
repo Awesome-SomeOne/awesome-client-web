@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
 import * as S from "./styles";
-import { useGetMyTripList } from "@/apis/travel/travel.queries";
+import BottomNavBar from "@/components/common/bottomNavBar";
 import Button from "@/components/common/button";
 import Appbar from "@/components/common/header/Appbar";
 import TripCard from "@/components/myTripList/TripCard";
 import { PATH } from "@/constants/path";
+
+// import { useGetMyTripList } from "@/apis/travel/travel.queries";
 
 const MyTripListPage = () => {
   const navigate = useNavigate();
@@ -34,6 +36,7 @@ const MyTripListPage = () => {
           }}
         />
       </S.MyTripListPageWrapper>
+      <BottomNavBar />
     </>
   );
 };

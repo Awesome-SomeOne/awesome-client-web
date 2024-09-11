@@ -73,7 +73,8 @@ export const Theme = {
     Shadow_Md: "0px 0px 8px rgba(0, 0, 0, 0.04)"
   },
   size: {
-    Header_Height: "56px"
+    Header_Height: "56px",
+    BottomNavBar_Height: "56px"
   }
 };
 

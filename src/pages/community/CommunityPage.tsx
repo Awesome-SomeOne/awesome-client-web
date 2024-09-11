@@ -1,12 +1,14 @@
 import styled from "@emotion/styled";
 
-import * as S from "./styles";
 import SearchIcon from "@/assets/icons/SearchIcon";
+import BottomNavBar from "@/components/common/bottomNavBar";
 import Appbar from "@/components/common/header/Appbar";
 import MyActivityRecord from "@/components/community/MyActivityRecord";
 import PopularMemory from "@/components/community/PopularMemory";
 import PostList from "@/components/community/PostList";
 import { Theme } from "@/styles/theme";
+
+import * as S from "./styles";
 
 const CommunityPage = () => {
   return (
@@ -34,6 +36,7 @@ const CommunityPage = () => {
         </S.TitleWrapper>
         <PostList />
       </CommunityPageWrapper>
+      <BottomNavBar />
     </>
   );
 };
