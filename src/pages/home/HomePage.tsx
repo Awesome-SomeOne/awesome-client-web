@@ -1,3 +1,7 @@
+import { useState } from "react";
+
+import DetailPage from "./detail/DetailPage";
+import BottomNavBar from "@/components/common/bottomNavBar";
 import AppBarIcons from "@/components/home/AppBarIcons/index";
 import CarouselComponent from "@/components/home/Carousel/index";
 import CurrentLocation from "@/components/home/CurrentLoaction/index";
@@ -7,8 +11,7 @@ import PopularPlace from "@/components/home/PopularPlace/index";
 import RecommendPlace from "@/components/home/RecommendPlace/index";
 import Ship from "@/components/home/Ship/index";
 import Weather from "@/components/home/Weather/index";
-import { useState } from "react";
-import DetailPage from "./detail/DetailPage";
+
 import LikePage from "./like/LikePage";
 import LocationPage from "./location/LocationPage";
 import NotificationPage from "./notification/NotificationPage";
@@ -48,6 +51,7 @@ const HomePage = () => {
       {step === "popularPlace" && <PopularPlacePage onClose={() => setStep("home")} />}
       {step === "recommendPlace" && <RecommendPlacePage onClose={() => setStep("home")} />}
       {step === "detail" && <DetailPage onClose={() => setStep("home")} />}
+      <BottomNavBar />
     </>
   );
 };

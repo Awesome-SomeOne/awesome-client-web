@@ -1,5 +1,6 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
+import BottomNavBar from "@/components/common/bottomNavBar";
 import MapFilterChips from "@/components/map/mapFilterChips";
 import MapListBottomSheet from "@/components/map/MapListBottomSheet";
 import useOverlay from "@/hooks/useOverlay";
@@ -19,6 +20,7 @@ const MapPage = () => {
         </MapMarker>
       </Map>
       <MapListBottomSheet close={close} isOpen={isOpen} />
+      <BottomNavBar />
     </S.MapPageWrapper>
   );
 };
