@@ -1,11 +1,6 @@
 import { Theme } from "@/styles/theme";
 import styled from "@emotion/styled";
 
-export const NotificationContainer = styled.div`
-  display: flex;
-  gap: 6px;
-`;
-
 export const NotificationBox = styled.div`
   background: ${Theme.colors.Bg_Default};
   width: 100%;
