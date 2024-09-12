@@ -28,7 +28,7 @@ const HomePage = () => {
   };
 
   return (
-    <>
+    <div style={{ height: "100%", overflow: "scroll" }}>
       {step === "home" && (
         <S.HomeLayout>
           <S.AppBar>
@@ -52,7 +52,7 @@ const HomePage = () => {
       {step === "recommendPlace" && <RecommendPlacePage onClose={() => setStep("home")} />}
       {step === "detail" && <DetailPage onClose={() => setStep("home")} />}
       <BottomNavBar />
-    </>
+    </div>
   );
 };
 
