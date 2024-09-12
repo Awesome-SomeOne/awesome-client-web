@@ -1,16 +1,29 @@
+import { useNavigate } from "react-router-dom";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
 import { useState } from "react";
 import PlaceComponent from "../PlaceComponent/index";
 import * as S from "./styles";
+import { PATH } from "@/constants/path";
+import { CATEGORY_LIST } from "@/constants/homePageConstants";
 
-const RecommendPlace = ({ onClick }: { onClick: (step: string) => void }) => {
+const RecommendPlace = () => {
+  const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState("숙소");
 
   const handleClick = (event: any) => {
     setCurrentTab(event.target.innerText);
-    // tab 변경 처리하기
   };
+
+  const places = [
+    {
+      id: 1,
+      name: "장소",
+      address: "주소",
+      category: "숙소",
+      rating: 5.0
+    }
+  ];
 
   return (
     <S.RecLayout>
@@ -20,36 +33,22 @@ const RecommendPlace = ({ onClick }: { onClick: (step: string) => void }) => {
           sub="전체보기"
           titleSize="sm"
           spacingSize="md"
-          subOnClick={() => onClick("recommendPlace")}
+          subOnClick={() => navigate(PATH.RECOMMEND_PLACE)}
         />
-        <TabAnatomy tabs={["숙소", "식당", "렌트카", "액티비티"]} selectedTab={currentTab} onClick={handleClick} />
+        <TabAnatomy tabs={CATEGORY_LIST} selectedTab={currentTab} onClick={handleClick} />
       </div>
       <S.ComponentCol>
-        <PlaceComponent
-          image="src/assets/images/accommodation.png"
-          name="숙소이름이 들어갑니다"
-          rating="5.0"
-          count={1000}
-          address="강원 춘천시 남산면 남이섬길 1"
-          like={true}
-          onClick={() => onClick("detail")}
-        />
-        <PlaceComponent
-          image="src/assets/images/accommodation.png"
-          name="숙소이름이 들어갑니다"
-          rating="5.0"
-          count={1000}
-          address="강원 춘천시 남산면 남이섬길 1"
-          onClick={() => onClick("detail")}
-        />
-        <PlaceComponent
-          image="src/assets/images/accommodation.png"
-          name="숙소이름이 들어갑니다"
-          rating="5.0"
-          count={1000}
-          address="강원 춘천시 남산면 남이섬길 1"
-          onClick={() => onClick("detail")}
-        />
+        {places.map((place) => (
+          <PlaceComponent
+            image={"src/assets/images/accommodation.png"}
+            name={place.name}
+            rating={place.rating.toString()}
+            count={1000}
+            address={place.address}
+            like={true}
+            onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
+          />
+        ))}
       </S.ComponentCol>
     </S.RecLayout>
   );

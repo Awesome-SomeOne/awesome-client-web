@@ -18,6 +18,16 @@ const LikePage = () => {
     // tab 변경 처리하기
   };
 
+  const places = [
+    {
+      id: 1,
+      name: "장소",
+      address: "주소",
+      category: "숙소",
+      rating: 5.0
+    }
+  ];
+
   useEffect(() => {
     setPlace([]);
   }, []);
@@ -36,15 +46,17 @@ const LikePage = () => {
       <TabAnatomy tabs={CATEGORY_LIST} selectedTab={currentTab} onClick={handleClick} />
       {!place.length ? (
         <S.ComponentCol>
-          <PlaceComponent
-            image="src/assets/images/accommodation.png"
-            name="숙소이름이 들어갑니다"
-            rating="5.0"
-            count={1000}
-            address="강원 춘천시 남산면 남이섬길  1"
-            like={true}
-            // onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
-          />
+          {places.map((place) => (
+            <PlaceComponent
+              image={"src/assets/images/accommodation.png"}
+              name={place.name}
+              rating={place.rating.toString()}
+              count={1000}
+              address={place.address}
+              like={true}
+              onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
+            />
+          ))}
         </S.ComponentCol>
       ) : (
         <S.NoResultContainer>

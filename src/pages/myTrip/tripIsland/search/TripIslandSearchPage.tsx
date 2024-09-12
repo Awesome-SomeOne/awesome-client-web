@@ -25,7 +25,7 @@ const TripIslandSearchPage = ({
   useEffect(() => {
     console.log(searchQuery);
     if (!searchQuery) {
-      setSearchResults([]);
+      setSearchResult([]);
       return;
     }
     // 검색 처리하기
@@ -33,7 +33,7 @@ const TripIslandSearchPage = ({
       { id: 1, name: "남이섬", type: "관광명소", address: "경상북도 울릉도" },
       { id: 2, name: "제주도", type: "관광명소", address: "경상북도 울릉도" }
     ];
-    setSearchResults(result);
+    setSearchResult(result);
   }, [searchQuery]);
 
   const handleSubmit = (value: string) => {
@@ -74,8 +74,8 @@ const TripIslandSearchPage = ({
         <Divider size="sm" />
         <S.Container>
           <S.ResultContainer>
-            {searchResults.length > 0 &&
-              searchResults.map((place, index) => (
+            {searchResult.length > 0 &&
+              searchResult.map((place, index) => (
                 <ListComponent
                   key={index}
                   place={place}
@@ -84,7 +84,7 @@ const TripIslandSearchPage = ({
                 />
               ))}
           </S.ResultContainer>
-          {searchQuery && searchResults.length === 0 && <NoResult />}
+          {searchQuery && searchResult.length === 0 && <NoResult />}
           {selectedIsland ? (
             <Button
               text="선택완료"

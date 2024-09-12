@@ -1,7 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import GeneralHeader from "@/components/common/generalHeader/index";
+import { PATH } from "@/constants/path";
 import * as S from "./styles";
 
-const PopularPlace = ({ onClick }: { onClick: (step: string) => void }) => {
+const PopularPlace = () => {
+  const navigate = useNavigate();
+
+  const places = [
+    {
+      id: 1,
+      name: "장소",
+      address: "주소",
+      category: "숙소",
+      rating: 5.0
+    }
+  ];
+
   return (
     <S.PopularPlaceLayout>
       <GeneralHeader
@@ -9,27 +23,17 @@ const PopularPlace = ({ onClick }: { onClick: (step: string) => void }) => {
         sub="전체보기"
         titleSize="sm"
         spacingSize="md"
-        subOnClick={() => onClick("popularPlace")}
+        subOnClick={() => navigate(PATH.POPULAR_PLACE)}
       />
       <S.PlaceBox>
-        <Place
-          image="src/assets/images/popular1.png"
-          ranking={1}
-          name="제주도 동문시장"
-          onClick={() => onClick("detail")}
-        />
-        <Place
-          image="src/assets/images/popular2.png"
-          ranking={2}
-          name="울릉도 현포 남방파제"
-          onClick={() => onClick("detail")}
-        />
-        <Place
-          image="src/assets/images/popular2.png"
-          ranking={3}
-          name="울릉도 현포 남방파제"
-          onClick={() => onClick("detail")}
-        />
+        {places.map((place, index) => (
+          <Place
+            image={"src/assets/images/popular1.png"}
+            ranking={index + 1}
+            name={place.name}
+            onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
+          />
+        ))}
       </S.PlaceBox>
     </S.PopularPlaceLayout>
   );

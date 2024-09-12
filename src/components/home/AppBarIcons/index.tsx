@@ -1,11 +1,15 @@
+import { PATH } from "@/constants/path";
+import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 
-const AppBarIcons = ({ onClick }: { onClick: (step: string) => void }) => {
+const AppBarIcons = () => {
+  const navigate = useNavigate();
+
   return (
     <S.AppBarLayout>
-      <S.AppBarIcon src="/src/assets/icons/search.svg" onClick={() => onClick("search")} />
-      <S.AppBarIcon src="/src/assets/icons/like.svg" onClick={() => onClick("like")} />
-      <S.AppBarIcon src="/src/assets/icons/notification.svg" onClick={() => onClick("notification")} />
+      <S.AppBarIcon src="/src/assets/icons/search.svg" onClick={() => navigate(PATH.SEARCH)} />
+      <S.AppBarIcon src="/src/assets/icons/like.svg" onClick={() => navigate(PATH.LIKE)} />
+      <S.AppBarIcon src="/src/assets/icons/notification.svg" onClick={() => navigate(PATH.NOTIFICATION)} />
     </S.AppBarLayout>
   );
 };

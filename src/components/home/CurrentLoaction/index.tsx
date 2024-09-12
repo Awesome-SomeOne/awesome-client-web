@@ -1,6 +1,10 @@
+import { PATH } from "@/constants/path";
+import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 
-const CurrentLocation = ({ onClick }: { onClick: (step: string) => void }) => {
+const CurrentLocation = () => {
+  const navigate = useNavigate();
+
   return (
     <S.CurrentLocationLayout>
       <S.CurrentLocationBox>
@@ -8,7 +12,7 @@ const CurrentLocation = ({ onClick }: { onClick: (step: string) => void }) => {
         <S.LocationTitle>현재 위치</S.LocationTitle>
         <S.Location>경상남도 김해시</S.Location>
       </S.CurrentLocationBox>
-      <S.DownArrow src="src/assets/icons/down.svg" onClick={() => onClick("location")} />
+      <S.DownArrow src="src/assets/icons/down.svg" onClick={() => navigate(PATH.LOCATION)} />
     </S.CurrentLocationLayout>
   );
 };
