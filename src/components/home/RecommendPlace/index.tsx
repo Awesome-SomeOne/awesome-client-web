@@ -38,9 +38,10 @@ const RecommendPlace = () => {
         <TabAnatomy tabs={CATEGORY_LIST} selectedTab={currentTab} onClick={handleClick} />
       </div>
       <S.ComponentCol>
-        {places.map((place) => (
+        {places.map((place, index) => (
           <PlaceComponent
-            image={"src/assets/images/accommodation.png"}
+            key={index}
+            image={"src/assets/images/place_null.svg"}
             name={place.name}
             rating={place.rating.toString()}
             count={1000}
