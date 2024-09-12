@@ -18,62 +18,8 @@ import BackIcon from "@/assets/icons/BackIcon";
 import { Theme } from "@/styles/theme";
 import * as S from "./styles";
 import { Place } from "@/types/myTrip";
-
-export type PlaceType = { id: number; name: string; type?: string; address: string; image?: string };
-
-const placeData: { day: number; places: PlaceType[] }[] = [
-  {
-    day: 1,
-    places: [
-      {
-        id: 1,
-        name: "산선암1",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      },
-      {
-        id: 2,
-        name: "산선암2",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      }
-    ]
-  },
-  {
-    day: 2,
-    places: [
-      {
-        id: 3,
-        name: "산선암3",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      },
-      {
-        id: 4,
-        name: "산선암4",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      }
-    ]
-  },
-  {
-    day: 3,
-    places: [
-      {
-        id: 5,
-        name: "산선암5",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      },
-      {
-        id: 6,
-        name: "산선암6",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      }
-    ]
-  }
-];
+import { useAtom } from "jotai";
+import { daysAtom } from "@/atoms/myTrip/planAtom";
 
 const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
   const [placeList, setPlaceList] = useState<{ day: number; date: string; places: Place[] }[]>([]);
@@ -82,10 +28,15 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
   const [isMoveClicked, setIsMoveClicked] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
+  const [days, setDays] = useAtom(daysAtom);
 
   const handleDragStart = () => {
     setSelectedPlace(null);
   };
+
+  useEffect(() => {
+    setPlaceList(days);
+  }, [days]);
 
   const handleDragEnd = ({ source, destination }: DragUpdate) => {
     if (source && destination) {
@@ -134,13 +85,17 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
   };
 
   const handleDelete = () => {
-    // 삭제 처리하기
+    const newPlaceList = placeList.map((day) => ({
+      ...day,
+      places: day.places.filter((place) => place !== selectedPlace)
+    }));
+    setPlaceList(newPlaceList);
     setIsDeleteModalOpen(false);
   };
 
   const handleMoveClick = () => {
-    // 바텀시트 띄우기
-    setSelectedDay(1);
+    const selectedPlaceDay = placeList.filter((day) => day.places.find((place) => place === selectedPlace))[0].day;
+    setSelectedDay(selectedPlaceDay);
     setIsMoveClicked(true);
   };
 
@@ -204,8 +159,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
         rightIcon1={
           <div
             onClick={() => {
-              // 저장하기
-              console.log("편집 일정 저장");
+              setDays(placeList);
               onPrev();
             }}
           >
@@ -230,7 +184,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
                 {(provided: DroppableProvided) => (
                   <S.DayContainer>
                     <S.DayText>Day {day.day}</S.DayText>
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                    <div ref={provided.innerRef} {...provided.droppableProps} style={{ minHeight: "35px" }}>
                       {day.places.map((place, index) => (
                         <PlaceContainer
                           key={index}
@@ -264,7 +218,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
         <BottomSheet isOpen={isMoveClicked} close={() => setIsMoveClicked(false)}>
           <>
             <S.DaysUl>
-              {placeData.map(({ day }, index) => (
+              {days.map(({ day }, index) => (
                 <S.DayLi key={index} selected={day === selectedDay} onClick={() => setSelectedDay(day)}>
                   Day {day}
                 </S.DayLi>

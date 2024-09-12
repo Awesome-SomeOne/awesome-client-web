@@ -1,6 +1,6 @@
 import Button from "../../components/common/button/index";
 import * as S from "./styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MyTripSchedulePage from "./tripSchedule/TripSchedulePage";
 import MyTripIslandPage from "./tripIsland/TripIslandPage";
 import MyTripThemePage from "./tripTheme/TripThemePage";
@@ -12,6 +12,8 @@ import SimpleModal from "@/components/common/simpleModal/index";
 import useOverlay from "@/hooks/useOverlay";
 import TripIslandSearchPage from "./tripIsland/search/TripIslandSearchPage";
 import { Place } from "@/types/myTrip";
+import { useAtom } from "jotai";
+import { daysAtom, useResetAtoms } from "@/atoms/myTrip/planAtom";
 
 const MyTripPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -28,6 +30,19 @@ const MyTripPage = () => {
 
   const [isSearching, setIsSearching] = useState(false);
   const [recommend, setRecommend] = useState(false);
+
+  const [, setDaysAtom] = useAtom(daysAtom);
+
+  const resetAtoms = useResetAtoms();
+
+  useEffect(() => {
+    if (currentStep < 3) {
+      resetAtoms();
+    }
+    if (currentStep < 5) {
+      setDaysAtom([]);
+    }
+  }, [currentStep]);
 
   const handleRecClick = () => {
     isSearching && setIsSearching(false);
@@ -102,6 +117,7 @@ const MyTripPage = () => {
               setCurrentStep(1);
               setRecommend(false);
               setSelectedPlaces([]);
+              setDaysAtom([]);
             }}
             isOpen={isOpen}
             close={close}

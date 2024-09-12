@@ -11,52 +11,42 @@ import Appbar from "@/components/common/header/Appbar";
 import RecentSearch from "@/components/search/recentSearch/index";
 import { Place } from "@/types/myTrip";
 import { NoResult } from "@/components/search/noResult/index";
+import { useAtom } from "jotai";
+import { planGeneratingAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
+import { useGetRecommendPlace, useSearchPlace } from "@/apis/myTrip/myTrip.queries";
 
 const AddPlacePage = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [selectedPlaces, setSelectedPlaces] = useState<Place[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchedPlaces, setSearchedPlaces] = useState<Place[]>([]);
   const [showSelectedList, setShowSelectedList] = useState(false);
   const [keywords, setKeywords] = useState<string[]>([]);
+  const [{ islandId, planName: category }] = useAtom(planGeneratingAtom);
+  const { data: recommendedPlaces = [] } = useGetRecommendPlace({
+    islandId,
+    category
+  });
 
-  const [recommendedPlaces, setRecommendedPlaces] = useState([
-    {
-      id: 0,
-      name: "산선암",
-      address: "경상북도 울릉도",
-      category: "관광명소"
-    },
-    {
-      id: 1,
-      name: "산선암",
-      address: "경상북도 울릉도",
-      category: "관광명소"
-    }
-  ]);
+  const { data: searchedPlaces = [] } = useSearchPlace({
+    keyword: searchQuery
+  });
+
+  const addPlacesToDay = useUpdateDaysAtom();
+
+  useEffect(() => {
+    console.log(searchQuery);
+  }, [searchQuery]);
+
   useEffect(() => {
     // 최근 검색어 불러오기
     setKeywords(["테스트", "테스트", "테스트"]);
   }, []);
 
   const handleAddClick = () => {
-    // Day에 선택한 장소 추가 처리하기
+    addPlacesToDay(day, selectedPlaces);
     onPrev();
   };
-
-  useEffect(() => {
-    // 검색 처리하기
-    setSearchedPlaces([
-      {
-        id: 100,
-        name: searchQuery,
-        category: "관광명소",
-        address: "경상북도 울릉도"
-      }
-    ]);
-    return () => setSearchedPlaces([]);
-  }, [searchQuery]);
 
   useEffect(() => {
     if (inputValue !== searchQuery) setSearchQuery("");
@@ -86,7 +76,6 @@ const AddPlacePage = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
 
   useEffect(() => {
     if (isSearching) return;
-    // setSearchedPlaces([]);
     setInputValue("");
     setSearchQuery("");
   }, [isSearching]);
@@ -125,11 +114,11 @@ const AddPlacePage = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
       <Divider size="sm" />
       {!isSearching && (
         <>
-          <GeneralHeader title="[포토스팟]에 추천하는 장소" />
+          <GeneralHeader title={`[${category}]에 추천하는 장소`} />
           <S.ListContainer isSelected={selectedPlaces.length > 0}>
-            {recommendedPlaces.map((place) => (
+            {recommendedPlaces.map((place: Place, index: number) => (
               <ListComponent
-                key={place.id}
+                key={index}
                 place={place}
                 onClick={() => {
                   if (selectedPlaces.some((p) => p.id === place.id)) {
@@ -172,7 +161,7 @@ const AddPlacePage = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
       {searchQuery && (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
           {searchedPlaces.length > 0 ? (
-            searchedPlaces.map((place) => (
+            searchedPlaces.map((place: Place) => (
               <ListComponent
                 key={place.id}
                 place={place}

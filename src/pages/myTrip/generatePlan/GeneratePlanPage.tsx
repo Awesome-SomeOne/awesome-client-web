@@ -5,11 +5,16 @@ import EditPlanPage from "@/pages/myTrip/editPlan/EditPlanPage";
 import { Place } from "@/types/myTrip";
 import AddPlacePage from "../addPlace/AddPlacePage";
 import MapComponent from "@/components/myTrip/map/index";
+import { useAtom } from "jotai";
+import { planGeneratingAtom } from "@/atoms/myTrip/planAtom";
+import { ISLAND_LIST } from "@/constants/myTripPageConstants";
 
 const GeneratePlanPage = ({ recommended = [] }: { recommended?: Place[] }) => {
   const [day, setDay] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [{ islandId, startDate, endDate }] = useAtom(planGeneratingAtom);
+  const islandName = ISLAND_LIST.find((island) => island.id === islandId)?.name;
 
   const onAdd = () => {
     setIsAdding(true);
@@ -28,7 +33,7 @@ const GeneratePlanPage = ({ recommended = [] }: { recommended?: Place[] }) => {
       {!isEditing && !isAdding && (
         <>
           <div style={{ height: "100%", paddingTop: "56px", overflow: "hidden" }}>
-            <GeneralHeader title="울릉도" sub="2024.06.28 ~ 2024.06.30" titleSize="md" />
+            <GeneralHeader title={islandName} sub={`${startDate} ~ ${endDate}`} titleSize="md" />
             <MapComponent
               positionList={[
                 { lat: 33.55635, lng: 126.795841 },

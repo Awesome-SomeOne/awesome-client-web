@@ -4,7 +4,7 @@ import GeneralHeader from "@/components/common/generalHeader/index";
 import { DateRange, Range, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { format, subYears, addYears } from "date-fns";
+import { format, parse, subYears, addYears } from "date-fns";
 import { ko } from "date-fns/locale";
 import { Theme } from "@/styles/theme";
 import DropdownIcon from "@/assets/icons/DropdownIcon";
@@ -14,11 +14,16 @@ import Wheel from "@/components/myTrip/wheel/index";
 import { YEARS, MONTHS } from "@/constants/dateConstants";
 import "./style.css";
 import * as S from "./styles";
+import { useAtom } from "jotai";
+import { startDateAtom, endDateAtom } from "@/atoms/myTrip/planAtom";
 
-type ScheduleType = {
-  startDate: string;
-  endDate: string;
-};
+const formatDateToKorean = (date: Date) => format(date, "M월 d일", { locale: ko });
+const parseDateFromKorean = (dateString: string, year: number) =>
+  parse(`${year}-${dateString}`, "yyyy-M월 dd일", new Date());
+const formatDateToLocal = (date: Date) => format(date, "yyyy-MM-dd");
+
+const getYearFromDate = (date: Date) => parseInt(format(date, "yyyy"));
+
 const TripSchedulePage = ({ onNext }: { onNext: () => void }) => {
   const today = {
     year: parseInt(format(new Date(), "yyyy")),
@@ -38,9 +43,11 @@ const TripSchedulePage = ({ onNext }: { onNext: () => void }) => {
       key: "selection"
     }
   ]);
-  const [schedule, setSchedule] = useState<ScheduleType | null>(null);
 
   const { isOpen, open, close } = useOverlay();
+
+  const [, setStartDate] = useAtom(startDateAtom);
+  const [, setEndDate] = useAtom(endDateAtom);
 
   // year, month 임의 변경
   useEffect(() => {
@@ -94,29 +101,34 @@ const TripSchedulePage = ({ onNext }: { onNext: () => void }) => {
   const handleChange = ({ selection }: RangeKeyDict) => {
     if (selection.startDate && selection.endDate) {
       setRange([selection]);
-      setSchedule({
-        startDate: new Date(selection.startDate)
-          .toLocaleDateString("ko-KR", {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-          })
-          .slice(6),
-        endDate: new Date(selection.endDate)
-          .toLocaleDateString("ko-KR", {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-          })
-          .slice(6)
-      });
     }
   };
 
   const handleNext = () => {
     // 설정한 여행 기간 처리하기
+    if (!range[0].startDate || !range[0].endDate) return;
+
+    const startDateYear = getYearFromDate(range[0].startDate);
+    const endDateYear = getYearFromDate(range[0].endDate);
+
+    const startDateParsed = parseDateFromKorean(formatDateToKorean(range[0].startDate), startDateYear);
+    const endDateParsed = parseDateFromKorean(formatDateToKorean(range[0].endDate), endDateYear);
+
+    const startDateFormatted = formatDateToLocal(startDateParsed);
+    const endDateFormatted = formatDateToLocal(endDateParsed);
+
+    setStartDate(startDateFormatted);
+    setEndDate(endDateFormatted);
+
     onNext();
   };
+
+  const buttonText =
+    range[0]?.startDate && range[0]?.endDate
+      ? formatDateToKorean(range[0].startDate) === formatDateToKorean(range[0].endDate)
+        ? `${formatDateToKorean(range[0].startDate)} 여행 떠나기`
+        : `${formatDateToKorean(range[0].startDate)}~${formatDateToKorean(range[0].endDate)} 여행 떠나기`
+      : "날짜를 선택해주세요";
 
   return (
     <div style={{ height: "100%", paddingTop: "56px" }}>
@@ -141,15 +153,9 @@ const TripSchedulePage = ({ onNext }: { onNext: () => void }) => {
         </S.DateRangeWrapper>
         <div style={{ width: "100%", position: "absolute", bottom: "0" }}>
           <Button
-            text={
-              schedule
-                ? schedule.startDate !== schedule.endDate
-                  ? `${schedule.startDate}~${schedule.endDate} 여행 떠나기`
-                  : `${schedule.startDate} 여행 떠나기`
-                : "날짜를 선택해주세요"
-            }
+            text={buttonText}
             size="lg"
-            disabled={!schedule}
+            disabled={buttonText === "날짜를 선택해주세요"}
             style={{ width: "calc(100% - 40px)", margin: "8px 20px" }}
             onClick={handleNext}
           />

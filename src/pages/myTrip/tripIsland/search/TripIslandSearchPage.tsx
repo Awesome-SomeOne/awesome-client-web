@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ClearIcon from "@/assets/icons/ClearIcon";
 import Button from "@/components/common/button/index";
 import Divider from "@/components/common/divider/index";
@@ -8,6 +8,9 @@ import ListComponent from "@/components/myTrip/listComponent/index";
 import { Place } from "@/types/myTrip";
 import { NoResult } from "@/components/search/noResult/index";
 import * as S from "./styles";
+import { useAtom } from "jotai";
+import { islandIdAtom } from "@/atoms/myTrip/planAtom";
+import { useSearchIsland } from "@/apis/myTrip/myTrip.queries";
 
 const TripIslandSearchPage = ({
   onNext,
@@ -19,22 +22,10 @@ const TripIslandSearchPage = ({
   onRecClick: () => void;
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResult, setSearchResult] = useState<Place[]>([]);
   const [selectedIsland, setSelectedIsland] = useState<Place | null>(null);
+  const [, setIslandId] = useAtom(islandIdAtom);
 
-  useEffect(() => {
-    console.log(searchQuery);
-    if (!searchQuery) {
-      setSearchResult([]);
-      return;
-    }
-    // 검색 처리하기
-    const result = [
-      { id: 1, name: "남이섬", type: "관광명소", address: "경상북도 울릉도" },
-      { id: 2, name: "제주도", type: "관광명소", address: "경상북도 울릉도" }
-    ];
-    setSearchResult(result);
-  }, [searchQuery]);
+  const { data: searchResult = [] } = useSearchIsland({ keyword: searchQuery });
 
   const handleSubmit = (value: string) => {
     setSearchQuery(value);
@@ -46,7 +37,7 @@ const TripIslandSearchPage = ({
   };
 
   const handleSelectDone = () => {
-    // selectedIsland 선택 처리
+    setIslandId(2);
     onNext();
   };
 
@@ -75,7 +66,7 @@ const TripIslandSearchPage = ({
         <S.Container>
           <S.ResultContainer>
             {searchResult.length > 0 &&
-              searchResult.map((place, index) => (
+              searchResult.map((place: Place, index: number) => (
                 <ListComponent
                   key={index}
                   place={place}

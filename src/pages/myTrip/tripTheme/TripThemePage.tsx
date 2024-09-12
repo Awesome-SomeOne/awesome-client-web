@@ -6,6 +6,8 @@ import RecommendedIsland from "../tripIsland/recommendationIsland/RecommendedIsl
 import * as S from "./styles";
 import { Place } from "@/types/myTrip";
 import { THEME_LIST } from "@/constants/myTripPageConstants";
+import { useAtom } from "jotai";
+import { planNameAtom } from "@/atoms/myTrip/planAtom";
 
 const TripThemePage = ({
   onPrev,
@@ -23,6 +25,7 @@ const TripThemePage = ({
   const [recommend, setRecommend] = useState(isRecommend);
   const [recommended, setRecommended] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [, setPlanName] = useAtom(planNameAtom);
 
   const handleThemeClick = (event: any) => {
     if (event.target.children.length === 0) {
@@ -32,6 +35,7 @@ const TripThemePage = ({
         setSelectedTheme("");
       } else {
         setSelectedTheme(theme);
+        setPlanName(theme);
       }
     }
   };
@@ -40,7 +44,7 @@ const TripThemePage = ({
     inputRef.current?.focus();
   }, [showInput]);
 
-  const handleSelect = () => {
+  const handleNext = () => {
     // 섬 선택 처리하기
     if (recommend) setRecommended(true);
     else onNext();
@@ -48,9 +52,9 @@ const TripThemePage = ({
 
   const handleSubmit = (value: string) => {
     // 입력한 여행 목적 저장하기
-    console.log(value);
+    setPlanName(value);
     // 일정 세우기로 넘어가기
-    handleSelect();
+    handleNext();
   };
 
   const handlePrev = () => {
@@ -92,7 +96,7 @@ const TripThemePage = ({
             style={{ width: "calc(100% - 40px)", margin: "8px 20px" }}
             size="lg"
             disabled={!selectedTheme}
-            onClick={handleSelect}
+            onClick={handleNext}
           />
           <BottomSheet
             children={<InputComponent inputRef={inputRef} handleSubmit={handleSubmit} />}

@@ -1,3 +1,4 @@
+// import { useGetRecommendPlaces } from "@/apis/place/place.queries";
 import { useNavigate } from "react-router-dom";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
@@ -10,6 +11,8 @@ import { CATEGORY_LIST } from "@/constants/homePageConstants";
 const RecommendPlace = () => {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState("숙소");
+
+  // const { data: places = [] } = useGetRecommendPlaces({ islandId: 1, category: currentTab });
 
   const handleClick = (event: any) => {
     setCurrentTab(event.target.innerText);
