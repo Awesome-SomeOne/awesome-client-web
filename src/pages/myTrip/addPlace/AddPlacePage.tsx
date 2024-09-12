@@ -9,75 +9,32 @@ import ListComponent from "@/components/myTrip/listComponent/index";
 import * as S from "./styles";
 import Appbar from "@/components/common/header/Appbar";
 import RecentSearch from "@/components/search/recentSearch/index";
-import { PlaceType } from "../editPlan/EditPlanPage";
+import { Place } from "@/types/myTrip";
 import { NoResult } from "@/components/search/noResult/index";
-
-const recommendedPlaces: PlaceType[] = [
-  {
-    id: 0,
-    name: "산선암",
-    type: "관광명소",
-    address: "경상북도 울릉도"
-  },
-  {
-    id: 1,
-    name: "산선암",
-    type: "관광명소",
-    address: "경상북도 울릉도"
-  },
-  {
-    id: 2,
-    name: "산선암",
-    type: "관광명소",
-    address: "경상북도 울릉도"
-  },
-  {
-    id: 3,
-    name: "산선암",
-    type: "관광명소",
-    address: "경상북도 울릉도"
-  },
-  {
-    id: 4,
-    name: "산선암",
-    type: "관광명소",
-    address: "경상북도 울릉도"
-  },
-  {
-    id: 5,
-    name: "산선암",
-    type: "관광명소",
-    address: "경상북도 울릉도"
-  },
-  {
-    id: 6,
-    name: "산선암",
-    type: "관광명소",
-    address: "경상북도 울릉도"
-  },
-  {
-    id: 7,
-    name: "산선암",
-    type: "관광명소",
-    address: "경상북도 울릉도"
-  },
-  {
-    id: 8,
-    name: "산선암",
-    type: "관광명소",
-    address: "경상북도 울릉도"
-  }
-];
 
 const AddPlacePage = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
   const [isSearching, setIsSearching] = useState(false);
-  const [selectedPlaces, setSelectedPlaces] = useState<PlaceType[]>([]);
+  const [selectedPlaces, setSelectedPlaces] = useState<Place[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchedPlaces, setSearchedPlaces] = useState<PlaceType[]>([]);
+  const [searchedPlaces, setSearchedPlaces] = useState<Place[]>([]);
   const [showSelectedList, setShowSelectedList] = useState(false);
   const [keywords, setKeywords] = useState<string[]>([]);
 
+  const [recommendedPlaces, setRecommendedPlaces] = useState([
+    {
+      id: 0,
+      name: "산선암",
+      address: "경상북도 울릉도",
+      category: "관광명소"
+    },
+    {
+      id: 1,
+      name: "산선암",
+      address: "경상북도 울릉도",
+      category: "관광명소"
+    }
+  ]);
   useEffect(() => {
     // 최근 검색어 불러오기
     setKeywords(["테스트", "테스트", "테스트"]);
@@ -94,7 +51,7 @@ const AddPlacePage = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
       {
         id: 100,
         name: searchQuery,
-        type: "관광명소",
+        category: "관광명소",
         address: "경상북도 울릉도"
       }
     ]);

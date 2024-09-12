@@ -1,6 +1,6 @@
 import Button from "@/components/common/button/index";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
-import { PlaceType } from "@/pages/myTrip/editPlan/EditPlanPage";
+import { Place } from "@/types/myTrip";
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import AddBox from "../box/addBox/index";
@@ -10,7 +10,7 @@ import * as S from "./styles";
 
 interface IPlanProps {
   selectedDay: number;
-  recommended?: PlaceType[];
+  recommended?: Place[];
   isPageEditing: boolean;
   onPageEdit: () => void;
   onAdd: () => void;
@@ -27,15 +27,15 @@ const Plan = ({ selectedDay, isPageEditing, onPageEdit, onAdd, onEdit, onPageEdi
     onSelect(selectedDay);
   }, [selectedDay]);
   // Day별 일정 불러오기
-  const [travelPlaceList, setTravelPlaceList] = useState<PlaceType[]>([
+  const [travelPlaceList, setTravelPlaceList] = useState<Place[]>([
     // {
     //   name: "산선암",
-    //   type: "관광명소",
+    //   category: "관광명소",
     //   address: "경상북도 울릉도"
     // },
     // {
     //   name: "산선암",
-    //   type: "관광명소",
+    //   category: "관광명소",
     //   address: "경상북도 울릉도"
     // }
   ]);
@@ -66,20 +66,20 @@ const Plan = ({ selectedDay, isPageEditing, onPageEdit, onAdd, onEdit, onPageEdi
       {
         id: 0,
         name: "산선암",
-        type: "관광명소",
-        address: "경상북도 울릉도"
+        address: "경상북도 울릉도",
+        category: "관광명소"
       },
       {
         id: 1,
         name: "산선암",
-        type: "관광명소",
-        address: "경상북도 울릉도"
+        address: "경상북도 울릉도",
+        category: "관광명소"
       },
       {
         id: 2,
         name: "산선암",
-        type: "관광명소",
-        address: "경상북도 울릉도"
+        address: "경상북도 울릉도",
+        category: "관광명소"
       }
     ]);
   };

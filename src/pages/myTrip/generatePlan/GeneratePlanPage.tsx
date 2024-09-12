@@ -1,11 +1,12 @@
 import GeneralHeader from "@/components/common/generalHeader/index";
 import PlanGenerating from "@/components/myTrip/planGenerating/index";
 import { useState } from "react";
-import EditPlanPage, { PlaceType } from "@/pages/myTrip/editPlan/EditPlanPage";
+import EditPlanPage from "@/pages/myTrip/editPlan/EditPlanPage";
+import { Place } from "@/types/myTrip";
 import AddPlacePage from "../addPlace/AddPlacePage";
 import MapComponent from "@/components/myTrip/map/index";
 
-const GeneratePlanPage = ({ recommended = [] }: { recommended?: PlaceType[] }) => {
+const GeneratePlanPage = ({ recommended = [] }: { recommended?: Place[] }) => {
   const [day, setDay] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);

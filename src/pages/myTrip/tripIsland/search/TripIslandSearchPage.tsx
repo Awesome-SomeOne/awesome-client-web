@@ -5,7 +5,7 @@ import Divider from "@/components/common/divider/index";
 import Appbar from "@/components/common/header/Appbar";
 import SearchBar from "@/components/common/searchBar/index";
 import ListComponent from "@/components/myTrip/listComponent/index";
-import { PlaceType } from "../../editPlan/EditPlanPage";
+import { Place } from "@/types/myTrip";
 import { NoResult } from "@/components/search/noResult/index";
 import * as S from "./styles";
 
@@ -19,8 +19,8 @@ const TripIslandSearchPage = ({
   onRecClick: () => void;
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<PlaceType[]>([]);
-  const [selectedIsland, setSelectedIsland] = useState<PlaceType | null>(null);
+  const [searchResult, setSearchResult] = useState<Place[]>([]);
+  const [selectedIsland, setSelectedIsland] = useState<Place | null>(null);
 
   useEffect(() => {
     console.log(searchQuery);

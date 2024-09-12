@@ -12,12 +12,12 @@ import { PATH } from "@/constants/path";
 import { useNavigate } from "react-router-dom";
 import AddBox from "../box/addBox/index";
 import PlaceBox from "../box/placeBox/index";
-import { PlaceType } from "@/pages/myTrip/editPlan/EditPlanPage";
+import { Place } from "@/types/myTrip";
 import MiniMapComponent from "../map/miniMap/index";
 
 interface IPlanProps {
   selectedDay: number;
-  recommended: PlaceType[];
+  recommended: Place[];
   onAdd: () => void;
   onEdit: () => void;
   onSelect: (day: number) => void;
@@ -32,7 +32,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
   const { isOpen, open, close } = useOverlay();
 
   // Day별 일정 불러오기
-  const [travelPlaceList, setTravelPlaceList] = useState<PlaceType[]>([
+  const [travelPlaceList, setTravelPlaceList] = useState<Place[]>([
     // {
     //   name: "산선암",
     //   type: "관광명소",
@@ -46,9 +46,9 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
   ]);
 
   // 추천 장소
-  const [recommendedPlaces, setRecommendedPlaces] = useState<PlaceType[]>(recommended);
+  const [recommendedPlaces, setRecommendedPlaces] = useState<Place[]>(recommended);
   // 추천 장소 중 선택한 장소
-  const [selectedPlace, setSelectedPlace] = useState<PlaceType | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   // 모달에서 선택된 Day
   const [selectedBottomSheetDay, setSelectedBottomSheetDay] = useState(days[selectedDay - 1]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -85,19 +85,19 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
       {
         id: 1,
         name: "산선암",
-        type: "관광명소",
+        category: "관광명소",
         address: "경상북도 울릉도"
       },
       {
         id: 2,
         name: "산선암",
-        type: "관광명소",
+        category: "관광명소",
         address: "경상북도 울릉도"
       },
       {
         id: 3,
         name: "산선암",
-        type: "관광명소",
+        category: "관광명소",
         address: "경상북도 울릉도"
       }
     ]);
@@ -114,7 +114,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
   };
 
   // 추천 장소 chip 클릭 시
-  const handleChipClick = (place: PlaceType) => {
+  const handleChipClick = (place: Place) => {
     setSelectedPlace(place);
     setSelectedBottomSheetDay(days[selectedDay - 1]);
   };

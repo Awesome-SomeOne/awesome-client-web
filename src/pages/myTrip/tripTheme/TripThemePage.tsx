@@ -4,7 +4,7 @@ import Button from "@/components/common/button/index";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import RecommendedIsland from "../tripIsland/recommendationIsland/RecommendedIsland";
 import * as S from "./styles";
-import { PlaceType } from "../editPlan/EditPlanPage";
+import { Place } from "@/types/myTrip";
 import { THEME_LIST } from "@/constants/myTripPageConstants";
 
 const TripThemePage = ({
@@ -16,7 +16,7 @@ const TripThemePage = ({
   onPrev: () => void;
   onNext: () => void;
   isRecommend: boolean;
-  setSelectedPlaces: (selectedPlaces: PlaceType[]) => void;
+  setSelectedPlaces: (selectedPlaces: Place[]) => void;
 }) => {
   const [selectedTheme, setSelectedTheme] = useState("");
   const [showInput, setShowInput] = useState(false);

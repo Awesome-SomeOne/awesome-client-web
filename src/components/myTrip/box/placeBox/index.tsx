@@ -1,7 +1,7 @@
-import { PlaceType } from "@/pages/myTrip/editPlan/EditPlanPage";
+import { Place } from "@/types/myTrip";
 import * as S from "./styles";
 
-const PlaceBox = ({ order = 1, place, line = true }: { order: number; place: PlaceType; line?: boolean }) => {
+const PlaceBox = ({ order = 1, place, line = true }: { order: number; place: Place; line?: boolean }) => {
   const calculatedOrder = order % 6;
   return (
     <div>
@@ -17,7 +17,7 @@ const PlaceBox = ({ order = 1, place, line = true }: { order: number; place: Pla
           <div>
             <S.UpperText>
               <S.PlaceName>{place.name}</S.PlaceName>
-              <S.PlaceDesc>{place.type}</S.PlaceDesc>
+              <S.PlaceDesc>{place.category}</S.PlaceDesc>
             </S.UpperText>
             <S.PlaceDesc>{place.address}</S.PlaceDesc>
           </div>

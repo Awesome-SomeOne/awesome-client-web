@@ -11,11 +11,11 @@ import ClearIcon from "@/assets/icons/ClearIcon";
 import SimpleModal from "@/components/common/simpleModal/index";
 import useOverlay from "@/hooks/useOverlay";
 import TripIslandSearchPage from "./tripIsland/search/TripIslandSearchPage";
-import { PlaceType } from "./editPlan/EditPlanPage";
+import { Place } from "@/types/myTrip";
 
 const MyTripPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedPlaces, setSelectedPlaces] = useState<PlaceType[]>([]);
+  const [selectedPlaces, setSelectedPlaces] = useState<Place[]>([]);
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);
   const prevStep = () => {

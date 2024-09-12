@@ -2,7 +2,7 @@ import Button from "@/components/common/button/index";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import ListComponent from "@/components/myTrip/listComponent/index";
 import { useState } from "react";
-import { PlaceType } from "../../editPlan/EditPlanPage";
+import { Place } from "@/types/myTrip";
 import * as S from "./styles";
 
 const RecommendedIsland = ({
@@ -14,10 +14,10 @@ const RecommendedIsland = ({
   theme: string;
   onPrev: () => void;
   onNext: () => void;
-  setSelectedPlaces: (selectedPlaces: PlaceType[]) => void;
+  setSelectedPlaces: (selectedPlaces: Place[]) => void;
 }) => {
-  const [recommendPlace, setRecommendPlace] = useState<PlaceType[]>([]);
-  const [selectedPlaces, setLocalSelectedPlaces] = useState<PlaceType[]>([]);
+  const [recommendPlace, setRecommendPlace] = useState<Place[]>([]);
+  const [selectedPlaces, setLocalSelectedPlaces] = useState<Place[]>([]);
 
   const handleSelect = () => {
     // 추천 장소 불러오기

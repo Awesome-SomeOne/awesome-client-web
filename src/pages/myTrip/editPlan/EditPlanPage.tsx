@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DraggableProvided,
   DroppableProvided,
@@ -17,6 +17,7 @@ import Appbar from "@/components/common/header/Appbar";
 import BackIcon from "@/assets/icons/BackIcon";
 import { Theme } from "@/styles/theme";
 import * as S from "./styles";
+import { Place } from "@/types/myTrip";
 
 export type PlaceType = { id: number; name: string; type?: string; address: string; image?: string };
 
@@ -75,8 +76,8 @@ const placeData: { day: number; places: PlaceType[] }[] = [
 ];
 
 const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
-  const [placeList, setPlaceList] = useState(placeData);
-  const [selectedPlace, setSelectedPlace] = useState<PlaceType | null>(null);
+  const [placeList, setPlaceList] = useState<{ day: number; date: string; places: Place[] }[]>([]);
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [selectedDay, setSelectedDay] = useState(1);
   const [isMoveClicked, setIsMoveClicked] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -185,7 +186,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
       }
     });
     setPlaceList(newPlaceList);
-    // setSelectedPlace(null);
+    setSelectedPlace(null);
     setIsMoveClicked(false);
     return;
   };
@@ -312,12 +313,12 @@ const PlaceContainer = ({
   onClick
 }: {
   day: number;
-  place: PlaceType;
+  place: Place;
   index: number;
   checked: boolean;
   onClick: () => void;
 }) => {
-  const { id, name, type, address } = place;
+  const { id, name, category, address } = place;
   return (
     <Draggable key={`day${day}-place${id}`} draggableId={`${id}`} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
@@ -335,7 +336,7 @@ const PlaceContainer = ({
             <div style={{ width: "100%" }}>
               <S.UpperText>
                 <S.PlaceName>{name}</S.PlaceName>
-                <S.PlaceDesc>{type}</S.PlaceDesc>
+                <S.PlaceDesc>{category}</S.PlaceDesc>
               </S.UpperText>
               <S.PlaceDesc>{address}</S.PlaceDesc>
             </div>
