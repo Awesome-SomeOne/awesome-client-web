@@ -39,7 +39,6 @@ export const PlaceContainer = styled(motion.div)`
 
 export const Row = styled.div`
   width: 100%;
-  margin: auto;
   padding-top: 8px;
   display: flex;
   align-items: center;
