@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import ClearIcon from "@/assets/icons/ClearIcon";
 import Chip from "@/components/common/chip/index";
 import Appbar from "@/components/common/header/Appbar";
@@ -13,7 +14,8 @@ export type NotificationType = {
   content: string;
 };
 
-const NotificationPage = ({ onClose }: { onClose: () => void }) => {
+const NotificationPage = () => {
+  const navigate = useNavigate();
   const [notification, setNotification] = useState<NotificationType[]>([]);
   const [selectedChip, setSelectedChip] = useState("전체");
 
@@ -54,7 +56,7 @@ const NotificationPage = ({ onClose }: { onClose: () => void }) => {
         title="알림센터"
         textAlign="center"
         rightIcon1={
-          <div onClick={onClose}>
+          <div onClick={() => navigate(-1)}>
             <ClearIcon size="28" />
           </div>
         }

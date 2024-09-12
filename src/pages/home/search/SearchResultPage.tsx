@@ -7,6 +7,7 @@ import Appbar from "@/components/common/header/Appbar";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
 import PlaceComponent from "@/components/home/PlaceComponent/index";
 import { NoResult } from "@/components/search/noResult/index";
+import { CATEGORY_LIST } from "@/constants/homePageConstants";
 import { useState } from "react";
 import { SearchResult } from "./SearchPage";
 import * as S from "./styles";
@@ -47,7 +48,7 @@ const SearchResultPage = ({
           }
         />
         <GeneralHeader title={searchQuery} />
-        <TabAnatomy tabs={["관광지", "숙소", "식당", "액티비티"]} selectedTab={currentTab} onClick={handleClick} />
+        <TabAnatomy tabs={CATEGORY_LIST} selectedTab={currentTab} onClick={handleClick} />
         <div style={{ height: "100%", overflow: "scroll", display: "flex", flexDirection: "column" }}>
           <div style={{ padding: "8px 20px" }}>
             <Dropdown text={"최신순"} />

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import ClearIcon from "@/assets/icons/ClearIcon";
 import BottomSheet from "@/components/common/bottomSheet/index";
 import Appbar from "@/components/common/header/Appbar";
@@ -8,7 +9,8 @@ import { useEffect, useState } from "react";
 import ReportPage from "./report/ReportPage";
 import * as S from "./styles";
 
-const DetailPage = ({ onClose }: { onClose: () => void }) => {
+const PlaceDetailPage = () => {
+  const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [showReportPage, setShowReportPage] = useState(false);
@@ -49,7 +51,7 @@ const DetailPage = ({ onClose }: { onClose: () => void }) => {
           </div>
         }
         rightIcon2={
-          <div onClick={onClose}>
+          <div onClick={() => navigate(-1)}>
             <ClearIcon size="28" />
           </div>
         }
@@ -98,4 +100,4 @@ const DetailPage = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-export default DetailPage;
+export default PlaceDetailPage;

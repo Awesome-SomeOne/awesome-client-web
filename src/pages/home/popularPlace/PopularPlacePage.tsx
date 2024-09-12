@@ -1,51 +1,66 @@
+// import { useGetLandmarkPlaces } from "@/apis/place/place.queries";
+import { useNavigate } from "react-router-dom";
 import BackIcon from "@/assets/icons/BackIcon";
 import DropdownIcon from "@/assets/icons/DropdownIcon";
 import Chip from "@/components/common/chip/index";
 import Appbar from "@/components/common/header/Appbar";
-import { Place } from "@/components/home/PopularPlacePage/index";
-import { useEffect, useState } from "react";
-import DetailPage from "../detail/DetailPage";
+import { PlaceComponent } from "@/components/home/PopularPlacePage/index";
+import { Place } from "@/types/myTrip";
+import { useEffect } from "react";
 import * as S from "./styles";
+import { PATH } from "@/constants/path";
 
-const PopularPlacePage = ({ onClose }: { onClose: () => void }) => {
-  const [showDetail, setShowDetail] = useState(false);
+const PopularPlacePage = () => {
+  const navigate = useNavigate();
+  // const { data: places = [] } = useGetLandmarkPlaces({ islandId: 1 });
+  /*
+    [
+      {
+        Long id
+        String name
+        String address
+        Business_category category
+        Double rating
+      }
+    ]
+  */
+
+  const places = [
+    {
+      id: 1,
+      name: "장소",
+      address: "주소",
+      category: "숙소",
+      rating: 5.0
+    }
+  ];
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  return !showDetail ? (
+  return (
     <div style={{ height: "100%", paddingTop: "56px", overflow: "hidden" }}>
       <Appbar
         title="관광지 둘러보기"
         textAlign="center"
         leftIcon={
-          <div onClick={onClose}>
+          <div onClick={() => navigate(-1)}>
             <BackIcon />
           </div>
         }
       />
       <S.Container>
         <Chip text="섬 전체" shape="box" trailingIcon={<DropdownIcon />} />
-        <Place
-          image={"/src/assets/images/popular2.png"}
-          name={"울릉도 현포 남방파제"}
-          onClick={() => setShowDetail(true)}
-        />
-        <Place
-          image={"/src/assets/images/popular2.png"}
-          name={"울릉도 현포 남방파제"}
-          onClick={() => setShowDetail(true)}
-        />
-        <Place
-          image={"/src/assets/images/popular2.png"}
-          name={"울릉도 현포 남방파제"}
-          onClick={() => setShowDetail(true)}
-        />
+        {places.map((place: Place) => (
+          <PlaceComponent
+            image={"/src/assets/images/popular2.png"}
+            name={place.name}
+            onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
+          />
+        ))}
       </S.Container>
     </div>
-  ) : (
-    <DetailPage onClose={() => setShowDetail(false)} />
   );
 };
 

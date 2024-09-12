@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import ClearIcon from "@/assets/icons/ClearIcon";
 import Appbar from "@/components/common/header/Appbar";
 import SearchBar from "@/components/common/searchBar/index";
@@ -15,7 +16,8 @@ export type SearchResult = {
   like: boolean;
 };
 
-const SearchPage = ({ onClose }: { onClose: () => void }) => {
+const SearchPage = () => {
+  const navigate = useNavigate();
   const [keywords, setKeywords] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -72,7 +74,7 @@ const SearchPage = ({ onClose }: { onClose: () => void }) => {
               title="검색"
               textAlign="center"
               rightIcon1={
-                <div onClick={onClose}>
+                <div onClick={() => navigate(-1)}>
                   <ClearIcon size="28" />
                 </div>
               }
@@ -92,7 +94,7 @@ const SearchPage = ({ onClose }: { onClose: () => void }) => {
           searchQuery={searchQuery}
           searchResult={searchResult}
           onPrev={handleClose}
-          onClose={onClose}
+          onClose={() => navigate(-1)}
         />
       )}
     </>
