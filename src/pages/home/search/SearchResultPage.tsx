@@ -56,8 +56,9 @@ const SearchResultPage = ({
           </div>
           {searchResult.length ? (
             <S.ComponentCol>
-              {searchResult.map((result: SearchResult) => (
+              {searchResult.map((result: SearchResult, index) => (
                 <PlaceComponent
+                  key={index}
                   image={result.image}
                   name={result.name}
                   rating={result.rating}

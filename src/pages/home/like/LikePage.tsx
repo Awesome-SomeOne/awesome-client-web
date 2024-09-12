@@ -46,8 +46,9 @@ const LikePage = () => {
       <TabAnatomy tabs={CATEGORY_LIST} selectedTab={currentTab} onClick={handleClick} />
       {!place.length ? (
         <S.ComponentCol>
-          {places.map((place) => (
+          {places.map((place, index) => (
             <PlaceComponent
+              key={index}
               image={"src/assets/images/accommodation.png"}
               name={place.name}
               rating={place.rating.toString()}

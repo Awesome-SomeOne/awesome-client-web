@@ -52,8 +52,9 @@ const PopularPlacePage = () => {
       />
       <S.Container>
         <Chip text="섬 전체" shape="box" trailingIcon={<DropdownIcon />} />
-        {places.map((place: Place) => (
+        {places.map((place: Place, index) => (
           <PlaceComponent
+            key={index}
             image={"/src/assets/images/popular2.png"}
             name={place.name}
             onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
