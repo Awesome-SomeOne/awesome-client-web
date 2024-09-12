@@ -1,14 +1,39 @@
+// import { useGetRecommendPlaces } from "@/apis/place/place.queries";
+import { useNavigate } from "react-router-dom";
 import BackIcon from "@/assets/icons/BackIcon";
 import Appbar from "@/components/common/header/Appbar";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
 import PlaceComponent from "@/components/home/PlaceComponent/index";
 import { useEffect, useState } from "react";
-import DetailPage from "../detail/DetailPage";
 import * as S from "./styles";
+import { PATH } from "@/constants/path";
 
-const RecommendPlacePage = ({ onClose }: { onClose: () => void }) => {
+const RecommendPlacePage = () => {
+  const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState("숙소");
-  const [showDetail, setShowDetail] = useState(false);
+
+  // const { data: places = [] } = useGetRecommendPlaces({ islandId: 1, category: currentTab });
+  /*
+    [
+      {
+        Long id
+        String name
+        String address
+        Business_category category
+        Double rating
+      }
+    ]
+  */
+
+  const places = [
+    {
+      id: 1,
+      name: "장소 이름",
+      address: "주소",
+      category: "숙소",
+      rating: 5.0
+    }
+  ];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -16,53 +41,35 @@ const RecommendPlacePage = ({ onClose }: { onClose: () => void }) => {
 
   const handleTabClick = (event: any) => {
     setCurrentTab(event.target.innerText);
-    // 탭 변경 처리
   };
 
-  return !showDetail ? (
+  return (
     <div style={{ height: "100%", paddingTop: "56px", overflow: "hidden" }}>
       <Appbar
         title="추천 장소"
         textAlign="center"
         leftIcon={
-          <div onClick={onClose}>
+          <div onClick={() => navigate(-1)}>
             <BackIcon />
           </div>
         }
       />
-      <TabAnatomy tabs={["숙소", "식당", "렌트카", "액티비티"]} selectedTab={currentTab} onClick={handleTabClick} />
+      <TabAnatomy tabs={["숙소", "식당", "관광지", "액티비티"]} selectedTab={currentTab} onClick={handleTabClick} />
       <S.ComponentCol>
-        <PlaceComponent
-          image="src/assets/images/accommodation.png"
-          name="숙소이름이 들어갑니다"
-          rating="5.0"
-          count={1000}
-          address="강원 춘천시 남산면 남이섬길 1"
-          like={true}
-          onClick={() => setShowDetail(true)}
-        />
-        <PlaceComponent
-          image="src/assets/images/accommodation.png"
-          name="숙소이름이 들어갑니다"
-          rating="5.0"
-          count={1000}
-          address="강원 춘천시 남산면 남이섬길 1"
-          like={true}
-          onClick={() => setShowDetail(true)}
-        />
-        <PlaceComponent
-          image="src/assets/images/accommodation.png"
-          name="숙소이름이 들어갑니다"
-          rating="5.0"
-          count={1000}
-          address="강원 춘천시 남산면 남이섬길 1"
-          like={true}
-          onClick={() => setShowDetail(true)}
-        />
+        {places.map((place, index) => (
+          <PlaceComponent
+            key={index}
+            image="src/assets/images/accommodation.png"
+            name={place.name}
+            rating={place.rating.toString()}
+            count={1000}
+            address={place.address}
+            like={true}
+            onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
+          />
+        ))}
       </S.ComponentCol>
     </div>
-  ) : (
-    <DetailPage onClose={() => setShowDetail(false)} />
   );
 };
 

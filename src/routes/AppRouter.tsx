@@ -11,6 +11,13 @@ import MyTripListPage from "@/pages/myTripList/MyTripListPage";
 import MyTripRecordPage from "@/pages/myTripRecord/MyTripRecordPage";
 import MyTripRecordDetailPage from "@/pages/myTripRecordDetail/MyTripRecordDetailPage";
 import MyTripRecordList from "@/pages/myTripRecordList/MyTripRecordList";
+import PlaceDetailPage from "@/pages/home/detail/DetailPage";
+import SearchPage from "@/pages/home/search/SearchPage";
+import LikePage from "@/pages/home/like/LikePage";
+import NotificationPage from "@/pages/home/notification/NotificationPage";
+import LocationPage from "@/pages/home/location/LocationPage";
+import PopularPlacePage from "@/pages/home/popularPlace/PopularPlacePage";
+import RecommendPlacePage from "@/pages/home/recommendPlace/RecommendPlacePage";
 
 const AppRouter = () => {
   const router = createBrowserRouter([
@@ -53,6 +60,34 @@ const AppRouter = () => {
             {
               path: PATH.MY_TRIP_RECORD_LIST,
               element: <MyTripRecordList />
+            },
+            {
+              path: PATH.LOCATION,
+              element: <LocationPage />
+            },
+            {
+              path: PATH.SEARCH,
+              element: <SearchPage />
+            },
+            {
+              path: PATH.LIKE,
+              element: <LikePage />
+            },
+            {
+              path: PATH.NOTIFICATION,
+              element: <NotificationPage />
+            },
+            {
+              path: PATH.POPULAR_PLACE,
+              element: <PopularPlacePage />
+            },
+            {
+              path: PATH.RECOMMEND_PLACE,
+              element: <RecommendPlacePage />
+            },
+            {
+              path: PATH.PLACE_DETAIL(),
+              element: <PlaceDetailPage />
             }
           ]
         }

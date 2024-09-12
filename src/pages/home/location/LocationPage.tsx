@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import ClearIcon from "@/assets/icons/ClearIcon";
 import Button from "@/components/common/button/index";
 import GeneralHeader from "@/components/common/generalHeader/index";
@@ -18,7 +19,8 @@ const LocationData: Record<LocationType, string[]> = {
   경상북도: ["전체"]
 };
 
-const LocationPage = ({ onClose }: { onClose: () => void }) => {
+const LocationPage = () => {
+  const navigate = useNavigate();
   const [selectedLocation, setSelectedLocation] = useState<LocationType>("제주도");
   const [selectedSubLocation, setSelectedSubLocation] = useState("");
 
@@ -33,7 +35,7 @@ const LocationPage = ({ onClose }: { onClose: () => void }) => {
 
   const handleSelectDone = () => {
     console.log("위치 선택 완료 처리");
-    onClose();
+    navigate(-1);
   };
 
   return (
@@ -42,7 +44,7 @@ const LocationPage = ({ onClose }: { onClose: () => void }) => {
         title="검색"
         textAlign="center"
         rightIcon1={
-          <div onClick={onClose}>
+          <div onClick={() => navigate(-1)}>
             <ClearIcon size="28" />
           </div>
         }
