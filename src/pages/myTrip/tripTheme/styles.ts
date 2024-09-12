@@ -5,7 +5,6 @@ export const BoxContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  padding: 0 0 64px 0;
   margin: 0 20px;
 `;
 

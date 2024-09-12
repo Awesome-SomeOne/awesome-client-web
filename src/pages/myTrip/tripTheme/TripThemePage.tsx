@@ -84,7 +84,7 @@ const TripThemePage = ({
           </S.BoxContainer>
           <Button
             text="선택완료"
-            style={{ width: "calc(100% - 40px)", margin: "8px 20px", position: "absolute", bottom: "0" }}
+            style={{ width: "calc(100% - 40px)", margin: "8px 20px" }}
             size="lg"
             disabled={!selectedTheme}
             onClick={handleSelect}
@@ -127,7 +127,8 @@ const InputComponent = ({
     <S.InputContainer>
       <S.TextField
         onClick={(event: any) => event.stopPropagation()}
-        onSubmit={() => {
+        onSubmit={(event: any) => {
+          event.preventDefault();
           if (inputRef.current) {
             handleSubmit(inputRef.current.value);
           }
