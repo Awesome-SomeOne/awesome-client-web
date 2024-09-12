@@ -77,21 +77,24 @@ export const useGetPlan = (data: GetPlanData) => {
 export const useSearchPlace = (data: SearchPlaceData) => {
   return useQuery({
     queryKey: ["searchPlace", data.keyword],
-    queryFn: () => searchPlace(data)
+    queryFn: () => searchPlace(data),
+    enabled: !!data.keyword
   });
 };
 
 export const useSearchIsland = (data: SearchPlaceData) => {
   return useQuery({
     queryKey: ["searchIsland", data.keyword],
-    queryFn: () => searchIsland(data)
+    queryFn: () => searchIsland(data),
+    enabled: !!data.keyword
   });
 };
 
 export const useGetPopularPlace = (data: GetPopularPlaceData) => {
   return useQuery({
     queryKey: ["popularPlace", data.islandId],
-    queryFn: () => getPopularPlace(data)
+    queryFn: () => getPopularPlace(data),
+    enabled: !!data.islandId
   });
 };
 
