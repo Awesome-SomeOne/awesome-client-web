@@ -66,7 +66,9 @@ const TripThemePage = ({
             height: "100%",
             paddingTop: "56px",
             position: "relative",
-            overflow: "scroll"
+            overflow: "scroll",
+            display: "flex",
+            flexDirection: "column"
           }}
         >
           <GeneralHeader
@@ -74,14 +76,17 @@ const TripThemePage = ({
             description="선택을 기반으로 관광 명소를 추천해드려요"
             titleSize="md"
           />
-          <S.BoxContainer onClick={handleThemeClick}>
-            {THEME_LIST.filter((theme) => !recommend || theme.name !== "직접 입력") // 추천 페이지인 경우 '직접 입력' 제외
-              .map((theme) => (
-                <S.Box key={theme.id} selected={selectedTheme === theme.name}>
-                  {theme.name}
-                </S.Box>
-              ))}
-          </S.BoxContainer>
+          <div style={{ flexGrow: 1 }}>
+            <S.BoxContainer onClick={handleThemeClick}>
+              {THEME_LIST.filter((theme) => !recommend || theme.name !== "직접 입력") // 추천 페이지인 경우 '직접 입력' 제외
+                .map((theme) => (
+                  <S.Box key={theme.id} selected={selectedTheme === theme.name}>
+                    {theme.name}
+                  </S.Box>
+                ))}
+            </S.BoxContainer>
+          </div>
+
           <Button
             text="선택완료"
             style={{ width: "calc(100% - 40px)", margin: "8px 20px" }}
