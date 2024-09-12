@@ -18,8 +18,8 @@ export interface AddPlacesData {
 }
 
 export interface GetRecommendPlaceData {
-  islandId: number;
-  category: string;
+  islandId: number | null;
+  category: string | null;
 }
 
 export interface GetPlanData {
