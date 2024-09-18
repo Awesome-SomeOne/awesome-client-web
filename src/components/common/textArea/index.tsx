@@ -58,10 +58,10 @@ function TextArea({
         {label}
       </S.Label>
       <S.TextArea
-        ref={(e) => {
-          ref(e);
-          textAreaRef.current = e;
-        }}
+        // ref={(e) => {
+        //   ref(e);
+        //   textAreaRef.current = e;
+        // }}
         placeholder={placeholder}
         disabled={disable}
         error={error}

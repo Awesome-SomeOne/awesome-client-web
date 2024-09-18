@@ -77,6 +77,7 @@ const MyTripRecordPage = () => {
                 size="lg"
                 onClick={() => {
                   // TODO: 앱 내 갤러리로 이동
+                  window.ReactNativeWebView.postMessage(JSON.stringify({ type: "openGallery" }));
                   setPageOrder(1);
                 }}
               />
