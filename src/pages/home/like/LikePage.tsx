@@ -11,7 +11,7 @@ import { PATH } from "@/constants/path";
 const LikePage = () => {
   const navigate = useNavigate();
   const [place, setPlace] = useState([]);
-  const [currentTab, setCurrentTab] = useState("숙소");
+  const [currentTab, setCurrentTab] = useState("숙박");
 
   const handleClick = (event: any) => {
     setCurrentTab(event.target.innerText);
@@ -23,7 +23,7 @@ const LikePage = () => {
       id: 1,
       name: "장소",
       address: "주소",
-      category: "숙소",
+      category: "숙박",
       rating: 5.0
     }
   ];
@@ -46,8 +46,9 @@ const LikePage = () => {
       <TabAnatomy tabs={CATEGORY_LIST} selectedTab={currentTab} onClick={handleClick} />
       {!place.length ? (
         <S.ComponentCol>
-          {places.map((place) => (
+          {places.map((place, index) => (
             <PlaceComponent
+              key={index}
               image={"src/assets/images/accommodation.png"}
               name={place.name}
               rating={place.rating.toString()}

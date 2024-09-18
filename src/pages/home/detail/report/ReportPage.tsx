@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import * as S from "./styles";
 
 const ReportPage = ({ onClose }: { onClose: () => void }) => {
-  const [selectedReason, setSelectedReason] = useState<string | null>(null);
+  const [selectedReason, setSelectedReason] = useState<string>();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [charCount, setCharCount] = useState(0);
 

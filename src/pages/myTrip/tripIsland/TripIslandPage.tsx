@@ -3,6 +3,8 @@ import Button from "@/components/common/button/index";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import { ISLAND_LIST } from "@/constants/myTripPageConstants";
 import * as S from "./styles";
+import { useAtom } from "jotai";
+import { islandIdAtom } from "@/atoms/myTrip/planAtom";
 
 const TripIslandPage = ({
   onNext,
@@ -14,15 +16,18 @@ const TripIslandPage = ({
   onRecClick: () => void;
 }) => {
   const [selectedIsland, setSelectedIsland] = useState(null);
+  const [, setIslandId] = useAtom(islandIdAtom);
 
   const handleIslandClick = (event: any) => {
     if (event.target.children.length === 0) {
-      setSelectedIsland(event.target.innerText);
+      const islandName = event.target.innerText;
+      setSelectedIsland(islandName);
     }
   };
 
   const handleClick = () => {
-    // 섬 선택 처리하기
+    const islandId = ISLAND_LIST.find((island) => island.name === selectedIsland)?.id || null;
+    setIslandId(islandId);
     onNext();
   };
 

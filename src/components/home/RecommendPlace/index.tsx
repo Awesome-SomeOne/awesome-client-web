@@ -1,3 +1,4 @@
+// import { useGetRecommendPlaces } from "@/apis/place/place.queries";
 import { useNavigate } from "react-router-dom";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
@@ -9,7 +10,9 @@ import { CATEGORY_LIST } from "@/constants/homePageConstants";
 
 const RecommendPlace = () => {
   const navigate = useNavigate();
-  const [currentTab, setCurrentTab] = useState("숙소");
+  const [currentTab, setCurrentTab] = useState("숙박");
+
+  // const { data: places = [] } = useGetRecommendPlaces({ islandId: 1, category: currentTab });
 
   const handleClick = (event: any) => {
     setCurrentTab(event.target.innerText);
@@ -20,7 +23,7 @@ const RecommendPlace = () => {
       id: 1,
       name: "장소",
       address: "주소",
-      category: "숙소",
+      category: "숙박",
       rating: 5.0
     }
   ];
@@ -38,9 +41,10 @@ const RecommendPlace = () => {
         <TabAnatomy tabs={CATEGORY_LIST} selectedTab={currentTab} onClick={handleClick} />
       </div>
       <S.ComponentCol>
-        {places.map((place) => (
+        {places.map((place, index) => (
           <PlaceComponent
-            image={"src/assets/images/accommodation.png"}
+            key={index}
+            image={"src/assets/images/place_null.svg"}
             name={place.name}
             rating={place.rating.toString()}
             count={1000}

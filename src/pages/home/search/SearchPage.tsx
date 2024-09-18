@@ -11,7 +11,7 @@ export type SearchResult = {
   image: string;
   name: string;
   address: string;
-  rating: string;
+  rating: number;
   count: number;
   like: boolean;
 };
@@ -42,7 +42,7 @@ const SearchPage = () => {
         image: "/src/assets/images/accommodation.png",
         name: "숙소이름",
         address: "주소",
-        rating: "5.0",
+        rating: 5.0,
         count: 1000,
         like: false
       }

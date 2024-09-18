@@ -18,74 +18,29 @@ import BackIcon from "@/assets/icons/BackIcon";
 import { Theme } from "@/styles/theme";
 import * as S from "./styles";
 import { Place } from "@/types/myTrip";
-
-export type PlaceType = { id: number; name: string; type?: string; address: string; image?: string };
-
-const placeData: { day: number; places: PlaceType[] }[] = [
-  {
-    day: 1,
-    places: [
-      {
-        id: 1,
-        name: "산선암1",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      },
-      {
-        id: 2,
-        name: "산선암2",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      }
-    ]
-  },
-  {
-    day: 2,
-    places: [
-      {
-        id: 3,
-        name: "산선암3",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      },
-      {
-        id: 4,
-        name: "산선암4",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      }
-    ]
-  },
-  {
-    day: 3,
-    places: [
-      {
-        id: 5,
-        name: "산선암5",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      },
-      {
-        id: 6,
-        name: "산선암6",
-        type: "관광명소",
-        address: "경상북도 울릉도"
-      }
-    ]
-  }
-];
+import { useAtom } from "jotai";
+import { daysAtom } from "@/atoms/myTrip/planAtom";
 
 const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
+  const [initialPlaceList, setInitialPlaceList] = useState<{ day: number; date: string; places: Place[] }[]>([]);
   const [placeList, setPlaceList] = useState<{ day: number; date: string; places: Place[] }[]>([]);
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<Place>();
   const [selectedDay, setSelectedDay] = useState(1);
   const [isMoveClicked, setIsMoveClicked] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
+  const [days, setDays] = useAtom(daysAtom);
 
   const handleDragStart = () => {
-    setSelectedPlace(null);
+    setSelectedPlace(undefined);
   };
+
+  useEffect(() => {
+    if (initialPlaceList.length === 0) {
+      setInitialPlaceList(days.map((day) => ({ ...day, places: [...day.places] })));
+    }
+    setPlaceList(days);
+  }, [days]);
 
   const handleDragEnd = ({ source, destination }: DragUpdate) => {
     if (source && destination) {
@@ -98,6 +53,12 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
         const updatedPlaces = placeList[sourceId].places.filter((_, index) => index !== source.index);
         // 해당 순서에 넣기
         updatedPlaces.splice(destination.index, 0, { ...placeToMove });
+
+        // order 변경
+        updatedPlaces.forEach((place, index) => {
+          place.order = index + 1;
+        });
+
         // 새로운 리스트 생성하기
         const newPlaceList = placeList.slice();
         newPlaceList[sourceId] = {
@@ -111,20 +72,35 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
         // 기존 배열에서 삭제하기
         const placeToMove = placeList[sourceId].places[source.index];
         const removedPlaces = placeList[sourceId].places.filter((_, index) => index !== source.index);
-        // 해당 배열의 해당 순서에 넣기
-        const updatedPlaces = placeList[destinationId].places;
-        updatedPlaces.splice(destination.index, 0, { ...placeToMove });
-        // 새로운 리스트 생성하기
-        const newPlaceList = placeList.slice();
-        newPlaceList[sourceId] = {
-          ...newPlaceList[sourceId],
-          places: removedPlaces
-        };
-        newPlaceList[destinationId] = {
-          ...newPlaceList[destinationId],
-          places: updatedPlaces
-        };
-        setPlaceList(newPlaceList);
+
+        const alreadyExists = placeList[destinationId].places.some((place) => place.name === placeToMove.name);
+
+        if (!alreadyExists) {
+          // 해당 배열의 해당 순서에 넣기
+          const updatedPlaces = placeList[destinationId].places;
+          updatedPlaces.splice(destination.index, 0, { ...placeToMove });
+
+          // order, date 변경
+          removedPlaces.forEach((place, index) => {
+            place.order = index + 1;
+          });
+          updatedPlaces.forEach((place, index) => {
+            place.order = index + 1;
+            place.date = placeList[destinationId].date;
+          });
+
+          // 새로운 리스트 생성하기
+          const newPlaceList = placeList.slice();
+          newPlaceList[sourceId] = {
+            ...newPlaceList[sourceId],
+            places: removedPlaces
+          };
+          newPlaceList[destinationId] = {
+            ...newPlaceList[destinationId],
+            places: updatedPlaces
+          };
+          setPlaceList(newPlaceList);
+        }
       }
     }
   };
@@ -134,18 +110,22 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
   };
 
   const handleDelete = () => {
-    // 삭제 처리하기
+    const newPlaceList = placeList.map((day) => ({
+      ...day,
+      places: day.places.filter((place) => place !== selectedPlace)
+    }));
+    setPlaceList(newPlaceList);
     setIsDeleteModalOpen(false);
   };
 
   const handleMoveClick = () => {
-    // 바텀시트 띄우기
-    setSelectedDay(1);
+    const selectedPlaceDay = placeList.filter((day) => day.places.find((place) => place === selectedPlace))[0].day;
+    setSelectedDay(selectedPlaceDay);
     setIsMoveClicked(true);
   };
 
   const handleMove = () => {
-    if (selectedPlace === null) return;
+    if (!selectedPlace) return;
 
     // 원래 속해있던 day 구하기
     let originalDay: number | undefined;
@@ -158,6 +138,14 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
 
     // 같은 날짜 선택 시
     if (originalDay === selectedDay) {
+      setSelectedPlace(undefined);
+      setIsMoveClicked(false);
+      return;
+    }
+
+    const alreadyExists = placeList[selectedDay - 1].places.some((place) => place.name === selectedPlace.name);
+    if (alreadyExists) {
+      setSelectedPlace(undefined);
       setIsMoveClicked(false);
       return;
     }
@@ -167,7 +155,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
       if (dayObject.day === originalDay) {
         return {
           ...dayObject,
-          places: dayObject.places.filter((place) => place.id !== selectedPlace.id)
+          places: dayObject.places.filter((place) => place.name !== selectedPlace.name)
         };
       } else {
         return dayObject;
@@ -186,7 +174,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
       }
     });
     setPlaceList(newPlaceList);
-    setSelectedPlace(null);
+    setSelectedPlace(undefined);
     setIsMoveClicked(false);
     return;
   };
@@ -204,8 +192,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
         rightIcon1={
           <div
             onClick={() => {
-              // 저장하기
-              console.log("편집 일정 저장");
+              setDays(placeList);
               onPrev();
             }}
           >
@@ -230,7 +217,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
                 {(provided: DroppableProvided) => (
                   <S.DayContainer>
                     <S.DayText>Day {day.day}</S.DayText>
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                    <div ref={provided.innerRef} {...provided.droppableProps} style={{ minHeight: "35px" }}>
                       {day.places.map((place, index) => (
                         <PlaceContainer
                           key={index}
@@ -240,7 +227,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
                           checked={selectedPlace === place}
                           onClick={() => {
                             if (selectedPlace === place) {
-                              setSelectedPlace(null);
+                              setSelectedPlace(undefined);
                             } else {
                               setSelectedPlace(place);
                             }
@@ -264,7 +251,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
         <BottomSheet isOpen={isMoveClicked} close={() => setIsMoveClicked(false)}>
           <>
             <S.DaysUl>
-              {placeData.map(({ day }, index) => (
+              {days.map(({ day }, index) => (
                 <S.DayLi key={index} selected={day === selectedDay} onClick={() => setSelectedDay(day)}>
                   Day {day}
                 </S.DayLi>
@@ -283,7 +270,10 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
           firstButtonText="취소"
           secondButtonText="나가기"
           firstButtonOnClick={() => setIsCloseModalOpen(false)}
-          secondButtonOnClick={onPrev}
+          secondButtonOnClick={() => {
+            setDays(initialPlaceList);
+            onPrev();
+          }}
           isFilled
           isOpen={isCloseModalOpen}
           close={() => setIsCloseModalOpen(false)}
@@ -320,7 +310,7 @@ const PlaceContainer = ({
 }) => {
   const { id, name, category, address } = place;
   return (
-    <Draggable key={`day${day}-place${id}`} draggableId={`${id}`} index={index}>
+    <Draggable key={`day${day}-place${name}`} draggableId={`day${day}-place${name}`} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <S.PlaceContainer
           {...provided.draggableProps}

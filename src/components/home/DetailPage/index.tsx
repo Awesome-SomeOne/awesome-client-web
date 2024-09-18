@@ -4,16 +4,26 @@ import GeneralHeader from "@/components/common/generalHeader/index";
 import LineButton from "@/components/common/lineButton/index";
 import MiniMapComponent from "@/components/myTrip/map/miniMap/index";
 import { Theme } from "@/styles/theme";
+import { useParams } from "react-router-dom";
+// import { useGetPlace } from "@/apis/place/place.queries";
 import * as S from "./styles";
 
 export const Detail = ({ onMoreClick }: { onMoreClick: () => void }) => {
+  const { placeId } = useParams<{ placeId: string }>();
+  // const { businessName, address, xAddress, yAddress, imgUrl, reviews } = useGetPlace({ businessId: placeId });
+  const businessName = "제주도 동문시장";
+  const address = "제주 제주시 관덕로14길 20";
+  const xAddress = "126.795841";
+  const yAddress = "33.55635";
+  const imgUrl = "/src/assets/images/popular1.png";
+  const reviews = [];
   return (
     <S.DetailCotainer>
-      <S.DetailImage src={"/src/assets/images/popular1.png"} />
+      <S.DetailImage src={imgUrl} />
       <S.DetailInfoContainer>
         <S.DetailHeader>
           <S.TopSection>
-            <S.PlaceName>{"제주도 동문시장"}</S.PlaceName>
+            <S.PlaceName>{businessName}</S.PlaceName>
             <LineButton leadingIcon={<LikeIcon size="24" color={Theme.colors.Label_Primary_Default} />} text="찜하기" />
           </S.TopSection>
           <S.Time>영업중 | 매일 08:00 - 21:00</S.Time>
@@ -25,7 +35,7 @@ export const Detail = ({ onMoreClick }: { onMoreClick: () => void }) => {
           </S.Info>
           <S.Info>
             <img src={"/src/assets/icons/location_small.svg"} />
-            제주 제주시 관덕로14길 20
+            {address}
           </S.Info>
           <S.Info>
             <img src={"/src/assets/icons/phone.svg"} />
@@ -41,7 +51,7 @@ export const Detail = ({ onMoreClick }: { onMoreClick: () => void }) => {
         }
       </S.Introduction>
       {/* 지도 */}
-      <MiniMapComponent lat={33.55635} lng={126.795841} />
+      <MiniMapComponent lat={parseFloat(yAddress)} lng={parseFloat(xAddress)} />
       {/* 후기 */}
       <GeneralHeader title="후기" spacingSize="md" />
       <Review onMoreClick={onMoreClick} />

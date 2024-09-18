@@ -4,6 +4,7 @@ import ListComponent from "@/components/myTrip/listComponent/index";
 import { useState } from "react";
 import { Place } from "@/types/myTrip";
 import * as S from "./styles";
+import { useGetRecommendIsland, useGetRecommendPlace } from "@/apis/myTrip/myTrip.queries";
 
 const RecommendedIsland = ({
   theme,
@@ -19,52 +20,26 @@ const RecommendedIsland = ({
   const [recommendPlace, setRecommendPlace] = useState<Place[]>([]);
   const [selectedPlaces, setLocalSelectedPlaces] = useState<Place[]>([]);
 
-  const handleSelect = () => {
-    // 추천 장소 불러오기
-    setRecommendPlace([
-      {
-        id: 0,
-        name: "산선암",
-        address: "경상북도 울릉도",
-        image: "/src/assets/images/place.png"
-      },
+  const { data: recommendIsland, isFetching } = useGetRecommendIsland();
+
+  const islandId = recommendIsland?.id;
+  const category = theme;
+  const {
+    data: recommendPlaceList = [
       {
         id: 1,
-        name: "산선암",
-        address: "경상북도 울릉도",
-        image: "/src/assets/images/place.png"
-      },
-      {
-        id: 2,
-        name: "산선암",
-        address: "경상북도 울릉도",
-        image: "/src/assets/images/place.png"
-      },
-      {
-        id: 3,
-        name: "산선암",
-        address: "경상북도 울릉도",
-        image: "/src/assets/images/place.png"
-      },
-      {
-        id: 4,
-        name: "산선암",
-        address: "경상북도 울릉도",
-        image: "/src/assets/images/place.png"
-      },
-      {
-        id: 5,
-        name: "산선암",
-        address: "경상북도 울릉도",
-        image: "/src/assets/images/place.png"
-      },
-      {
-        id: 6,
-        name: "산선암",
-        address: "경상북도 울릉도",
-        image: "/src/assets/images/place.png"
+        name: "aaa",
+        address: "a1",
+        category: "식당",
+        x_address: "126.795841",
+        y_address: "33.55635"
       }
-    ]);
+    ]
+  } = useGetRecommendPlace({ islandId: islandId, category: category });
+
+  const handleSelect = () => {
+    // 추천 장소 불러오기
+    setRecommendPlace(recommendPlaceList);
   };
 
   const handleNext = () => {
@@ -77,6 +52,7 @@ const RecommendedIsland = ({
       onNext();
     }
   };
+  if (isFetching) return <>fetching...</>;
   return (
     <div
       style={{
@@ -94,8 +70,8 @@ const RecommendedIsland = ({
           />
           <S.IslandCard src={"/src/assets/images/place.png"}>
             <S.TextContainer>
-              <S.IslandName>{"울릉도"}</S.IslandName>
-              <S.IslandAddress>{"경상북도 울릉도"}</S.IslandAddress>
+              <S.IslandName>{recommendIsland?.islandName}</S.IslandName>
+              <S.IslandAddress>{recommendIsland?.address}</S.IslandAddress>
             </S.TextContainer>
           </S.IslandCard>
           <S.ButtonContainer>
@@ -108,7 +84,7 @@ const RecommendedIsland = ({
         <>
           <GeneralHeader
             title="추천 장소"
-            description={`{${theme}} 테마에 맞는 섬을 추천해드릴게요!`}
+            description={`{${theme}} 테마에 맞는 장소를 추천해드릴게요!`}
             spacingSize="sm"
             titleSize="md"
           />

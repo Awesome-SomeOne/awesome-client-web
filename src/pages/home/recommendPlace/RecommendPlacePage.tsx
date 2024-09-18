@@ -7,10 +7,11 @@ import PlaceComponent from "@/components/home/PlaceComponent/index";
 import { useEffect, useState } from "react";
 import * as S from "./styles";
 import { PATH } from "@/constants/path";
+import { CATEGORY_LIST } from "@/constants/homePageConstants";
 
 const RecommendPlacePage = () => {
   const navigate = useNavigate();
-  const [currentTab, setCurrentTab] = useState("숙소");
+  const [currentTab, setCurrentTab] = useState("숙박");
 
   // const { data: places = [] } = useGetRecommendPlaces({ islandId: 1, category: currentTab });
   /*
@@ -30,7 +31,7 @@ const RecommendPlacePage = () => {
       id: 1,
       name: "장소 이름",
       address: "주소",
-      category: "숙소",
+      category: "숙박",
       rating: 5.0
     }
   ];
@@ -54,12 +55,12 @@ const RecommendPlacePage = () => {
           </div>
         }
       />
-      <TabAnatomy tabs={["숙소", "식당", "관광지", "액티비티"]} selectedTab={currentTab} onClick={handleTabClick} />
+      <TabAnatomy tabs={CATEGORY_LIST} selectedTab={currentTab} onClick={handleTabClick} />
       <S.ComponentCol>
         {places.map((place, index) => (
           <PlaceComponent
             key={index}
-            image="src/assets/images/accommodation.png"
+            image={"src/assets/images/place_null.svg"}
             name={place.name}
             rating={place.rating.toString()}
             count={1000}

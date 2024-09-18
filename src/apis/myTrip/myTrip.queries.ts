@@ -26,21 +26,21 @@ import {
   GetPopularPlaceData
 } from "./myTrip.type";
 
-export const useGeneratePlan = (data: GeneratePlanData) => {
+export const useGeneratePlan = () => {
   return useMutation({
-    mutationFn: () => generatePlan(data)
+    mutationFn: (data: GeneratePlanData) => generatePlan(data)
   });
 };
 
-export const useAddPlace = (data: AddPlaceData) => {
+export const useAddPlace = () => {
   return useMutation({
-    mutationFn: () => addPlace(data)
+    mutationFn: (data: AddPlaceData) => addPlace(data)
   });
 };
 
-export const useAddPlaces = (data: AddPlacesData) => {
+export const useAddPlaces = () => {
   return useMutation({
-    mutationFn: () => addPlaces(data)
+    mutationFn: (data: AddPlacesData) => addPlaces(data)
   });
 };
 
@@ -77,21 +77,24 @@ export const useGetPlan = (data: GetPlanData) => {
 export const useSearchPlace = (data: SearchPlaceData) => {
   return useQuery({
     queryKey: ["searchPlace", data.keyword],
-    queryFn: () => searchPlace(data)
+    queryFn: () => searchPlace(data),
+    enabled: !!data.keyword
   });
 };
 
 export const useSearchIsland = (data: SearchPlaceData) => {
   return useQuery({
     queryKey: ["searchIsland", data.keyword],
-    queryFn: () => searchIsland(data)
+    queryFn: () => searchIsland(data),
+    enabled: !!data.keyword
   });
 };
 
 export const useGetPopularPlace = (data: GetPopularPlaceData) => {
   return useQuery({
     queryKey: ["popularPlace", data.islandId],
-    queryFn: () => getPopularPlace(data)
+    queryFn: () => getPopularPlace(data),
+    enabled: !!data.islandId
   });
 };
 

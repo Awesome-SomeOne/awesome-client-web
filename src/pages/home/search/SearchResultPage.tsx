@@ -23,7 +23,7 @@ const SearchResultPage = ({
   onPrev: () => void;
   onClose: () => void;
 }) => {
-  const [currentTab, setCurrentTab] = useState("숙소");
+  const [currentTab, setCurrentTab] = useState("숙박");
 
   const handleClick = (event: any) => {
     setCurrentTab(event.target.innerText);
@@ -56,11 +56,12 @@ const SearchResultPage = ({
           </div>
           {searchResult.length ? (
             <S.ComponentCol>
-              {searchResult.map((result: SearchResult) => (
+              {searchResult.map((result, index) => (
                 <PlaceComponent
+                  key={index}
                   image={result.image}
                   name={result.name}
-                  rating={result.rating}
+                  rating={result.rating.toString()}
                   count={result.count}
                   address={result.address}
                   like={result.like}

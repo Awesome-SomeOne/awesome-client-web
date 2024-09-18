@@ -14,6 +14,11 @@ import AddBox from "../box/addBox/index";
 import PlaceBox from "../box/placeBox/index";
 import { Place } from "@/types/myTrip";
 import MiniMapComponent from "../map/miniMap/index";
+import { useAtom } from "jotai";
+import { daysAtom, daysInitAtom, planAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
+import { calculateDistance, getDaysArray } from "@/utils/myTrip/myTrip.utils";
+import { useAddPlaces } from "@/apis/myTrip/myTrip.queries";
+// import { useGeneratePlan } from "@/apis/myTrip/myTrip.queries";
 
 interface IPlanProps {
   selectedDay: number;
@@ -24,34 +29,37 @@ interface IPlanProps {
 }
 
 const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: IPlanProps) => {
-  // daysArray 만들기 -> index가 1,2,3... 날짜가 date
-  const days = ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7", "Day 8", "Day 9", "Day 10", "Day 11"];
-
+  const [{ islandId, startDate, endDate, planName }] = useAtom(planAtom);
+  const [, initializeDays] = useAtom(daysInitAtom);
+  const [days] = useAtom(daysAtom);
+  const daysArray = getDaysArray(days.length - 1);
   const navigate = useNavigate();
+  const mutation = useAddPlaces();
 
   const { isOpen, open, close } = useOverlay();
 
-  // Day별 일정 불러오기
-  const [travelPlaceList, setTravelPlaceList] = useState<Place[]>([
-    // {
-    //   name: "산선암",
-    //   type: "관광명소",
-    //   address: "경상북도 울릉도"
-    // },
-    // {
-    //   name: "산선암",
-    //   type: "관광명소",
-    //   address: "경상북도 울릉도"
-    // }
-  ]);
-
+  // Day별 일정
+  const [travelPlaceList, setTravelPlaceList] = useState<Place[]>([]);
   // 추천 장소
   const [recommendedPlaces, setRecommendedPlaces] = useState<Place[]>(recommended);
   // 추천 장소 중 선택한 장소
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<Place>();
   // 모달에서 선택된 Day
-  const [selectedBottomSheetDay, setSelectedBottomSheetDay] = useState(days[selectedDay - 1]);
+  const [selectedBottomSheetDay, setSelectedBottomSheetDay] = useState(daysArray[selectedDay - 1]);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const addPlacesToDay = useUpdateDaysAtom();
+
+  useEffect(() => {
+    if (days.length > 0) return;
+    initializeDays({ startDate, endDate });
+  }, [startDate, endDate, initializeDays]);
+
+  // Day 일정 불러오기
+  useEffect(() => {
+    if (days.length === 0) return;
+    setTravelPlaceList(days[selectedDay - 1].places);
+  }, [selectedDay]);
 
   useEffect(() => {
     if (selectedPlace) {
@@ -60,47 +68,45 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
   }, [selectedPlace]);
 
   // 스크롤에 따른 height 변경
+  const [minHeight, setMinHeight] = useState("120px");
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ container: ref });
-  const [height, setHeight] = useState("152px");
+  const [height, setHeight] = useState(minHeight);
   useMotionValueEvent(scrollYProgress, "change", (latest: any) => {
     if (latest > 0.1) {
       setHeight("100%");
     } else {
-      setHeight("152px");
+      setHeight(minHeight);
     }
   });
+
+  useEffect(() => {
+    if (travelPlaceList.length) {
+      setMinHeight("152px");
+    } else setMinHeight("120px");
+  }, [travelPlaceList]);
+
+  useEffect(() => {
+    setHeight(minHeight);
+  }, [minHeight]);
 
   // Day 변경시
   const handleDayClick = (event: any) => {
     if (ref.current) {
       ref.current.scrollTop = 0;
     }
-    // setSelectedDay(event.target.innerText);
     const day = parseInt(event.target.innerText.slice(4));
     onSelect(day);
+  };
 
-    // 해당 Day의 일정 불러오기
-    setTravelPlaceList([
-      {
-        id: 1,
-        name: "산선암",
-        category: "관광명소",
-        address: "경상북도 울릉도"
-      },
-      {
-        id: 2,
-        name: "산선암",
-        category: "관광명소",
-        address: "경상북도 울릉도"
-      },
-      {
-        id: 3,
-        name: "산선암",
-        category: "관광명소",
-        address: "경상북도 울릉도"
-      }
-    ]);
+  const addPlaces = async (tripId: number) => {
+    for (const day of days) {
+      await mutation.mutateAsync({
+        travelPlanId: tripId,
+        businessIds: day.places.map((place: Place) => place.id),
+        date: day.date
+      });
+    }
   };
 
   // 일정 생성하기 버튼 클릭 시
@@ -109,41 +115,49 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
       setModalOpen(true);
     } else {
       // 일정 생성하기 > tripId 받기 > 페이지 이동하기
-      navigate({ pathname: PATH.MY_TRIP(1) }, { state: { generated: true } });
+      // const { tripId } = useGeneratePlan({ islandId, startDate, endDate, planName });
+      const tripId = 1;
+      addPlaces(tripId);
+      navigate({ pathname: PATH.MY_TRIP(tripId) }, { state: { generated: true } });
     }
   };
 
   // 추천 장소 chip 클릭 시
   const handleChipClick = (place: Place) => {
     setSelectedPlace(place);
-    setSelectedBottomSheetDay(days[selectedDay - 1]);
+    setSelectedBottomSheetDay(daysArray[selectedDay - 1]);
   };
 
   const handleCancelAddPlace = () => {
-    setSelectedPlace(null);
+    setSelectedPlace(undefined);
     close();
   };
 
   // 추천 장소 추가
   const handleAddPlace = () => {
     // 선택한 Day에 장소 추가하기
+    if (!selectedPlace) return;
+    addPlacesToDay(parseInt(selectedBottomSheetDay.slice(4)), [selectedPlace]);
 
     // chip 목록에서 제거하기
     const filtered = recommendedPlaces.filter((place) => place !== selectedPlace);
     setRecommendedPlaces(filtered);
 
     // 초기화
-    setSelectedPlace(null);
+    setSelectedPlace(undefined);
     const day = parseInt(selectedBottomSheetDay.slice(4));
     onSelect(day);
     close();
   };
 
-  const handleSecondButtonClick = () => {
+  const handleSecondButtonClick = async () => {
     setModalOpen(false);
     setRecommendedPlaces([]);
     // 일정 생성하기 > tripId 받기 > 페이지 이동하기
-    navigate({ pathname: PATH.MY_TRIP(1) }, { state: { generated: true } });
+    // const { tripId } = useGeneratePlan({ islandId, startDate, endDate, planName });
+    const tripId = 1;
+    addPlaces(tripId);
+    navigate({ pathname: PATH.MY_TRIP(tripId) }, { state: { generated: true } });
   };
 
   return (
@@ -155,7 +169,9 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
               <Chip
                 key={index}
                 text={place.name}
-                leadingIcon={<img src={place.image} style={{ width: "24px", height: "24px", borderRadius: "999px" }} />}
+                leadingIcon={
+                  <img src={place.imgUrl} style={{ width: "24px", height: "24px", borderRadius: "999px" }} />
+                }
                 trailingIcon={
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -170,18 +186,18 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
           </S.ChipsContainer>
         )}
         <TabAnatomy
-          tabs={days}
-          selectedTab={days[selectedDay - 1]}
+          tabs={daysArray}
+          selectedTab={daysArray[selectedDay - 1]}
           onClick={handleDayClick}
           style={{ background: "#fff" }}
         />
         <S.PlaceContainer ref={ref} animate={{ height: height }}>
           <S.Row>
             <S.Info>
-              <S.Date>2024.06.28</S.Date>
+              <S.Date>{days[selectedDay - 1]?.date}</S.Date>
               <S.Weather>32℃ 맑음</S.Weather>
             </S.Info>
-            <S.TextButton onClick={onEdit}>장소 편집</S.TextButton>
+            {travelPlaceList.length > 0 && <S.TextButton onClick={onEdit}>장소 편집</S.TextButton>}
           </S.Row>
           {travelPlaceList.length === 0 && (
             <div style={{ display: "flex", gap: "4px" }}>
@@ -191,8 +207,16 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
           {travelPlaceList.map((place, index) => (
             <div key={index}>
               <PlaceBox order={index + 1} place={place} />
-              {index < travelPlaceList.length - 1 && (
-                <p style={{ fontSize: "14px", fontWeight: "600", lineHeight: "18px" }}>{512}m</p>
+              {index < travelPlaceList.length - 1 && travelPlaceList.length > 1 && (
+                <p style={{ fontSize: "14px", fontWeight: "600", lineHeight: "18px" }}>
+                  {calculateDistance(
+                    parseFloat(travelPlaceList[index].y_address),
+                    parseFloat(travelPlaceList[index].x_address),
+                    parseFloat(travelPlaceList[index + 1].y_address),
+                    parseFloat(travelPlaceList[index + 1].x_address)
+                  )}
+                  m
+                </p>
               )}
               {index === travelPlaceList.length - 1 && (
                 <div style={{ display: "flex", gap: "4px", height: "96px" }}>
@@ -221,12 +245,9 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
           <S.BottomSheetTopContainer>
             <S.Title>어느 일정에 등록할까요?</S.Title>
             <Chip
-              text="산선암"
+              text={selectedPlace?.name}
               leadingIcon={
-                <img
-                  src={"/src/assets/images/place.png"}
-                  style={{ width: "24px", height: "24px", borderRadius: "999px" }}
-                />
+                <img src={selectedPlace?.imgUrl} style={{ width: "24px", height: "24px", borderRadius: "999px" }} />
               }
               style={{ cursor: "default" }}
             />
@@ -235,7 +256,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
             </div>
           </S.BottomSheetTopContainer>
           <S.DaysUl>
-            {days.map((day, index) => (
+            {daysArray.map((day, index) => (
               <S.DayLi
                 key={index}
                 selected={day === selectedBottomSheetDay}
