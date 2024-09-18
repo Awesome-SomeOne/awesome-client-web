@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import BottomSheet from "@/components/common/bottomSheet/index";
 import Button from "@/components/common/button/index";
 import GeneralHeader from "@/components/common/generalHeader/index";
+import InputComponent from "@/components/myTrip/inputComponent/index";
 import RecommendedIsland from "../tripIsland/recommendationIsland/RecommendedIsland";
 import * as S from "./styles";
 import { Place } from "@/types/myTrip";
@@ -98,11 +99,9 @@ const TripThemePage = ({
             disabled={!selectedTheme}
             onClick={handleNext}
           />
-          <BottomSheet
-            children={<InputComponent inputRef={inputRef} handleSubmit={handleSubmit} />}
-            isOpen={showInput}
-            close={() => setShowInput(false)}
-          />
+          <BottomSheet isOpen={showInput} close={() => setShowInput(false)}>
+            <InputComponent inputRef={inputRef} handleSubmit={handleSubmit} />
+          </BottomSheet>
         </div>
       ) : (
         recommend && (
@@ -115,54 +114,6 @@ const TripThemePage = ({
         )
       )}
     </>
-  );
-};
-
-const InputComponent = ({
-  inputRef,
-  handleSubmit
-}: {
-  inputRef: React.RefObject<HTMLInputElement>;
-  handleSubmit: (value: string) => void;
-}) => {
-  const [charCount, setCharCount] = useState(0);
-  const max = 25;
-  const handleInputChange = () => {
-    if (inputRef.current) {
-      setCharCount(inputRef.current.value.length);
-    }
-  };
-  return (
-    <S.InputContainer>
-      <S.TextField
-        onClick={(event: any) => event.stopPropagation()}
-        onSubmit={(event: any) => {
-          event.preventDefault();
-          if (inputRef.current) {
-            handleSubmit(inputRef.current.value);
-          }
-        }}
-      >
-        <S.TextInput
-          ref={inputRef}
-          type="text"
-          placeholder="여행 목적을 작성해주세요"
-          onChange={handleInputChange}
-          maxLength={max}
-        />
-        <S.TextButton
-          disabled={!charCount}
-          onClick={() => {
-            if (inputRef.current) {
-              handleSubmit(inputRef.current.value);
-            }
-          }}
-        >
-          작성
-        </S.TextButton>
-      </S.TextField>
-      <S.Counter>{`${charCount}/25`}</S.Counter>
-    </S.InputContainer>
   );
 };
 
