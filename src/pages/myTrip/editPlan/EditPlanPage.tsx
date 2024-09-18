@@ -22,8 +22,9 @@ import { useAtom } from "jotai";
 import { daysAtom } from "@/atoms/myTrip/planAtom";
 
 const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
+  const [initialPlaceList, setInitialPlaceList] = useState<{ day: number; date: string; places: Place[] }[]>([]);
   const [placeList, setPlaceList] = useState<{ day: number; date: string; places: Place[] }[]>([]);
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<Place>();
   const [selectedDay, setSelectedDay] = useState(1);
   const [isMoveClicked, setIsMoveClicked] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -31,10 +32,13 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
   const [days, setDays] = useAtom(daysAtom);
 
   const handleDragStart = () => {
-    setSelectedPlace(null);
+    setSelectedPlace(undefined);
   };
 
   useEffect(() => {
+    if (initialPlaceList.length === 0) {
+      setInitialPlaceList(days.map((day) => ({ ...day, places: [...day.places] })));
+    }
     setPlaceList(days);
   }, [days]);
 
@@ -49,6 +53,12 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
         const updatedPlaces = placeList[sourceId].places.filter((_, index) => index !== source.index);
         // 해당 순서에 넣기
         updatedPlaces.splice(destination.index, 0, { ...placeToMove });
+
+        // order 변경
+        updatedPlaces.forEach((place, index) => {
+          place.order = index + 1;
+        });
+
         // 새로운 리스트 생성하기
         const newPlaceList = placeList.slice();
         newPlaceList[sourceId] = {
@@ -62,20 +72,35 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
         // 기존 배열에서 삭제하기
         const placeToMove = placeList[sourceId].places[source.index];
         const removedPlaces = placeList[sourceId].places.filter((_, index) => index !== source.index);
-        // 해당 배열의 해당 순서에 넣기
-        const updatedPlaces = placeList[destinationId].places;
-        updatedPlaces.splice(destination.index, 0, { ...placeToMove });
-        // 새로운 리스트 생성하기
-        const newPlaceList = placeList.slice();
-        newPlaceList[sourceId] = {
-          ...newPlaceList[sourceId],
-          places: removedPlaces
-        };
-        newPlaceList[destinationId] = {
-          ...newPlaceList[destinationId],
-          places: updatedPlaces
-        };
-        setPlaceList(newPlaceList);
+
+        const alreadyExists = placeList[destinationId].places.some((place) => place.name === placeToMove.name);
+
+        if (!alreadyExists) {
+          // 해당 배열의 해당 순서에 넣기
+          const updatedPlaces = placeList[destinationId].places;
+          updatedPlaces.splice(destination.index, 0, { ...placeToMove });
+
+          // order, date 변경
+          removedPlaces.forEach((place, index) => {
+            place.order = index + 1;
+          });
+          updatedPlaces.forEach((place, index) => {
+            place.order = index + 1;
+            place.date = placeList[destinationId].date;
+          });
+
+          // 새로운 리스트 생성하기
+          const newPlaceList = placeList.slice();
+          newPlaceList[sourceId] = {
+            ...newPlaceList[sourceId],
+            places: removedPlaces
+          };
+          newPlaceList[destinationId] = {
+            ...newPlaceList[destinationId],
+            places: updatedPlaces
+          };
+          setPlaceList(newPlaceList);
+        }
       }
     }
   };
@@ -100,7 +125,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
   };
 
   const handleMove = () => {
-    if (selectedPlace === null) return;
+    if (!selectedPlace) return;
 
     // 원래 속해있던 day 구하기
     let originalDay: number | undefined;
@@ -113,6 +138,14 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
 
     // 같은 날짜 선택 시
     if (originalDay === selectedDay) {
+      setSelectedPlace(undefined);
+      setIsMoveClicked(false);
+      return;
+    }
+
+    const alreadyExists = placeList[selectedDay - 1].places.some((place) => place.name === selectedPlace.name);
+    if (alreadyExists) {
+      setSelectedPlace(undefined);
       setIsMoveClicked(false);
       return;
     }
@@ -122,7 +155,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
       if (dayObject.day === originalDay) {
         return {
           ...dayObject,
-          places: dayObject.places.filter((place) => place.id !== selectedPlace.id)
+          places: dayObject.places.filter((place) => place.name !== selectedPlace.name)
         };
       } else {
         return dayObject;
@@ -141,7 +174,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
       }
     });
     setPlaceList(newPlaceList);
-    setSelectedPlace(null);
+    setSelectedPlace(undefined);
     setIsMoveClicked(false);
     return;
   };
@@ -194,7 +227,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
                           checked={selectedPlace === place}
                           onClick={() => {
                             if (selectedPlace === place) {
-                              setSelectedPlace(null);
+                              setSelectedPlace(undefined);
                             } else {
                               setSelectedPlace(place);
                             }
@@ -237,7 +270,10 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
           firstButtonText="취소"
           secondButtonText="나가기"
           firstButtonOnClick={() => setIsCloseModalOpen(false)}
-          secondButtonOnClick={onPrev}
+          secondButtonOnClick={() => {
+            setDays(initialPlaceList);
+            onPrev();
+          }}
           isFilled
           isOpen={isCloseModalOpen}
           close={() => setIsCloseModalOpen(false)}
@@ -274,7 +310,7 @@ const PlaceContainer = ({
 }) => {
   const { id, name, category, address } = place;
   return (
-    <Draggable key={`day${day}-place${id}`} draggableId={`${id}`} index={index}>
+    <Draggable key={`day${day}-place${name}`} draggableId={`day${day}-place${name}`} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <S.PlaceContainer
           {...provided.draggableProps}

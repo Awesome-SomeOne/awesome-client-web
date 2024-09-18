@@ -14,7 +14,7 @@ const PopularPlace = () => {
       id: 1,
       name: "장소",
       address: "주소",
-      category: "숙소",
+      category: "숙박",
       rating: 5.0
     }
   ];

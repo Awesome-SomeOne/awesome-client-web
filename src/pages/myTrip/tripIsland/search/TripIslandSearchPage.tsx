@@ -5,7 +5,7 @@ import Divider from "@/components/common/divider/index";
 import Appbar from "@/components/common/header/Appbar";
 import SearchBar from "@/components/common/searchBar/index";
 import ListComponent from "@/components/myTrip/listComponent/index";
-import { Place } from "@/types/myTrip";
+import { Island } from "@/types/myTrip";
 import { NoResult } from "@/components/search/noResult/index";
 import * as S from "./styles";
 import { useAtom } from "jotai";
@@ -22,22 +22,31 @@ const TripIslandSearchPage = ({
   onRecClick: () => void;
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedIsland, setSelectedIsland] = useState<Place | null>(null);
+  const [selectedIsland, setSelectedIsland] = useState<Island>();
   const [, setIslandId] = useAtom(islandIdAtom);
 
-  const { data: searchResult = [] } = useSearchIsland({ keyword: searchQuery });
+  const {
+    data: searchResult = [
+      {
+        id: 1,
+        name: "울릉도",
+        address: "주소"
+      }
+    ]
+  } = useSearchIsland({ keyword: searchQuery });
 
   const handleSubmit = (value: string) => {
     setSearchQuery(value);
   };
 
   const handleInputChange = (value: string) => {
-    setSelectedIsland(null);
+    setSelectedIsland(undefined);
     setSearchQuery(value);
   };
 
   const handleSelectDone = () => {
-    setIslandId(2);
+    if (!selectedIsland) return;
+    setIslandId(selectedIsland.id);
     onNext();
   };
 
@@ -66,7 +75,7 @@ const TripIslandSearchPage = ({
         <S.Container>
           <S.ResultContainer>
             {searchResult.length > 0 &&
-              searchResult.map((place: Place, index: number) => (
+              searchResult.map((place: Island, index: number) => (
                 <ListComponent
                   key={index}
                   place={place}

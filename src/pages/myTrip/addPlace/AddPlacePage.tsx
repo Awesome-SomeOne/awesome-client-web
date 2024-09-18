@@ -12,31 +12,77 @@ import RecentSearch from "@/components/search/recentSearch/index";
 import { Place } from "@/types/myTrip";
 import { NoResult } from "@/components/search/noResult/index";
 import { useAtom } from "jotai";
-import { planGeneratingAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
-import { useGetRecommendPlace, useSearchPlace } from "@/apis/myTrip/myTrip.queries";
+import { daysAtom, planAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
+import { useGetPopularPlace, useGetRecommendPlace, useSearchPlace } from "@/apis/myTrip/myTrip.queries";
+import { CATEGORY_LIST } from "@/constants/homePageConstants";
+import { ISLAND_LIST } from "@/constants/myTripPageConstants";
 
-const AddPlacePage = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
+const AddPlacePage = ({ onPrev, day, planName }: { onPrev: () => void; day: number; planName?: string }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [selectedPlaces, setSelectedPlaces] = useState<Place[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSelectedList, setShowSelectedList] = useState(false);
   const [keywords, setKeywords] = useState<string[]>([]);
-  const [{ islandId, planName: category }] = useAtom(planGeneratingAtom);
-  const { data: recommendedPlaces = [] } = useGetRecommendPlace({
-    islandId,
-    category
-  });
+  const [{ islandId, planName: category }] = useAtom(planAtom);
+  const recommendedPlaces: Place[] = [];
 
-  const { data: searchedPlaces = [] } = useSearchPlace({
-    keyword: searchQuery
-  });
+  if (planName && CATEGORY_LIST.includes(planName)) {
+    if (!islandId) return;
+    const { data: places } = useGetRecommendPlace({
+      islandId,
+      category: planName
+    });
+    places?.map((place: Place) => recommendedPlaces.push(place));
+  } else if (category && CATEGORY_LIST.includes(category)) {
+    if (!islandId) return;
+    const { data: places } = useGetRecommendPlace({
+      islandId,
+      category
+    });
+    places?.map((place: Place) => recommendedPlaces.push(place));
+  } else {
+    if (!islandId) return;
+    const { data: places } = useGetPopularPlace({ islandId });
+    places?.map((place: Place) => recommendedPlaces.push(place));
+  }
 
+  // const recommendedPlaces = [
+  //   {
+  //     id: 1,
+  //     name: "추천 장소",
+  //     address: "주소",
+  //     category: "관광지",
+  //     x_address: "126.795841",
+  //     y_address: "33.55635"
+  //   }
+  // ];
+
+  const searchedPlaces = [
+    {
+      id: 101,
+      name: "검색 장소",
+      address: "주소",
+      category: "관광지",
+      x_address: "126.795865",
+      y_address: "33.55634"
+    },
+    {
+      id: 102,
+      name: "검색 장소2",
+      address: "주소",
+      category: "관광지",
+      x_address: "126.795841",
+      y_address: "33.55635"
+    }
+  ];
+
+  // const { data: searchedPlaces = [] } = useSearchPlace({
+  //   keyword: searchQuery
+  // });
+
+  const [days] = useAtom(daysAtom);
   const addPlacesToDay = useUpdateDaysAtom();
-
-  useEffect(() => {
-    console.log(searchQuery);
-  }, [searchQuery]);
 
   useEffect(() => {
     // 최근 검색어 불러오기
@@ -44,7 +90,17 @@ const AddPlacePage = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
   }, []);
 
   const handleAddClick = () => {
-    addPlacesToDay(day, selectedPlaces);
+    const currentDay = days[day - 1];
+    const currentPlaces: Place[] = currentDay?.places || [];
+
+    const nextOrder = currentPlaces.length > 0 ? Math.max(...currentPlaces.map((place) => place.order || 0)) + 1 : 1;
+
+    const placesWithOrder = selectedPlaces.map((place, index) => ({
+      ...place,
+      order: nextOrder + index
+    }));
+
+    addPlacesToDay(day, placesWithOrder);
     onPrev();
   };
 
@@ -114,9 +170,17 @@ const AddPlacePage = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
       <Divider size="sm" />
       {!isSearching && (
         <>
-          <GeneralHeader title={`[${category}]에 추천하는 장소`} />
+          <GeneralHeader
+            title={
+              planName && CATEGORY_LIST.includes(planName)
+                ? `${planName}에 추천하는 장소`
+                : category && CATEGORY_LIST.includes(category)
+                  ? `${category}에 추천하는 장소`
+                  : `${ISLAND_LIST.find((island) => island.id === islandId)?.name}의 인기장소`
+            }
+          />
           <S.ListContainer isSelected={selectedPlaces.length > 0}>
-            {recommendedPlaces.map((place: Place, index: number) => (
+            {recommendedPlaces.map((place, index) => (
               <ListComponent
                 key={index}
                 place={place}
@@ -161,7 +225,7 @@ const AddPlacePage = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
       {searchQuery && (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
           {searchedPlaces.length > 0 ? (
-            searchedPlaces.map((place: Place) => (
+            searchedPlaces.map((place) => (
               <ListComponent
                 key={place.id}
                 place={place}

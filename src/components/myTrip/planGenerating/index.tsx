@@ -15,7 +15,10 @@ import PlaceBox from "../box/placeBox/index";
 import { Place } from "@/types/myTrip";
 import MiniMapComponent from "../map/miniMap/index";
 import { useAtom } from "jotai";
-import { daysAtom, daysInitAtom, planGeneratingAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
+import { daysAtom, daysInitAtom, planAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
+import { calculateDistance, getDaysArray } from "@/utils/myTrip/myTrip.utils";
+import { useAddPlaces } from "@/apis/myTrip/myTrip.queries";
+// import { useGeneratePlan } from "@/apis/myTrip/myTrip.queries";
 
 interface IPlanProps {
   selectedDay: number;
@@ -25,23 +28,13 @@ interface IPlanProps {
   onSelect: (day: number) => void;
 }
 
-const getDaysArray = (daysBetween: number) => {
-  const daysArray = [];
-
-  for (let i = 1; i <= daysBetween + 1; i++) {
-    daysArray.push(`Day ${i}`);
-  }
-
-  return daysArray;
-};
-
 const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: IPlanProps) => {
-  const [{ startDate, endDate }] = useAtom(planGeneratingAtom);
+  const [{ islandId, startDate, endDate, planName }] = useAtom(planAtom);
   const [, initializeDays] = useAtom(daysInitAtom);
   const [days] = useAtom(daysAtom);
   const daysArray = getDaysArray(days.length - 1);
-
   const navigate = useNavigate();
+  const mutation = useAddPlaces();
 
   const { isOpen, open, close } = useOverlay();
 
@@ -50,7 +43,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
   // 추천 장소
   const [recommendedPlaces, setRecommendedPlaces] = useState<Place[]>(recommended);
   // 추천 장소 중 선택한 장소
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<Place>();
   // 모달에서 선택된 Day
   const [selectedBottomSheetDay, setSelectedBottomSheetDay] = useState(daysArray[selectedDay - 1]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -106,13 +99,26 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
     onSelect(day);
   };
 
+  const addPlaces = async (tripId: number) => {
+    for (const day of days) {
+      await mutation.mutateAsync({
+        travelPlanId: tripId,
+        businessIds: day.places.map((place: Place) => place.id),
+        date: day.date
+      });
+    }
+  };
+
   // 일정 생성하기 버튼 클릭 시
   const handleGenerate = () => {
     if (recommendedPlaces?.length) {
       setModalOpen(true);
     } else {
       // 일정 생성하기 > tripId 받기 > 페이지 이동하기
-      navigate({ pathname: PATH.MY_TRIP(1) }, { state: { generated: true } });
+      // const { tripId } = useGeneratePlan({ islandId, startDate, endDate, planName });
+      const tripId = 1;
+      addPlaces(tripId);
+      navigate({ pathname: PATH.MY_TRIP(tripId) }, { state: { generated: true } });
     }
   };
 
@@ -123,7 +129,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
   };
 
   const handleCancelAddPlace = () => {
-    setSelectedPlace(null);
+    setSelectedPlace(undefined);
     close();
   };
 
@@ -138,17 +144,20 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
     setRecommendedPlaces(filtered);
 
     // 초기화
-    setSelectedPlace(null);
+    setSelectedPlace(undefined);
     const day = parseInt(selectedBottomSheetDay.slice(4));
     onSelect(day);
     close();
   };
 
-  const handleSecondButtonClick = () => {
+  const handleSecondButtonClick = async () => {
     setModalOpen(false);
     setRecommendedPlaces([]);
     // 일정 생성하기 > tripId 받기 > 페이지 이동하기
-    navigate({ pathname: PATH.MY_TRIP(1) }, { state: { generated: true } });
+    // const { tripId } = useGeneratePlan({ islandId, startDate, endDate, planName });
+    const tripId = 1;
+    addPlaces(tripId);
+    navigate({ pathname: PATH.MY_TRIP(tripId) }, { state: { generated: true } });
   };
 
   return (
@@ -160,7 +169,9 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
               <Chip
                 key={index}
                 text={place.name}
-                leadingIcon={<img src={place.image} style={{ width: "24px", height: "24px", borderRadius: "999px" }} />}
+                leadingIcon={
+                  <img src={place.imgUrl} style={{ width: "24px", height: "24px", borderRadius: "999px" }} />
+                }
                 trailingIcon={
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -196,8 +207,16 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
           {travelPlaceList.map((place, index) => (
             <div key={index}>
               <PlaceBox order={index + 1} place={place} />
-              {index < travelPlaceList.length - 1 && (
-                <p style={{ fontSize: "14px", fontWeight: "600", lineHeight: "18px" }}>{512}m</p>
+              {index < travelPlaceList.length - 1 && travelPlaceList.length > 1 && (
+                <p style={{ fontSize: "14px", fontWeight: "600", lineHeight: "18px" }}>
+                  {calculateDistance(
+                    parseFloat(travelPlaceList[index].y_address),
+                    parseFloat(travelPlaceList[index].x_address),
+                    parseFloat(travelPlaceList[index + 1].y_address),
+                    parseFloat(travelPlaceList[index + 1].x_address)
+                  )}
+                  m
+                </p>
               )}
               {index === travelPlaceList.length - 1 && (
                 <div style={{ display: "flex", gap: "4px", height: "96px" }}>
@@ -228,7 +247,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
             <Chip
               text={selectedPlace?.name}
               leadingIcon={
-                <img src={selectedPlace?.image} style={{ width: "24px", height: "24px", borderRadius: "999px" }} />
+                <img src={selectedPlace?.imgUrl} style={{ width: "24px", height: "24px", borderRadius: "999px" }} />
               }
               style={{ cursor: "default" }}
             />

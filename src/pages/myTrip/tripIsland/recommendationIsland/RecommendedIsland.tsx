@@ -20,22 +20,26 @@ const RecommendedIsland = ({
   const [recommendPlace, setRecommendPlace] = useState<Place[]>([]);
   const [selectedPlaces, setLocalSelectedPlaces] = useState<Place[]>([]);
 
-  const { data: recommendIsland } = useGetRecommendIsland();
+  const { data: recommendIsland, isFetching } = useGetRecommendIsland();
 
   const islandId = recommendIsland?.id;
   const category = theme;
-  const { data: recommendPlaceList } = useGetRecommendPlace({ islandId: 1, category: "식당" });
-
-  const handleSelect = () => {
-    // 추천 장소 불러오기
-    setRecommendPlace([
+  const {
+    data: recommendPlaceList = [
       {
         id: 1,
         name: "aaa",
         address: "a1",
-        category: "식당"
+        category: "식당",
+        x_address: "126.795841",
+        y_address: "33.55635"
       }
-    ]);
+    ]
+  } = useGetRecommendPlace({ islandId: islandId, category: category });
+
+  const handleSelect = () => {
+    // 추천 장소 불러오기
+    setRecommendPlace(recommendPlaceList);
   };
 
   const handleNext = () => {
@@ -48,6 +52,7 @@ const RecommendedIsland = ({
       onNext();
     }
   };
+  if (isFetching) return <>fetching...</>;
   return (
     <div
       style={{

@@ -1,13 +1,13 @@
 import { atom, useAtom } from "jotai";
-import { format } from "date-fns";
 import { Day, Place } from "@/types/myTrip";
+import { calculateDatesArray } from "@/utils/myTrip/myTrip.utils";
 
 export const islandIdAtom = atom<number | null>(null);
 export const startDateAtom = atom<string | null>(null);
 export const endDateAtom = atom<string | null>(null);
 export const planNameAtom = atom<string | null>(null);
 
-export const planGeneratingAtom = atom((get) => {
+export const planAtom = atom((get) => {
   const islandId = get(islandIdAtom);
   const startDate = get(startDateAtom);
   const endDate = get(endDateAtom);
@@ -32,30 +32,6 @@ export const useResetAtoms = () => {
   return resetAtoms;
 };
 
-const calculateDaysBetween = (startDate: string, endDate: string): number => {
-  const start = new Date(startDate).getTime();
-  const end = new Date(endDate).getTime();
-  const differenceInMillis = end - start;
-  const millisPerDay = 1000 * 60 * 60 * 24;
-  return Math.floor(differenceInMillis / millisPerDay) + 1; // +1 to include both start and end days
-};
-
-const calculateDatesArray = (startDate: string, endDate: string): Day[] => {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const daysBetween = calculateDaysBetween(startDate, endDate);
-
-  return Array.from({ length: daysBetween }, (_, i) => {
-    const dayDate = new Date(start);
-    dayDate.setDate(start.getDate() + i);
-    return {
-      day: i + 1,
-      date: format(dayDate, "yyyy-MM-dd"),
-      places: []
-    };
-  });
-};
-
 export const daysAtom = atom<Day[]>([]);
 
 export const daysInitAtom = atom(
@@ -69,6 +45,7 @@ export const daysInitAtom = atom(
     }
   }
 );
+
 export const useUpdateDaysAtom = () => {
   const [, setDays] = useAtom(daysAtom);
 
@@ -80,7 +57,9 @@ export const useUpdateDaysAtom = () => {
               ...day,
               places: [
                 ...day.places,
-                ...places.filter((newPlace) => !day.places.some((existingPlace) => existingPlace.id === newPlace.id))
+                ...places.filter(
+                  (newPlace) => !day.places.some((existingPlace) => existingPlace.name === newPlace.name)
+                )
               ]
             }
           : day

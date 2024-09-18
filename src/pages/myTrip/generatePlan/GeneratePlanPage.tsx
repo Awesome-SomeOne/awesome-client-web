@@ -1,20 +1,52 @@
 import GeneralHeader from "@/components/common/generalHeader/index";
 import PlanGenerating from "@/components/myTrip/planGenerating/index";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditPlanPage from "@/pages/myTrip/editPlan/EditPlanPage";
-import { Place } from "@/types/myTrip";
+import { Day, Place } from "@/types/myTrip";
 import AddPlacePage from "../addPlace/AddPlacePage";
 import MapComponent from "@/components/myTrip/map/index";
 import { useAtom } from "jotai";
-import { planGeneratingAtom } from "@/atoms/myTrip/planAtom";
+import { daysAtom, planAtom } from "@/atoms/myTrip/planAtom";
 import { ISLAND_LIST } from "@/constants/myTripPageConstants";
+import { Map } from "react-kakao-maps-sdk";
 
 const GeneratePlanPage = ({ recommended = [] }: { recommended?: Place[] }) => {
-  const [day, setDay] = useState(1);
+  const [selectedDay, setSelectedDay] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [{ islandId, startDate, endDate }] = useAtom(planGeneratingAtom);
-  const islandName = ISLAND_LIST.find((island) => island.id === islandId)?.name;
+  const [days] = useAtom(daysAtom);
+  const [{ islandId, startDate, endDate }] = useAtom(planAtom);
+  const islandName = ISLAND_LIST.find((island) => island.id === islandId)?.name || "";
+
+  const getPositionList = () => {
+    return days
+      .filter((day: Day) => day.day === selectedDay)
+      .flatMap((day: Day) => day.places)
+      .map((place: Place) => {
+        return {
+          lat: parseFloat(place.y_address || "0"),
+          lng: parseFloat(place.x_address || "0")
+        };
+      });
+  };
+
+  const [positionList, setPositionList] = useState(getPositionList());
+  const [position, setPosition] = useState<{ lat: string; lng: string }>();
+
+  useEffect(() => {
+    setPositionList(getPositionList());
+  }, [selectedDay, days]);
+
+  useEffect(() => {
+    if (positionList.length) return;
+    const ps = new kakao.maps.services.Places();
+
+    ps.keywordSearch(islandName, (data, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        setPosition({ lat: data[0].y, lng: data[0].x });
+      }
+    });
+  }, [positionList]);
 
   const onAdd = () => {
     setIsAdding(true);
@@ -34,24 +66,28 @@ const GeneratePlanPage = ({ recommended = [] }: { recommended?: Place[] }) => {
         <>
           <div style={{ height: "100%", paddingTop: "56px", overflow: "hidden" }}>
             <GeneralHeader title={islandName} sub={`${startDate} ~ ${endDate}`} titleSize="md" />
-            <MapComponent
-              positionList={[
-                { lat: 33.55635, lng: 126.795841 },
-                { lat: 33.556, lng: 126.7951 },
-                { lat: 33.5565, lng: 126.795 }
-              ]}
-            />
+            {positionList.length ? (
+              <MapComponent positionList={positionList} />
+            ) : (
+              position && (
+                <Map
+                  center={{ lat: parseFloat(position.lat) - 0.033, lng: parseFloat(position.lng) }}
+                  style={{ width: "100%", height: "100%" }}
+                  level={10}
+                ></Map>
+              )
+            )}
             <PlanGenerating
-              selectedDay={day}
+              selectedDay={selectedDay}
               recommended={recommended}
               onAdd={onAdd}
               onEdit={onEdit}
-              onSelect={(day: number) => setDay(day)}
+              onSelect={(day: number) => setSelectedDay(day)}
             />
           </div>
         </>
       )}
-      {isAdding && <AddPlacePage onPrev={onPrev} day={day} />}
+      {isAdding && <AddPlacePage onPrev={onPrev} day={selectedDay} />}
       {isEditing && <EditPlanPage onPrev={onPrev} />}
     </>
   );

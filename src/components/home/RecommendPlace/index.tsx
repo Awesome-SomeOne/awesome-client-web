@@ -10,7 +10,7 @@ import { CATEGORY_LIST } from "@/constants/homePageConstants";
 
 const RecommendPlace = () => {
   const navigate = useNavigate();
-  const [currentTab, setCurrentTab] = useState("숙소");
+  const [currentTab, setCurrentTab] = useState("숙박");
 
   // const { data: places = [] } = useGetRecommendPlaces({ islandId: 1, category: currentTab });
 
@@ -23,7 +23,7 @@ const RecommendPlace = () => {
       id: 1,
       name: "장소",
       address: "주소",
-      category: "숙소",
+      category: "숙박",
       rating: 5.0
     }
   ];
