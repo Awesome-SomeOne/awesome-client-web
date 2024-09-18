@@ -59,3 +59,10 @@ export const GoToGalleryButtonWrapper = styled.button`
   width: 100%;
   padding: 8px 20px;
 `;
+
+export const MainImageContainer = styled.figure`
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  align-content: center;
+`;

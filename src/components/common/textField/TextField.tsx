@@ -1,28 +1,33 @@
-import { useState } from "react";
+import { InputHTMLAttributes, useState } from "react";
+import { Control, useController } from "react-hook-form";
 
 import * as S from "./styles";
 
 type Size = "sm" | "lg";
 
-interface TextFieldProps {
+interface TextFieldProps
+  extends Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    "size" | "label" | "placeholder" | "disable" | "error" | "control" | "name"
+  > {
   size: Size;
   label: string;
   placeholder: string;
   disable?: boolean;
   error?: boolean;
+  control: Control<any>;
+  name: string;
 }
 
-function TextField({ size, label, placeholder, disable, error }: TextFieldProps) {
-  const [inputValue, setInputValue] = useState("");
+function TextField({ size, label, placeholder, disable, error, control, name, ...props }: TextFieldProps) {
   const [hasBlurred, setHasBlurred] = useState(false);
-
-  const handleBlur = () => {
-    setHasBlurred(true);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
+  const {
+    field: { onChange, onBlur, value }
+  } = useController({
+    name,
+    control,
+    defaultValue: ""
+  });
 
   return (
     <S.OutContainer size={size}>
@@ -33,10 +38,11 @@ function TextField({ size, label, placeholder, disable, error }: TextFieldProps)
         placeholder={placeholder}
         disabled={disable}
         error={error}
-        value={inputValue}
-        onBlur={handleBlur}
-        onChange={handleChange}
-        hasValue={hasBlurred && !!inputValue}
+        value={value}
+        onBlur={onBlur}
+        onChange={onChange}
+        hasValue={hasBlurred && !!value}
+        {...props}
       />
     </S.OutContainer>
   );

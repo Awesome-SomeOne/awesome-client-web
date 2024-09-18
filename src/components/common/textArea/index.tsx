@@ -1,4 +1,5 @@
-import { InputHTMLAttributes, useRef, useState } from "react";
+import { InputHTMLAttributes, useRef } from "react";
+import { Control, useController } from "react-hook-form";
 
 import * as S from "./styles";
 
@@ -10,6 +11,8 @@ interface TextAreaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   minHeight?: string;
   isShowLength?: boolean;
   maxLength?: number;
+  control: Control<any>;
+  name: string;
 }
 
 function TextArea({
@@ -20,15 +23,20 @@ function TextArea({
   minHeight,
   isShowLength = false,
   maxLength,
+  control,
+  name,
   ...props
 }: TextAreaProps) {
-  const [inputValue, setInputValue] = useState("");
-  const [hasBlurred, setHasBlurred] = useState(false);
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const {
+    field: { onChange, onBlur, value, ref },
+    fieldState: { isTouched }
+  } = useController({
+    name,
+    control,
+    defaultValue: ""
+  });
 
-  const handleBlur = () => {
-    setHasBlurred(true);
-  };
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const adjustHeight = () => {
     const textarea = textAreaRef.current;
@@ -40,7 +48,7 @@ function TextArea({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue(e.target.value);
+    onChange(e);
     adjustHeight();
   };
 
@@ -50,21 +58,24 @@ function TextArea({
         {label}
       </S.Label>
       <S.TextArea
-        ref={textAreaRef}
+        // ref={(e) => {
+        //   ref(e);
+        //   textAreaRef.current = e;
+        // }}
         placeholder={placeholder}
         disabled={disable}
         error={error}
-        value={inputValue}
-        onBlur={handleBlur}
+        value={value}
+        onBlur={onBlur}
         onChange={handleChange}
-        hasValue={hasBlurred && !!inputValue}
+        hasValue={isTouched && !!value}
         minHeight={minHeight}
         maxLength={maxLength}
         {...props}
       />
       {isShowLength && maxLength && (
         <S.MaxLengthText>
-          {inputValue.length}/{maxLength}
+          {value.length}/{maxLength}
         </S.MaxLengthText>
       )}
     </S.OutContainer>
