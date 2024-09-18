@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import * as S from "./styles";
+import { usePostCreateTravelRecord } from "@/apis/businessReview/businessReview.queries";
 import Clear from "@/assets/icons/Clear";
 import Button from "@/components/common/button";
 import Appbar from "@/components/common/header/Appbar";
@@ -16,8 +18,30 @@ const MyTripRecordPage = () => {
   const [pageOrder, setPageOrder] = useState(0);
   const [selectedTab, setSelectedTab] = useState("1");
   const navigate = useNavigate();
-  const handleTab = (e: any) => {
-    setSelectedTab(e.target.innerText);
+  const handleTab = (e: React.MouseEvent<HTMLElement>) => {
+    setSelectedTab(e.currentTarget.innerText);
+  };
+  const [isPublic, setIsPublic] = useState(false);
+
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      oneLineReview: "",
+      overallReview: ""
+    }
+  });
+
+  const { mutate: postCreateTravelRecord } = usePostCreateTravelRecord();
+
+  const onSubmit = (data: { oneLineReview: string; overallReview: string }) => {
+    console.log("data----", data);
+    console.log("isPublic----", isPublic);
+    postCreateTravelRecord({
+      planId: 1,
+      publicPrivate: isPublic,
+      images: [],
+      oneLineReview: data.oneLineReview,
+      overallReview: data.overallReview
+    });
   };
 
   return (
@@ -44,6 +68,9 @@ const MyTripRecordPage = () => {
               <span>추억으로 정리할 여행 사진을 골라주세요</span>
               <S.Text className="subtitle">최대 5개까지 등록할 수 있어요</S.Text>
             </S.DescriptionTextBox>
+            <S.MainImageContainer>
+              <img src="/camera.jpg" alt="trip" width="160px" height="160px" />
+            </S.MainImageContainer>
             <S.GoToGalleryButtonWrapper>
               <Button
                 text="갤러리로 이동"
@@ -56,11 +83,24 @@ const MyTripRecordPage = () => {
             </S.GoToGalleryButtonWrapper>
           </>
         ) : (
-          <>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <S.DescriptionTextBox>여행이 어땠는 지 구체적으로 기록해보세요</S.DescriptionTextBox>
             <S.WritingTextContainer>
-              <TextField label="한줄평 작성" placeholder="(선택) 한줄평을 작성해주세요" size="sm" />
-              <TextArea label="총평" placeholder="(선택) 여행의 총평을 적어주세요" maxLength={500} isShowLength />
+              <TextField
+                label="한줄평 작성"
+                placeholder="(선택) 한줄평을 작성해주세요"
+                size="sm"
+                control={control}
+                name="oneLineReview"
+              />
+              <TextArea
+                label="총평"
+                placeholder="(선택) 여행의 총평을 적어주세요"
+                maxLength={500}
+                isShowLength
+                control={control}
+                name="overallReview"
+              />
             </S.WritingTextContainer>
 
             <S.PhotoContainer>
@@ -85,8 +125,8 @@ const MyTripRecordPage = () => {
 
             <SpotCard />
 
-            <BottomCompleteButton />
-          </>
+            <BottomCompleteButton isPublic={isPublic} setIsPublic={setIsPublic} />
+          </form>
         )}
       </S.MyTripRecordPageContainer>
     </>

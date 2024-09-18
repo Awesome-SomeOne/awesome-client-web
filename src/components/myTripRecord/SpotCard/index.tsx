@@ -1,8 +1,8 @@
-import ReviewFullPageModal from "../ReviewFullPageModal";
+import { StarRateProvider } from "@/components/common/starRate/starRateContext";
 import useOverlay from "@/hooks/useOverlay";
 
+import ReviewFullPageModal from "../ReviewFullPageModal";
 import * as S from "./styles";
-import { StarRateProvider } from "@/components/common/starRate/starRateContext";
 
 interface SpotCardProps {
   isShowReview?: boolean;
