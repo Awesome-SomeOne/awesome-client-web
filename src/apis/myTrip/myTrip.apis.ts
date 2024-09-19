@@ -67,7 +67,7 @@ export const deletePlace = async (data: { travelPlaceId: number }) => {
 };
 
 export const deleteTravel = async (data: { planId: number }) => {
-  const response = await customAxios.delete("/api/travel/deletePlace", { data });
+  const response = await customAxios.delete("/api/travel/delete/travel", { data });
   return response.data;
 };
 
