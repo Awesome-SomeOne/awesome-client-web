@@ -203,11 +203,11 @@ const PlanContent = () => {
         date: place.date
       }));
       await updatePlace(editedPlaceData);
+      setPageState((prev) => ({ ...prev, isPageEditing: false }));
+      window.location.reload();
     } catch (error) {
       setPageState((prev) => ({ ...prev, showFailureToast: true }));
     }
-
-    setPageState((prev) => ({ ...prev, isPageEditing: false }));
   };
 
   const handleMore = () => {
