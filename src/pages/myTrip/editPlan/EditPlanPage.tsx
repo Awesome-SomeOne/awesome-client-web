@@ -84,7 +84,9 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
         const placeToMove = placeList[sourceId].places[source.index];
         const removedPlaces = placeList[sourceId].places.filter((_, index) => index !== source.index);
 
-        const alreadyExists = placeList[destinationId].places.some((place) => place.name === placeToMove.name);
+        const alreadyExists = placeList[destinationId].places.some(
+          (place) => place.name === placeToMove.name && place.category === placeToMove.category
+        );
 
         if (!alreadyExists) {
           // 해당 배열의 해당 순서에 넣기
@@ -156,7 +158,9 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
       return;
     }
 
-    const alreadyExists = placeList[selectedDay - 1].places.some((place) => place.name === selectedPlace.name);
+    const alreadyExists = placeList[selectedDay - 1].places.some(
+      (place) => place.name === selectedPlace.name && place.category === selectedPlace.category
+    );
     if (alreadyExists) {
       setShowToast(true);
       setSelectedPlace(undefined);

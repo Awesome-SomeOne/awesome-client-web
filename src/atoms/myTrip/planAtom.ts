@@ -57,7 +57,13 @@ export const useUpdateDaysAtom = () => {
               ...day,
               places: [
                 ...day.places,
-                ...places.filter((newPlace) => !day.places.some((existingPlace) => existingPlace.id === newPlace.id))
+                ...places.filter(
+                  (newPlace) =>
+                    !day.places.some(
+                      (existingPlace) =>
+                        existingPlace.name === newPlace.name && existingPlace.category === newPlace.category
+                    )
+                )
               ]
             }
           : day
