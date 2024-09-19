@@ -25,15 +25,7 @@ const TripIslandSearchPage = ({
   const [selectedIsland, setSelectedIsland] = useState<Island>();
   const [, setIslandId] = useAtom(islandIdAtom);
 
-  const {
-    data: searchResult = [
-      {
-        id: 1,
-        name: "울릉도",
-        address: "주소"
-      }
-    ]
-  } = useSearchIsland({ keyword: searchQuery });
+  const { data: searchResult = [] } = useSearchIsland({ keyword: searchQuery });
 
   const handleSubmit = (value: string) => {
     setSearchQuery(value);

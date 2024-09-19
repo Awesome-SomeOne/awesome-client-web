@@ -27,59 +27,32 @@ const AddPlacePage = ({ onPrev, day, planName }: { onPrev: () => void; day: numb
   const [{ islandId, planName: category }] = useAtom(planAtom);
   const recommendedPlaces: Place[] = [];
 
-  if (planName && CATEGORY_LIST.includes(planName)) {
-    if (!islandId) return;
-    const { data: places } = useGetRecommendPlace({
-      islandId,
-      category: planName
-    });
-    places?.map((place: Place) => recommendedPlaces.push(place));
-  } else if (category && CATEGORY_LIST.includes(category)) {
-    if (!islandId) return;
-    const { data: places } = useGetRecommendPlace({
-      islandId,
-      category
-    });
-    places?.map((place: Place) => recommendedPlaces.push(place));
-  } else {
-    if (!islandId) return;
-    const { data: places } = useGetPopularPlace({ islandId });
-    places?.map((place: Place) => recommendedPlaces.push(place));
+  if (islandId) {
+    if (planName && CATEGORY_LIST.includes(planName)) {
+      const { data: places } = useGetRecommendPlace({
+        islandId,
+        category: planName
+      });
+      places?.map((place: Place) => recommendedPlaces.push(place));
+    } else if (category && CATEGORY_LIST.includes(category)) {
+      const { data: places } = useGetRecommendPlace({
+        islandId,
+        category
+      });
+      places?.map((place: Place) => recommendedPlaces.push(place));
+    } else {
+      const { data } = useGetPopularPlace({ islandId });
+      const places = data?.map(({ businessId, ...rest }: { businessId: number }) => ({
+        id: businessId,
+        ...rest
+      }));
+      places?.map((place: Place) => recommendedPlaces.push(place));
+    }
   }
 
-  // const recommendedPlaces = [
-  //   {
-  //     id: 1,
-  //     name: "추천 장소",
-  //     address: "주소",
-  //     category: "관광지",
-  //     x_address: "126.795841",
-  //     y_address: "33.55635"
-  //   }
-  // ];
-
-  const searchedPlaces = [
-    {
-      id: 101,
-      name: "검색 장소",
-      address: "주소",
-      category: "관광지",
-      x_address: "126.795865",
-      y_address: "33.55634"
-    },
-    {
-      id: 102,
-      name: "검색 장소2",
-      address: "주소",
-      category: "관광지",
-      x_address: "126.795841",
-      y_address: "33.55635"
-    }
-  ];
-
-  // const { data: searchedPlaces = [] } = useSearchPlace({
-  //   keyword: searchQuery
-  // });
+  const { data: searchedPlaces = [] } = useSearchPlace({
+    keyword: searchQuery
+  });
 
   const [days] = useAtom(daysAtom);
   const addPlacesToDay = useUpdateDaysAtom();
@@ -225,9 +198,9 @@ const AddPlacePage = ({ onPrev, day, planName }: { onPrev: () => void; day: numb
       {searchQuery && (
         <div style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "scroll" }}>
           {searchedPlaces.length > 0 ? (
-            searchedPlaces.map((place) => (
+            searchedPlaces.map((place: Place, index: number) => (
               <ListComponent
-                key={place.id}
+                key={index}
                 place={place}
                 onClick={() => {
                   if (selectedPlaces.some((p) => p.id === place.id)) {

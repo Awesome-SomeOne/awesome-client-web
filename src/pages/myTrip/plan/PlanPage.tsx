@@ -1,6 +1,6 @@
 import GeneralHeader from "@/components/common/generalHeader/index";
 import { useEffect, useState } from "react";
-import AddPlacePage from "../addPlace/AddPlacePage";
+import AddPlacePage from "@/pages/myTrip/addPlace/AddPlacePage";
 import MapComponent from "@/components/myTrip/map/index";
 import { AnimatePresence } from "framer-motion";
 import Toast from "@/components/myTrip/toast/index";
@@ -16,80 +16,35 @@ import BottomSheet from "@/components/common/bottomSheet/index";
 import { Map } from "react-kakao-maps-sdk";
 import { useParams } from "react-router-dom";
 import { useAtom } from "jotai";
-// import { useGetPlan } from "@/apis/myTrip/myTrip.queries";
 import * as S from "./styles";
 import { daysAtom, daysInitAtom, islandIdAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
 import { differenceInCalendarDays, parseISO } from "date-fns";
 import { ISLAND_LIST } from "@/constants/myTripPageConstants";
 import { Day, Place } from "@/types/myTrip";
-import { useAddPlace, useDeletePlace, useUpdatePlace } from "@/apis/myTrip/myTrip.queries";
+import { useGetPlan, useAddPlace, useDeletePlace, useUpdatePlace, useDeleteTravel } from "@/apis/myTrip/myTrip.queries";
 import { differenceWith, sortBy } from "lodash";
+import { Suspense } from "react";
+import ErrorBoundary from "@/hooks/Errorboundary";
 
-const PlanPage = () => {
+const PlanContent = () => {
   const [day, setDay] = useState(1);
-  const [isPageEditing, setIsPageEditing] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showCloseModal, setShowCloseModal] = useState(false);
+  const [pageState, setPageState] = useState({
+    isAdding: false,
+    isEditing: false,
+    isPageEditing: false,
+    showToast: false,
+    showFailureToast: false,
+    showDelete: false,
+    showDeleteModal: false,
+    showCloseModal: false
+  });
   const navigate = useNavigate();
   const location = useLocation();
   const { generated } = location.state || { generated: false };
 
   const { tripId } = useParams<{ tripId: string }>();
-  // const { planName, islandName, startDate, endDate, travelPlaceList } = useGetPlan({ planId: parseInt(tripId) });
-  const planName = "효도 여행";
-  const islandName = "울릉도";
-  const startDate = "2024-09-13";
-  const endDate = "2024-09-15";
-  const travelPlaceList = [
-    {
-      id: 1,
-      name: "장소2",
-      address: "주소",
-      x_address: "126.795851",
-      y_address: "33.55645",
-      category: "숙박",
-      date: "2024-09-14",
-      order: 2,
-      imgUrl: ""
-    },
-    {
-      id: 2,
-      name: "장소1",
-      address: "주소",
-      x_address: "126.795841",
-      y_address: "33.55635",
-      category: "숙박",
-      date: "2024-09-14",
-      order: 1,
-      imgUrl: ""
-    },
-    {
-      id: 3,
-      name: "장소",
-      address: "주소",
-      x_address: "126.795841",
-      y_address: "33.55635",
-      category: "숙박",
-      date: "2024-09-15",
-      order: 1,
-      imgUrl: ""
-    },
-    {
-      id: 4,
-      name: "장소",
-      address: "주소",
-      x_address: "126.795841",
-      y_address: "33.55635",
-      category: "숙박",
-      date: "2024-09-13",
-      order: 1,
-      imgUrl: ""
-    }
-  ];
+  const { data: planData } = useGetPlan({ planId: parseInt(tripId as string) });
+  const { startDate, endDate, islandName, travelPlaceList, planName } = planData || {};
 
   const [, initializeDays] = useAtom(daysInitAtom);
   const [days] = useAtom(daysAtom);
@@ -99,56 +54,77 @@ const PlanPage = () => {
   const [positionList, setPositionList] = useState([]);
   const [position, setPosition] = useState<{ lat: string; lng: string }>();
 
-  const addMutation = useAddPlace();
-  const deleteMutation = useDeletePlace();
-  const updateMutation = useUpdatePlace();
+  const { mutateAsync: addPlace } = useAddPlace();
+  const { mutateAsync: deletePlace } = useDeletePlace();
+  const { mutateAsync: updatePlace } = useUpdatePlace();
+  const { mutateAsync: deletePlan } = useDeleteTravel();
 
-  useEffect(() => {
-    if (days.length > 0) return;
-    initializeDays({ startDate, endDate });
-
-    travelPlaceList
-      .sort((a, b) => a.order - b.order)
-      .sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime())
+  const initializePlacesInDays = (places: Place[], startDate: string) => {
+    places
+      .sort((a, b) => (a.order || 0) - (b.order || 0))
+      .sort((a, b) => {
+        if (!a.date || !b.date) return 0;
+        return parseISO(a.date).getTime() - parseISO(b.date).getTime();
+      })
       .map((place) => {
-        const placeDate = parseISO(place.date);
+        const placeDate = place.date && parseISO(place.date);
         const start = parseISO(startDate);
-        const dayNumber = differenceInCalendarDays(placeDate, start) + 1;
-        addPlacesToDay(dayNumber, [place]);
+        const dayNumber = placeDate && differenceInCalendarDays(placeDate, start) + 1;
+        dayNumber && addPlacesToDay(dayNumber, [place]);
       });
-  }, [startDate, endDate, initializeDays, travelPlaceList]);
+  };
 
-  useEffect(() => {
-    if (positionList.length) return;
+  const searchIslandPosition = (islandName: string) => {
     const ps = new kakao.maps.services.Places();
     ps.keywordSearch(islandName, (data, status) => {
       if (status === kakao.maps.services.Status.OK) {
         setPosition({ lat: data[0].y, lng: data[0].x });
       }
     });
-  }, [positionList]);
+  };
 
   useEffect(() => {
+    if (startDate && endDate && !days.length) {
+      initializeDays({ startDate, endDate });
+    }
+    initializePlacesInDays(travelPlaceList, startDate);
+  }, [travelPlaceList, startDate, endDate, initializeDays]);
+
+  useEffect(() => {
+    if (islandName && !positionList.length) {
+      searchIslandPosition(islandName);
+    }
+  }, [islandName, positionList]);
+
+  useEffect(() => {
+    if (!islandName) return;
     const islandId = ISLAND_LIST.find((island) => island.name === islandName)?.id;
-    if (!islandId) return;
-    setIslandId(islandId);
-    setShowToast(true);
-    const timer = setTimeout(() => setShowToast(false), 1500);
+    islandId && setIslandId(islandId);
+    setPageState((prev) => ({ ...prev, showToast: true }));
+    const timer = setTimeout(() => setPageState((prev) => ({ ...prev, showToast: false })), 1500);
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [islandName]);
+
+  useEffect(() => {
+    if (!pageState.showFailureToast) return;
+    const timer = setTimeout(() => setPageState((prev) => ({ ...prev, showFailureToast: false })), 1500);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [pageState.showFailureToast]);
 
   const onAdd = () => {
-    setIsAdding(true);
+    setPageState((prev) => ({ ...prev, isAdding: true }));
   };
 
   const onPageEdit = () => {
-    setIsPageEditing(true);
+    setPageState((prev) => ({ ...prev, isPageEditing: true }));
   };
 
   const onEdit = () => {
-    setIsEditing(true);
+    setPageState((prev) => ({ ...prev, isEditing: true }));
   };
 
   const sortPlaces = (places: Place[]) => sortBy(places, ["id", "date", "order"]);
@@ -173,7 +149,8 @@ const PlanPage = () => {
       const places = day.places;
       const placeWithOrder = places.map((place) => ({
         ...place,
-        order: order++
+        order: order++,
+        date: day.date
       }));
       editedPlaces.push(...placeWithOrder);
     });
@@ -184,7 +161,7 @@ const PlanPage = () => {
     const differences = getDifferences(originalPlaces, editedPlaces);
     console.log(differences);
     if (!differences.length) {
-      setIsPageEditing(false);
+      setPageState((prev) => ({ ...prev, isPageEditing: false }));
       return;
     }
 
@@ -205,7 +182,7 @@ const PlanPage = () => {
     try {
       for (const place of addedPlaces) {
         if (!tripId || !place.id || !place.date) return;
-        await addMutation.mutateAsync({
+        await addPlace({
           travelPlanId: parseInt(tripId),
           businessId: place.id,
           date: place.date
@@ -214,7 +191,7 @@ const PlanPage = () => {
 
       // 삭제된 장소 처리
       for (const place of removedPlaces) {
-        await deleteMutation.mutateAsync({
+        await deletePlace({
           travelPlaceId: place.id
         });
       }
@@ -225,40 +202,46 @@ const PlanPage = () => {
         order: place.order,
         date: place.date
       }));
-      await updateMutation.mutateAsync(editedPlaceData);
+      await updatePlace(editedPlaceData);
     } catch (error) {
-      console.log("수정 실패");
-      setIsPageEditing(false);
+      setPageState((prev) => ({ ...prev, showFailureToast: true }));
     }
 
-    setIsPageEditing(false);
+    setPageState((prev) => ({ ...prev, isPageEditing: false }));
   };
 
   const handleMore = () => {
-    setShowDelete(true);
+    setPageState((prev) => ({ ...prev, showDelete: true }));
   };
 
   const handleClose = () => {
-    // 수정 중인 일정 삭제
-    if (isPageEditing && !showCloseModal) {
-      setShowCloseModal(true);
+    if (pageState.isPageEditing && !pageState.showCloseModal) {
+      setPageState((prev) => ({ ...prev, showCloseModal: true }));
     } else if (generated) {
       navigate(PATH.MY_TRIP_LIST);
     } else navigate(-1);
   };
 
   const handleDelete = () => {
-    // 일정 삭제하기
-    navigate(PATH.MY_TRIP_LIST);
+    if (!tripId) return;
+    deletePlan(
+      {
+        planId: parseInt(tripId)
+      },
+      {
+        onSuccess: () => navigate(PATH.MY_TRIP_LIST)
+      }
+    );
   };
 
   const onPrev = () => {
-    isAdding && setIsAdding(false);
-    isEditing && setIsEditing(false);
+    pageState.isAdding && setPageState((prev) => ({ ...prev, isAdding: false }));
+    pageState.isEditing && setPageState((prev) => ({ ...prev, isEditing: false }));
   };
 
   return (
     <>
+      <AnimatePresence>{pageState.showFailureToast && <Toast message={"일정 수정 실패"} />}</AnimatePresence>
       <Appbar
         title=""
         textAlign="center"
@@ -273,9 +256,11 @@ const PlanPage = () => {
           </button>
         }
       />
-      {!isEditing && !isAdding && (
+      {!pageState.isEditing && !pageState.isAdding && (
         <div style={{ height: "100%", paddingTop: "56px", overflow: "hidden" }}>
-          {generated && <AnimatePresence>{showToast && <Toast message={"일정 생성 완료!"} />}</AnimatePresence>}
+          {generated && (
+            <AnimatePresence>{pageState.showToast && <Toast message={"일정 생성 완료!"} />}</AnimatePresence>
+          )}
           <GeneralHeader title={islandName} sub={`${startDate} ~ ${endDate}`} titleSize="md" />
           {positionList.length ? (
             <MapComponent positionList={positionList} />
@@ -294,7 +279,7 @@ const PlanPage = () => {
             startDate={startDate}
             endDate={endDate}
             selectedDay={day}
-            isPageEditing={isPageEditing}
+            isPageEditing={pageState.isPageEditing}
             onPageEdit={onPageEdit}
             onAdd={onAdd}
             onEdit={onEdit}
@@ -304,14 +289,15 @@ const PlanPage = () => {
           />
         </div>
       )}
-      {isAdding && <AddPlacePage onPrev={onPrev} day={day} planName={planName} />}
-      {isEditing && <EditPlanPage onPrev={onPrev} />}
-      <BottomSheet isOpen={showDelete} close={() => setShowDelete(false)}>
+      {pageState.isAdding && <AddPlacePage onPrev={onPrev} day={day} planName={planName} />}
+      {pageState.isEditing && <EditPlanPage onPrev={onPrev} />}
+      <BottomSheet isOpen={pageState.showDelete} close={() => setPageState((prev) => ({ ...prev, showDelete: false }))}>
         <S.BottomSheetContainer>
           <S.Delete
             onClick={() => {
-              setShowDelete(false);
-              setShowDeleteModal(true);
+              // setShowDelete(false);
+              // setShowDeleteModal(true);
+              setPageState((prev) => ({ ...prev, showDelete: false, showDeleteModal: true }));
             }}
           >
             삭제하기
@@ -324,10 +310,10 @@ const PlanPage = () => {
         content="삭제한 일정은 되돌릴 수 없어요"
         firstButtonText="취소"
         secondButtonText="삭제하기"
-        firstButtonOnClick={() => setShowDeleteModal(false)}
+        firstButtonOnClick={() => setPageState((prev) => ({ ...prev, showDeleteModal: false }))}
         secondButtonOnClick={handleDelete}
-        isOpen={showDeleteModal}
-        close={() => setShowDeleteModal(false)}
+        isOpen={pageState.showDeleteModal}
+        close={() => setPageState((prev) => ({ ...prev, showDeleteModal: false }))}
       />
       <SimpleModal
         image="/src/assets/images/warning.svg"
@@ -335,11 +321,23 @@ const PlanPage = () => {
         content="지금까지 수정된 일정이 전부 지워집니다!"
         firstButtonText="취소"
         secondButtonText="나가기"
-        firstButtonOnClick={() => setShowCloseModal(false)}
+        firstButtonOnClick={() => setPageState((prev) => ({ ...prev, showCloseModal: false }))}
         secondButtonOnClick={handleClose}
-        isOpen={showCloseModal}
-        close={() => setShowCloseModal(false)}
+        isOpen={pageState.showCloseModal}
+        close={() => setPageState((prev) => ({ ...prev, showCloseModal: false }))}
       />
+    </>
+  );
+};
+
+const PlanPage = () => {
+  return (
+    <>
+      <ErrorBoundary fallback={<>에러 발생</>}>
+        <Suspense fallback={<>로딩중...</>}>
+          <PlanContent />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 };

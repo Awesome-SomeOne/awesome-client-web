@@ -17,8 +17,7 @@ import MiniMapComponent from "../map/miniMap/index";
 import { useAtom } from "jotai";
 import { daysAtom, daysInitAtom, planAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
 import { calculateDistance, getDaysArray } from "@/utils/myTrip/myTrip.utils";
-import { useAddPlaces } from "@/apis/myTrip/myTrip.queries";
-// import { useGeneratePlan } from "@/apis/myTrip/myTrip.queries";
+import { useAddPlaces, useGeneratePlan } from "@/apis/myTrip/myTrip.queries";
 
 interface IPlanProps {
   selectedDay: number;
@@ -31,10 +30,11 @@ interface IPlanProps {
 const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: IPlanProps) => {
   const [{ islandId, startDate, endDate, planName }] = useAtom(planAtom);
   const [, initializeDays] = useAtom(daysInitAtom);
-  const [days] = useAtom(daysAtom);
+  const [days, setDays] = useAtom(daysAtom);
   const daysArray = getDaysArray(days.length - 1);
   const navigate = useNavigate();
-  const mutation = useAddPlaces();
+  const { mutateAsync: generatePlan } = useGeneratePlan();
+  const { mutateAsync: addManyPlace } = useAddPlaces();
 
   const { isOpen, open, close } = useOverlay();
 
@@ -99,9 +99,10 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
     onSelect(day);
   };
 
-  const addPlaces = async (tripId: number) => {
+  const addPlaces = (tripId: number) => {
     for (const day of days) {
-      await mutation.mutateAsync({
+      if (!day.places.length) return;
+      addManyPlace({
         travelPlanId: tripId,
         businessIds: day.places.map((place: Place) => place.id),
         date: day.date
@@ -114,11 +115,21 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
     if (recommendedPlaces?.length) {
       setModalOpen(true);
     } else {
+      if (!islandId || !startDate || !endDate || !planName) {
+        return;
+      }
       // 일정 생성하기 > tripId 받기 > 페이지 이동하기
-      // const { tripId } = useGeneratePlan({ islandId, startDate, endDate, planName });
-      const tripId = 1;
-      addPlaces(tripId);
-      navigate({ pathname: PATH.MY_TRIP(tripId) }, { state: { generated: true } });
+      generatePlan(
+        { islandId, startDate, endDate, planName },
+        {
+          onSuccess: (data: { islandId: number }) => {
+            const { islandId: tripId } = data;
+            addPlaces(tripId);
+            setDays([]);
+            navigate({ pathname: PATH.MY_TRIP(tripId) }, { state: { generated: true } });
+          }
+        }
+      );
     }
   };
 
