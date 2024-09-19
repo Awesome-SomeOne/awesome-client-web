@@ -1,4 +1,4 @@
-import customAxios from "../instance";
+import { customAxios } from "../instance";
 
 // 내 여행 리스트 조회
 export const getMyTripList = async () => {

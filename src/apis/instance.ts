@@ -9,6 +9,13 @@ const customAxios: AxiosInstance = axios.create({
   // }
 });
 
+const customAxiosMultipart: AxiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_REACT_APP_SERVER_HOST,
+  headers: {
+    "Content-Type": "multipart/form-data"
+  }
+});
+
 customAxios.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -20,4 +27,4 @@ customAxios.interceptors.response.use(
   }
 );
 
-export default customAxios;
+export { customAxios, customAxiosMultipart };

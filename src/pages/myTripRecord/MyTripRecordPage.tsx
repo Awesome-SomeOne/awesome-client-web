@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import * as S from "./styles";
 import { usePostCreateTravelRecord } from "@/apis/businessReview/businessReview.queries";
 import Clear from "@/assets/icons/Clear";
 import Button from "@/components/common/button";
@@ -14,6 +13,8 @@ import TextField from "@/components/common/textField/TextField";
 import BottomCompleteButton from "@/components/myTripRecord/BottomCompleteButton";
 import SpotCard from "@/components/myTripRecord/SpotCard";
 
+import * as S from "./styles";
+
 const MyTripRecordPage = () => {
   const [pageOrder, setPageOrder] = useState(0);
   const [selectedTab, setSelectedTab] = useState("1");
@@ -22,6 +23,7 @@ const MyTripRecordPage = () => {
     setSelectedTab(e.currentTarget.innerText);
   };
   const [isPublic, setIsPublic] = useState(false);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -32,17 +34,63 @@ const MyTripRecordPage = () => {
 
   const { mutate: postCreateTravelRecord } = usePostCreateTravelRecord();
 
-  const onSubmit = (data: { oneLineReview: string; overallReview: string }) => {
-    console.log("data----", data);
-    console.log("isPublic----", isPublic);
-    postCreateTravelRecord({
-      planId: 1,
-      publicPrivate: isPublic,
-      images: [],
-      oneLineReview: data.oneLineReview,
-      overallReview: data.overallReview
-    });
+  const onSubmit = async (data: { oneLineReview: string; overallReview: string }) => {
+    const formData = new FormData();
+    for (let i = 0; i < selectedImages.length; i++) {
+      try {
+        const [mimeType, base64Data] = selectedImages[i].split(",");
+        const type = mimeType.match(/:(.*?);/)?.[1] || "image/jpeg";
+
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let j = 0; j < byteCharacters.length; j++) {
+          byteNumbers[j] = byteCharacters.charCodeAt(j);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type });
+
+        const fileName = `image_${Date.now()}_${i}.${type.split("/")[1]}`;
+        const file = new File([blob], fileName, { type });
+
+        formData.append("images", file);
+      } catch (error) {
+        console.error("Error processing image:", error);
+      }
+    }
+
+    formData.append("planId", "1");
+    formData.append("publicPrivate", isPublic.toString());
+    formData.append("oneLineReview", data.oneLineReview);
+    formData.append("overallReview", data.overallReview);
+
+    postCreateTravelRecord(formData);
   };
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === "selectedImages") {
+          setSelectedImages(data.data.images);
+          setPageOrder(1);
+        }
+      } catch (error) {
+        console.error("Error parsing message:", error);
+      }
+    };
+
+    // 모든 가능한 이벤트 리스너 추가
+    window.addEventListener("message", handleMessage);
+    document.addEventListener("message", handleMessage as EventListener);
+    if (window.ReactNativeWebView) {
+      window.ReactNativeWebView.onMessage = handleMessage;
+    }
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+      document.removeEventListener("message", handleMessage as EventListener);
+    };
+  }, []);
 
   return (
     <>
@@ -76,9 +124,8 @@ const MyTripRecordPage = () => {
                 text="갤러리로 이동"
                 size="lg"
                 onClick={() => {
-                  // TODO: 앱 내 갤러리로 이동
+                  // NOTE: 앱 내 갤러리로 열기
                   window.ReactNativeWebView.postMessage(JSON.stringify({ type: "openGallery" }));
-                  setPageOrder(1);
                 }}
               />
             </S.GoToGalleryButtonWrapper>
@@ -107,18 +154,14 @@ const MyTripRecordPage = () => {
             <S.PhotoContainer>
               <S.Text className="label">사진</S.Text>
               <S.ImageContainer>
-                <img
-                  src="https://i.pinimg.com/564x/08/6d/00/086d0076f18503c3339ee3f7ad9c11cd.jpg"
-                  alt="trip"
-                  width="64px"
-                  height="64px"
-                />
-                <img
-                  src="https://i.pinimg.com/564x/08/6d/00/086d0076f18503c3339ee3f7ad9c11cd.jpg"
-                  alt="trip"
-                  width="64px"
-                  height="64px"
-                />
+                {selectedImages.map((data, index) => (
+                  <img
+                    key={index}
+                    src={data}
+                    alt={`Selected image ${index + 1}`}
+                    style={{ width: 64, height: 64, margin: 5 }}
+                  />
+                ))}
               </S.ImageContainer>
             </S.PhotoContainer>
 
