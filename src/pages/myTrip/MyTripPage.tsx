@@ -33,11 +33,11 @@ const MyTripPage = () => {
 
   const [, setDaysAtom] = useAtom(daysAtom);
 
-  const resetAtoms = useResetAtoms();
+  const resetPlanAtom = useResetAtoms();
 
   useEffect(() => {
     if (currentStep < 3) {
-      resetAtoms();
+      resetPlanAtom();
     }
     if (currentStep < 5) {
       setDaysAtom([]);
