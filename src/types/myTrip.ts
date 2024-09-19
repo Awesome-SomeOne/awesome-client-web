@@ -16,6 +16,7 @@ export interface Place {
   y_address: string;
   date?: string;
   order?: number;
+  status: boolean;
 }
 
 export interface Day {

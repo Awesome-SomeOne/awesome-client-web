@@ -1,4 +1,4 @@
-// import { useGetRecommendPlaces } from "@/apis/place/place.queries";
+import { useGetRecommendPlaces } from "@/apis/place/place.queries";
 import { useNavigate } from "react-router-dom";
 import BackIcon from "@/assets/icons/BackIcon";
 import Appbar from "@/components/common/header/Appbar";
@@ -8,33 +8,13 @@ import { useEffect, useState } from "react";
 import * as S from "./styles";
 import { PATH } from "@/constants/path";
 import { CATEGORY_LIST } from "@/constants/homePageConstants";
+import { Place } from "@/types/myTrip";
 
 const RecommendPlacePage = () => {
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState("숙박");
 
-  // const { data: places = [] } = useGetRecommendPlaces({ islandId: 1, category: currentTab });
-  /*
-    [
-      {
-        Long id
-        String name
-        String address
-        Business_category category
-        Double rating
-      }
-    ]
-  */
-
-  const places = [
-    {
-      id: 1,
-      name: "장소 이름",
-      address: "주소",
-      category: "숙박",
-      rating: 5.0
-    }
-  ];
+  const { data: places = [] } = useGetRecommendPlaces({ islandId: 1, category: currentTab });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -57,15 +37,15 @@ const RecommendPlacePage = () => {
       />
       <TabAnatomy tabs={CATEGORY_LIST} selectedTab={currentTab} onClick={handleTabClick} />
       <S.ComponentCol>
-        {places.map((place, index) => (
+        {places.map((place: Place, index: number) => (
           <PlaceComponent
             key={index}
-            image={"src/assets/images/place_null.svg"}
+            image={place.imgUrl || "src/assets/images/place_null.svg"}
             name={place.name}
-            rating={place.rating.toString()}
+            rating={place.rating?.toString() || "5.0"}
             count={1000}
             address={place.address}
-            like={true}
+            like={place.status}
             onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
           />
         ))}
