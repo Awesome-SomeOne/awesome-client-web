@@ -16,8 +16,8 @@ import SearchPage from "@/pages/home/search/SearchPage";
 import LikePage from "@/pages/home/like/LikePage";
 import NotificationPage from "@/pages/home/notification/NotificationPage";
 import LocationPage from "@/pages/home/location/LocationPage";
-import PopularPlacePage from "@/pages/home/popularPlace/PopularPlacePage";
-import RecommendPlacePage from "@/pages/home/recommendPlace/RecommendPlacePage";
+import PopularPlacePage from "@/pages/popularPlace/PopularPlacePage";
+import RecommendPlacePage from "@/pages/recommendPlace/RecommendPlacePage";
 
 const AppRouter = () => {
   const router = createBrowserRouter([

@@ -1,4 +1,4 @@
-// import { useGetLandmarkPlaces } from "@/apis/place/place.queries";
+import { useGetLandmarkPlaces } from "@/apis/place/place.queries";
 import { useNavigate } from "react-router-dom";
 import BackIcon from "@/assets/icons/BackIcon";
 import DropdownIcon from "@/assets/icons/DropdownIcon";
@@ -8,28 +8,11 @@ import { PlaceComponent } from "@/components/home/PopularPlacePage/index";
 import { useEffect } from "react";
 import * as S from "./styles";
 import { PATH } from "@/constants/path";
+import { Place } from "@/types/myTrip";
 
 const PopularPlacePage = () => {
   const navigate = useNavigate();
-  // const { data: places = [] } = useGetLandmarkPlaces({ islandId: 1 });
-
-  const places: {
-    id: number;
-    name: string;
-    address: string;
-    category: string;
-    rating: number;
-    status: boolean;
-  }[] = [
-    {
-      id: 1,
-      name: "장소",
-      address: "주소",
-      category: "숙박",
-      rating: 5.0,
-      status: false
-    }
-  ];
+  const { data: places = [] } = useGetLandmarkPlaces({ islandId: 1 });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -48,10 +31,10 @@ const PopularPlacePage = () => {
       />
       <S.Container>
         <Chip text="섬 전체" shape="box" trailingIcon={<DropdownIcon />} />
-        {places.map((place, index) => (
+        {places.map((place: Place, index: number) => (
           <PlaceComponent
             key={index}
-            image={"/src/assets/images/popular2.png"}
+            image={place.imgUrl || "/src/assets/images/popular2.png"}
             name={place.name}
             onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
           />

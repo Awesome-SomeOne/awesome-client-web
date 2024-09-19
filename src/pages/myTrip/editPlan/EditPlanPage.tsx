@@ -42,16 +42,16 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
     };
   }, [showToast]);
 
-  const handleDragStart = () => {
-    setSelectedPlace(undefined);
-  };
-
   useEffect(() => {
     if (initialPlaceList.length === 0) {
       setInitialPlaceList(days.map((day) => ({ ...day, places: [...day.places] })));
     }
     setPlaceList(days);
   }, [days]);
+
+  const handleDragStart = () => {
+    setSelectedPlace(undefined);
+  };
 
   const handleDragEnd = ({ source, destination }: DragUpdate) => {
     if (source && destination) {
@@ -161,6 +161,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
     const alreadyExists = placeList[selectedDay - 1].places.some(
       (place) => place.name === selectedPlace.name && place.category === selectedPlace.category
     );
+
     if (alreadyExists) {
       setShowToast(true);
       setSelectedPlace(undefined);
