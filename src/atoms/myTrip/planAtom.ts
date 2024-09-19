@@ -22,14 +22,14 @@ export const useResetAtoms = () => {
   const [, setEndDate] = useAtom(endDateAtom);
   const [, setPlanName] = useAtom(planNameAtom);
 
-  const resetAtoms = () => {
+  const resetPlanAtom = () => {
     setIslandId(null);
     setStartDate(null);
     setEndDate(null);
     setPlanName(null);
   };
 
-  return resetAtoms;
+  return resetPlanAtom;
 };
 
 export const daysAtom = atom<Day[]>([]);
@@ -58,7 +58,11 @@ export const useUpdateDaysAtom = () => {
               places: [
                 ...day.places,
                 ...places.filter(
-                  (newPlace) => !day.places.some((existingPlace) => existingPlace.name === newPlace.name)
+                  (newPlace) =>
+                    !day.places.some(
+                      (existingPlace) =>
+                        existingPlace.name === newPlace.name && existingPlace.category === newPlace.category
+                    )
                 )
               ]
             }

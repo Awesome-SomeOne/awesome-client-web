@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useSuspenseQuery } from "@tanstack/react-query";
 
 import {
   addPlace,
@@ -53,7 +53,7 @@ export const useGetRecommendPlace = (data: GetRecommendPlaceData) => {
 };
 
 export const useGetRecommendIsland = () => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["recommendIsland"],
     queryFn: getRecommendIsland
   });
@@ -67,10 +67,10 @@ export const useGetPlans = () => {
 };
 
 export const useGetPlan = (data: GetPlanData) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["plan", data.planId],
-    queryFn: () => getPlan(data),
-    enabled: !!data.planId
+    queryFn: () => getPlan(data)
+    // enabled: !!data.planId
   });
 };
 

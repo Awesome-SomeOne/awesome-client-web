@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Place } from "@/types/myTrip";
 import * as S from "./styles";
 import { useGetRecommendIsland, useGetRecommendPlace } from "@/apis/myTrip/myTrip.queries";
+import { useAtom } from "jotai";
+import { islandIdAtom } from "@/atoms/myTrip/planAtom";
 
 const RecommendedIsland = ({
   theme,
@@ -20,25 +22,21 @@ const RecommendedIsland = ({
   const [recommendPlace, setRecommendPlace] = useState<Place[]>([]);
   const [selectedPlaces, setLocalSelectedPlaces] = useState<Place[]>([]);
 
-  const { data: recommendIsland, isFetching } = useGetRecommendIsland();
+  const { data: recommendIsland } = useGetRecommendIsland();
 
   const islandId = recommendIsland?.id;
   const category = theme;
-  const {
-    data: recommendPlaceList = [
-      {
-        id: 1,
-        name: "aaa",
-        address: "a1",
-        category: "식당",
-        x_address: "126.795841",
-        y_address: "33.55635"
-      }
-    ]
-  } = useGetRecommendPlace({ islandId: islandId, category: category });
+  const { data: recommendPlaceList = [] } = useGetRecommendPlace({ islandId: islandId, category: category });
+
+  const [, setIslandId] = useAtom(islandIdAtom);
 
   const handleSelect = () => {
-    // 추천 장소 불러오기
+    // 섬 선택 처리
+    setIslandId(islandId);
+    // 추천 장소 없을 때
+    if (!recommendPlaceList.length) {
+      onNext();
+    }
     setRecommendPlace(recommendPlaceList);
   };
 
@@ -52,7 +50,7 @@ const RecommendedIsland = ({
       onNext();
     }
   };
-  if (isFetching) return <>fetching...</>;
+
   return (
     <div
       style={{

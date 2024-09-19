@@ -20,6 +20,8 @@ import * as S from "./styles";
 import { Place } from "@/types/myTrip";
 import { useAtom } from "jotai";
 import { daysAtom } from "@/atoms/myTrip/planAtom";
+import Toast from "@/components/myTrip/toast/index";
+import { AnimatePresence } from "framer-motion";
 
 const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
   const [initialPlaceList, setInitialPlaceList] = useState<{ day: number; date: string; places: Place[] }[]>([]);
@@ -30,6 +32,15 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
   const [days, setDays] = useAtom(daysAtom);
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (!showToast) return;
+    const timer = setTimeout(() => setShowToast(false), 1500);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [showToast]);
 
   const handleDragStart = () => {
     setSelectedPlace(undefined);
@@ -73,7 +84,9 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
         const placeToMove = placeList[sourceId].places[source.index];
         const removedPlaces = placeList[sourceId].places.filter((_, index) => index !== source.index);
 
-        const alreadyExists = placeList[destinationId].places.some((place) => place.name === placeToMove.name);
+        const alreadyExists = placeList[destinationId].places.some(
+          (place) => place.name === placeToMove.name && place.category === placeToMove.category
+        );
 
         if (!alreadyExists) {
           // 해당 배열의 해당 순서에 넣기
@@ -100,6 +113,8 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
             places: updatedPlaces
           };
           setPlaceList(newPlaceList);
+        } else {
+          setShowToast(true);
         }
       }
     }
@@ -143,8 +158,11 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
       return;
     }
 
-    const alreadyExists = placeList[selectedDay - 1].places.some((place) => place.name === selectedPlace.name);
+    const alreadyExists = placeList[selectedDay - 1].places.some(
+      (place) => place.name === selectedPlace.name && place.category === selectedPlace.category
+    );
     if (alreadyExists) {
+      setShowToast(true);
       setSelectedPlace(undefined);
       setIsMoveClicked(false);
       return;
@@ -181,6 +199,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
 
   return (
     <>
+      <AnimatePresence>{showToast && <Toast message={"해당 날짜에 이미 추가된 장소입니다"} />}</AnimatePresence>
       <Appbar
         title="장소 편집"
         textAlign="center"
@@ -310,7 +329,7 @@ const PlaceContainer = ({
 }) => {
   const { id, name, category, address } = place;
   return (
-    <Draggable key={`day${day}-place${name}`} draggableId={`day${day}-place${name}`} index={index}>
+    <Draggable key={`day${day}-place${id}`} draggableId={`day${day}-place${id}`} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <S.PlaceContainer
           {...provided.draggableProps}
