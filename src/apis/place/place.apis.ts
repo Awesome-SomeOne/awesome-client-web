@@ -1,4 +1,4 @@
-import customAxios from "../instance";
+import { customAxios } from "../instance";
 import { GetLandmarkPlacesProps, GetPlaceProps, GetRecommendPlacesProps } from "./place.type";
 
 export const getLandmarkPlaces = async (data: GetLandmarkPlacesProps) => {

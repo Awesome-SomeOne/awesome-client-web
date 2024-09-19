@@ -1,13 +1,12 @@
-import customAxios from "../instance";
-
+import { customAxios } from "../instance";
 import {
-  GeneratePlanData,
   AddPlaceData,
   AddPlacesData,
-  GetRecommendPlaceData,
+  GeneratePlanData,
   GetPlanData,
-  SearchPlaceData,
   GetPopularPlaceData,
+  GetRecommendPlaceData,
+  SearchPlaceData,
   UpdatePlaceData
 } from "./myTrip.type";
 
