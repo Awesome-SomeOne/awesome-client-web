@@ -72,6 +72,6 @@ export const deleteTravel = async (data: { planId: number }) => {
 };
 
 export const updatePlace = async (data: UpdatePlaceData[]) => {
-  const response = await customAxios.patch("/api/travel/update/place", { data });
+  const response = await customAxios.post("/api/travel/update/place", data);
   return response.data;
 };

@@ -155,10 +155,8 @@ const PlanContent = () => {
       editedPlaces.push(...placeWithOrder);
     });
 
-    console.log(originalPlaces);
-    console.log(editedPlaces);
-
     const differences = getDifferences(originalPlaces, editedPlaces);
+    console.log("변경된 것 --- ");
     console.log(differences);
     if (!differences.length) {
       setPageState((prev) => ({ ...prev, isPageEditing: false }));
@@ -175,7 +173,9 @@ const PlanContent = () => {
       (originalPlace) => !editedPlaces.some((newPlace) => newPlace.id === originalPlace.id)
     );
 
+    console.log("추가된 장소 --- ");
     console.log(addedPlaces);
+    console.log("삭제된 장소 ---");
     console.log(removedPlaces);
 
     // 추가된 장소 처리
