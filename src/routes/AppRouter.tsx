@@ -3,19 +3,26 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "@/App";
 import { PATH } from "@/constants/path";
 import CommunityPage from "@/pages/community/CommunityPage";
+import PlaceDetailPage from "@/pages/home/detail/DetailPage";
 import HomePage from "@/pages/home/HomePage";
+import LikePage from "@/pages/home/like/LikePage";
+import LocationPage from "@/pages/home/location/LocationPage";
+import NotificationPage from "@/pages/home/notification/NotificationPage";
+import SearchPage from "@/pages/home/search/SearchPage";
 import MapPage from "@/pages/map/MapPage";
+import AccountInfoPage from "@/pages/myPage/AccountInfoPage/AccountInfoPage";
+import ContactPage from "@/pages/myPage/ContactPage/ContactPage";
+import MyPage from "@/pages/myPage/MyPage";
+import MyReviewPage from "@/pages/myPage/MyReviewPage/MyReviewPage";
+import NotificationSettingPage from "@/pages/myPage/NotificationSettingPage/NotificationSettingPage";
+import SettingProfile from "@/pages/myPage/SettingProfile";
+import TermsPage from "@/pages/myPage/TermsPage/TermsPage";
 import MyTripPage from "@/pages/myTrip/MyTripPage";
 import PlanPage from "@/pages/myTrip/plan/PlanPage";
 import MyTripListPage from "@/pages/myTripList/MyTripListPage";
 import MyTripRecordPage from "@/pages/myTripRecord/MyTripRecordPage";
 import MyTripRecordDetailPage from "@/pages/myTripRecordDetail/MyTripRecordDetailPage";
 import MyTripRecordList from "@/pages/myTripRecordList/MyTripRecordList";
-import PlaceDetailPage from "@/pages/home/detail/DetailPage";
-import SearchPage from "@/pages/home/search/SearchPage";
-import LikePage from "@/pages/home/like/LikePage";
-import NotificationPage from "@/pages/home/notification/NotificationPage";
-import LocationPage from "@/pages/home/location/LocationPage";
 import PopularPlacePage from "@/pages/popularPlace/PopularPlacePage";
 import RecommendPlacePage from "@/pages/recommendPlace/RecommendPlacePage";
 
@@ -88,6 +95,34 @@ const AppRouter = () => {
             {
               path: PATH.PLACE_DETAIL(),
               element: <PlaceDetailPage />
+            },
+            {
+              path: PATH.MY_PAGE,
+              element: <MyPage />
+            },
+            {
+              path: PATH.SETTING_PROFILE,
+              element: <SettingProfile />
+            },
+            {
+              path: PATH.ACCOUNT_INFORMATION,
+              element: <AccountInfoPage />
+            },
+            {
+              path: PATH.NOTIFICATION_SETTING,
+              element: <NotificationSettingPage />
+            },
+            {
+              path: PATH.MY_REVIEW,
+              element: <MyReviewPage />
+            },
+            {
+              path: PATH.TERMS,
+              element: <TermsPage />
+            },
+            {
+              path: PATH.CONTACT,
+              element: <ContactPage />
             }
           ]
         }
