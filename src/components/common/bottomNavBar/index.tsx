@@ -18,7 +18,7 @@ const BottomNavBar = () => {
     { path: PATH.MY_TRIP_LIST, label: "내여행", Icon: BottomNavTripIcon },
     { path: PATH.MAP, label: "지도", Icon: BottomNavMapIcon },
     { path: PATH.COMMUNITY, label: "커뮤니티", Icon: BottomNavCommunityIcon },
-    { path: PATH.MY_TRIP_LIST, label: "프로필", Icon: BottomNavProfileIcon } // TODO: 프로필 페이지 경로 수정 필요
+    { path: PATH.MY_PAGE, label: "프로필", Icon: BottomNavProfileIcon }
   ] as const;
 
   const handleNavigation = (path: string) => {
