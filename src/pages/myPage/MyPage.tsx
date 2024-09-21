@@ -7,6 +7,7 @@ import { PATH } from "@/constants/path";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
+import BottomNavBar from "@/components/common/bottomNavBar";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ export default function MyPage() {
           ))}
         </S.ButtonSection>
       </S.InnerContainer>
+      <BottomNavBar />
     </S.Root>
   );
 }
