@@ -1,12 +1,13 @@
 import Button from "@/components/common/button/index";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import ListComponent from "@/components/myTrip/listComponent/index";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Place } from "@/types/myTrip";
 import * as S from "./styles";
 import { useGetRecommendIsland, useGetRecommendPlace } from "@/apis/myTrip/myTrip.queries";
 import { useAtom } from "jotai";
 import { islandIdAtom } from "@/atoms/myTrip/planAtom";
+import ErrorBoundary from "@/hooks/Errorboundary";
 
 const RecommendedIsland = ({
   theme,
@@ -52,13 +53,7 @@ const RecommendedIsland = ({
   };
 
   return (
-    <div
-      style={{
-        height: "100%",
-        paddingTop: "56px",
-        overflow: "hidden"
-      }}
-    >
+    <>
       {recommendPlace.length === 0 && (
         <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
           <GeneralHeader
@@ -114,8 +109,33 @@ const RecommendedIsland = ({
           </S.ButtonContainer>
         </>
       )}
+    </>
+  );
+};
+
+const RecommendedIslandPage = ({
+  ...props
+}: {
+  theme: string;
+  onPrev: () => void;
+  onNext: () => void;
+  setSelectedPlaces: (selectedPlaces: Place[]) => void;
+}) => {
+  return (
+    <div
+      style={{
+        height: "100%",
+        paddingTop: "56px",
+        overflow: "hidden"
+      }}
+    >
+      <ErrorBoundary fallback={<>에러 발생</>}>
+        <Suspense fallback={<>로딩중...</>}>
+          <RecommendedIsland {...props} />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 };
 
-export default RecommendedIsland;
+export default RecommendedIslandPage;

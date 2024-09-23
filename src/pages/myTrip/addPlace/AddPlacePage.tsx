@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import ClearIcon from "@/assets/icons/ClearIcon";
 import Button from "@/components/common/button/index";
 import Chip from "@/components/common/chip/index";
@@ -16,8 +16,9 @@ import { daysAtom, planAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
 import { useGetPopularPlace, useGetRecommendPlace, useSearchPlace } from "@/apis/myTrip/myTrip.queries";
 import { CATEGORY_LIST } from "@/constants/homePageConstants";
 import { ISLAND_LIST } from "@/constants/myTripPageConstants";
+import ErrorBoundary from "@/hooks/Errorboundary";
 
-const AddPlacePage = ({ onPrev, day, planName }: { onPrev: () => void; day: number; planName?: string }) => {
+const AddPlace = ({ onPrev, day, planName }: { onPrev: () => void; day: number; planName?: string }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [selectedPlaces, setSelectedPlaces] = useState<Place[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -110,23 +111,7 @@ const AddPlacePage = ({ onPrev, day, planName }: { onPrev: () => void; day: numb
   }, [isSearching]);
 
   return (
-    <div
-      style={{
-        paddingTop: "56px",
-        height: "100%",
-        position: "relative",
-        overflow: "hidden"
-      }}
-    >
-      <Appbar
-        title={`Day ${day}`}
-        textAlign="center"
-        rightIcon1={
-          <div onClick={onPrev}>
-            <ClearIcon size="28" />
-          </div>
-        }
-      />
+    <>
       <div style={{ display: "flex", alignItems: "center" }}>
         <SearchBar
           autoFocus={false}
@@ -227,6 +212,34 @@ const AddPlacePage = ({ onPrev, day, planName }: { onPrev: () => void; day: numb
           }}
         />
       )}
+    </>
+  );
+};
+
+const AddPlacePage = ({ ...props }: { onPrev: () => void; day: number; planName?: string }) => {
+  return (
+    <div
+      style={{
+        paddingTop: "56px",
+        height: "100%",
+        position: "relative",
+        overflow: "hidden"
+      }}
+    >
+      <Appbar
+        title={`Day ${props.day}`}
+        textAlign="center"
+        rightIcon1={
+          <div onClick={props.onPrev}>
+            <ClearIcon size="28" />
+          </div>
+        }
+      />
+      <ErrorBoundary fallback={<>에러 발생</>}>
+        <Suspense fallback={<>로딩중...</>}>
+          <AddPlace {...props} />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 };
