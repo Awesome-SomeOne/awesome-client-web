@@ -5,18 +5,37 @@ import DropdownIcon from "@/assets/icons/DropdownIcon";
 import Chip from "@/components/common/chip/index";
 import Appbar from "@/components/common/header/Appbar";
 import { PlaceComponent } from "@/components/home/PopularPlacePage/index";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import * as S from "./styles";
 import { PATH } from "@/constants/path";
 import { Place } from "@/types/myTrip";
+import ErrorBoundary from "@/hooks/Errorboundary";
 
-const PopularPlacePage = () => {
+const PopularPlace = () => {
   const navigate = useNavigate();
   const { data: places = [] } = useGetLandmarkPlaces({ islandId: 1 });
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  return (
+    <S.Container>
+      <Chip text="섬 전체" shape="box" trailingIcon={<DropdownIcon />} />
+      {places.map((place: Place, index: number) => (
+        <PlaceComponent
+          key={index}
+          image={place.imgUrl || "/src/assets/images/popular2.png"}
+          name={place.name}
+          onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
+        />
+      ))}
+    </S.Container>
+  );
+};
+
+const PopularPlacePage = () => {
+  const navigate = useNavigate();
 
   return (
     <div style={{ height: "100%", paddingTop: "56px", overflow: "hidden" }}>
@@ -29,17 +48,11 @@ const PopularPlacePage = () => {
           </div>
         }
       />
-      <S.Container>
-        <Chip text="섬 전체" shape="box" trailingIcon={<DropdownIcon />} />
-        {places.map((place: Place, index: number) => (
-          <PlaceComponent
-            key={index}
-            image={place.imgUrl || "/src/assets/images/popular2.png"}
-            name={place.name}
-            onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
-          />
-        ))}
-      </S.Container>
+      <ErrorBoundary fallback={<>에러 발생</>}>
+        <Suspense fallback={<>로딩중...</>}>
+          <PopularPlace />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 };

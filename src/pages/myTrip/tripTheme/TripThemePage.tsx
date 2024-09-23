@@ -3,7 +3,7 @@ import BottomSheet from "@/components/common/bottomSheet/index";
 import Button from "@/components/common/button/index";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import InputComponent from "@/components/myTrip/inputComponent/index";
-import RecommendedIsland from "../tripIsland/recommendationIsland/RecommendedIsland";
+import RecommendedIslandPage from "../tripIsland/recommendationIsland/RecommendedIslandPage";
 import * as S from "./styles";
 import { Place } from "@/types/myTrip";
 import { THEME_LIST } from "@/constants/myTripPageConstants";
@@ -105,7 +105,7 @@ const TripThemePage = ({
         </div>
       ) : (
         recommend && (
-          <RecommendedIsland
+          <RecommendedIslandPage
             theme={selectedTheme}
             onPrev={handlePrev}
             onNext={onNext}
