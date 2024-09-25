@@ -13,7 +13,7 @@ const PlaceBox = ({ order = 1, place, line = true }: { order: number; place: Pla
           {line && <img src="/icons/line.svg" style={{ height: "56px" }} />}
         </div>
         <S.PlaceBox>
-          <S.PlaceImage src={place.imgUrl} />
+          <S.PlaceImage src={place.imgUrl || '/images/place.png"'} />
           <div>
             <S.UpperText>
               <S.PlaceName>{place.name}</S.PlaceName>
