@@ -38,7 +38,7 @@ const SearchResultPage = ({
           textAlign="center"
           rightIcon1={
             <div onClick={onPrev}>
-              <img src="/src/assets/icons/search.svg" />
+              <img src="/icons/search.svg" />
             </div>
           }
           rightIcon2={

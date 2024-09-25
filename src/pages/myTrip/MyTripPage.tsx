@@ -96,7 +96,7 @@ const MyTripPage = () => {
           )}
 
           <SimpleModal
-            image="/src/assets/images/warning.svg"
+            image="/images/warning.svg"
             title="일정을 만들지 않고 나가시겠습니까?"
             content="지금까지 만든 일정이 전부 지워집니다!"
             firstButtonText="취소"

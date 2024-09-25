@@ -24,16 +24,16 @@ const PlaceComponent = ({
         <S.TopSection>
           <S.Name>{name}</S.Name>
           <S.Rating>
-            <img src="src/assets/icons/star.svg" alt="" />
+            <img src="/icons/star.svg" alt="" />
             {`${rating}점(${count > 999 ? "999+" : count})`}
           </S.Rating>
         </S.TopSection>
         <S.Address>
-          <img src="src/assets/icons/location_small.svg" />
+          <img src="/icons/location_small.svg" />
           {address}
         </S.Address>
       </S.InfoBox>
-      {like ? <S.Heart src="src/assets/icons/heart-fill.svg" /> : <S.Heart src="src/assets/icons/heart.svg" />}
+      {like ? <S.Heart src="/icons/heart-fill.svg" /> : <S.Heart src="/icons/heart.svg" />}
     </S.ComponentBox>
   );
 };

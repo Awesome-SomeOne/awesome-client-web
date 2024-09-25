@@ -17,7 +17,7 @@ const Detail = ({ onMoreClick }: { onMoreClick: () => void }) => {
   const address = "제주 제주시 관덕로14길 20";
   const xAddress = "126.795841";
   const yAddress = "33.55635";
-  const imgUrl = "/src/assets/images/popular1.png";
+  const imgUrl = "/images/popular1.png";
   const reviews = [];
   return (
     <S.DetailCotainer>
@@ -36,11 +36,11 @@ const Detail = ({ onMoreClick }: { onMoreClick: () => void }) => {
             요금정보
           </S.Info>
           <S.Info>
-            <img src={"/src/assets/icons/location_small.svg"} />
+            <img src={"/icons/location_small.svg"} />
             {address}
           </S.Info>
           <S.Info>
-            <img src={"/src/assets/icons/phone.svg"} />
+            <img src={"/icons/phone.svg"} />
             064-752-3001
           </S.Info>
         </S.InfoContainer>
@@ -67,13 +67,13 @@ const Review = ({ onMoreClick }: { onMoreClick: () => void }) => {
   return (
     <S.ReviewContainer>
       <S.ReviewHeader>
-        <S.UserImage src="/src/assets/images/user.png" />
+        <S.UserImage src="/images/user.png" />
         <S.UserCenter>
           <S.UserName>{"닉넴최대여덟글자"}</S.UserName>
           <S.Date>{"2024.12.31"}</S.Date>
         </S.UserCenter>
         <S.Rating>
-          <img src="/src/assets/icons/star.svg" />
+          <img src="/icons/star.svg" />
           {"5.0"}점
         </S.Rating>
         <div style={{ display: "flex", alignItems: "center" }} onClick={onMoreClick}>
@@ -86,8 +86,8 @@ const Review = ({ onMoreClick }: { onMoreClick: () => void }) => {
         }
       </S.ReviewContent>
       <S.ReviewImageContainer>
-        <S.ReviewImage src="/src/assets/images/place.png" />
-        <S.ReviewImage src="/src/assets/images/place.png" />
+        <S.ReviewImage src="/images/place.png" />
+        <S.ReviewImage src="/images/place.png" />
       </S.ReviewImageContainer>
     </S.ReviewContainer>
   );

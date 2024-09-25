@@ -30,7 +30,7 @@ export const Paragraph = styled.p`
 
 // 다녀온 여행 있을 때
 export const ImageBox = styled.div`
-  background: url("src/assets/images/itinerary.png");
+  background: url("/images/itinerary.png");
   background-size: cover;
   background-position: center;
   width: 100%;

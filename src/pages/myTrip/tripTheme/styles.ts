@@ -22,7 +22,7 @@ export const Box = styled.div<{ selected: boolean }>`
 
   &:hover {
     border: 2px solid ${Theme.colors.Border_Primary_Strong};
-    /* background: url("src/assets/images/island.png"); */
+    /* background: url("/images/island.png"); */
     background: ${Theme.colors.Fill_Primary_Default};
   }
 
@@ -30,7 +30,7 @@ export const Box = styled.div<{ selected: boolean }>`
     props.selected &&
     `
   border: 2px solid ${Theme.colors.Border_Primary_Strong};
-  /* background: url("src/assets/images/island.png"); */
+  /* background: url("/images/island.png"); */
   background: ${Theme.colors.Fill_Primary_Default};
   `}
 `;
