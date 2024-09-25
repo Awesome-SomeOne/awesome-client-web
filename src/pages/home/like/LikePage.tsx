@@ -49,7 +49,7 @@ const LikePage = () => {
           {places.map((place, index) => (
             <PlaceComponent
               key={index}
-              image={"src/assets/images/accommodation.png"}
+              image={"/images/accommodation.png"}
               name={place.name}
               rating={place.rating.toString()}
               count={1000}

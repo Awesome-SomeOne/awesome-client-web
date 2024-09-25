@@ -30,7 +30,7 @@ const CarouselComponent = () => {
 const CarouselImage = () => {
   return (
     <S.ImageContainer>
-      <S.Image src="src/assets/images/carousel.png" />
+      <S.Image src="/images/carousel.png" />
     </S.ImageContainer>
   );
 };

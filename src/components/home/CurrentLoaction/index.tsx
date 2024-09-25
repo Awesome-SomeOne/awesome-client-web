@@ -8,11 +8,11 @@ const CurrentLocation = () => {
   return (
     <S.CurrentLocationLayout>
       <S.CurrentLocationBox>
-        <S.LocationImage src="src/assets/icons/location.svg" />
+        <S.LocationImage src="/icons/location.svg" />
         <S.LocationTitle>현재 위치</S.LocationTitle>
         <S.Location>경상남도 김해시</S.Location>
       </S.CurrentLocationBox>
-      <S.DownArrow src="src/assets/icons/down.svg" onClick={() => navigate(PATH.LOCATION)} />
+      <S.DownArrow src="/icons/down.svg" onClick={() => navigate(PATH.LOCATION)} />
     </S.CurrentLocationLayout>
   );
 };

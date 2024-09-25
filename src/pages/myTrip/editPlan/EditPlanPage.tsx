@@ -284,7 +284,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
           </>
         </BottomSheet>
         <SimpleModal
-          image="/src/assets/images/warning.svg"
+          image="/images/warning.svg"
           title="편집하지 않고 나가시겠습니까?"
           content="지금까지 편집된 일정이 전부 지워집니다!"
           firstButtonText="취소"
@@ -299,7 +299,7 @@ const EditPlanPage = ({ onPrev }: { onPrev: () => void }) => {
           close={() => setIsCloseModalOpen(false)}
         />
         <SimpleModal
-          image="/src/assets/images/warning.svg"
+          image="/images/warning.svg"
           title="일정에서 정말 삭제할까요?"
           content="해당 항목이 일정에서 지워집니다"
           firstButtonText="취소"
@@ -340,9 +340,9 @@ const PlaceContainer = ({
             ...provided.draggableProps.style
           }}
         >
-          <img src="/src/assets/icons/handle.svg" {...provided.dragHandleProps} />
+          <img src="/icons/handle.svg" {...provided.dragHandleProps} />
           <S.PlaceBox>
-            <S.PlaceImage src={"/src/assets/images/place.png"} />
+            <S.PlaceImage src={"/images/place.png"} />
             <div style={{ width: "100%" }}>
               <S.UpperText>
                 <S.PlaceName>{name}</S.PlaceName>

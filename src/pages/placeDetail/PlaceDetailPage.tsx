@@ -47,7 +47,7 @@ const PlaceDetailPage = () => {
         textAlign="center"
         rightIcon1={
           <div onClick={handleLike}>
-            <img src="/src/assets/icons/like.svg" alt="" />
+            <img src="/icons/like.svg" alt="" />
           </div>
         }
         rightIcon2={
