@@ -5,7 +5,7 @@ import Dropdown from "@/components/common/dropdown/index";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import Appbar from "@/components/common/header/Appbar";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
-import PlaceComponent from "@/components/home/PlaceComponent/index";
+import PlaceComponent from "@/components/place/PlaceComponent/index";
 import { NoResult } from "@/components/search/noResult/index";
 import { CATEGORY_LIST } from "@/constants/homePageConstants";
 import { useState } from "react";

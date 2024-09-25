@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import ClearIcon from "@/assets/icons/ClearIcon";
 import Appbar from "@/components/common/header/Appbar";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
-import PlaceComponent from "@/components/home/PlaceComponent/index";
+import PlaceComponent from "@/components/place/PlaceComponent/index";
 import { CATEGORY_LIST } from "@/constants/homePageConstants";
 import { useEffect, useState } from "react";
 import * as S from "./styles";

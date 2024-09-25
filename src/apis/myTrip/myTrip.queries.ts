@@ -45,10 +45,9 @@ export const useAddPlaces = () => {
 };
 
 export const useGetRecommendPlace = (data: GetRecommendPlaceData) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["recommendPlace", data],
-    queryFn: () => getRecommendPlace(data),
-    enabled: !!data.category && !!data.islandId
+    queryFn: () => getRecommendPlace(data)
   });
 };
 

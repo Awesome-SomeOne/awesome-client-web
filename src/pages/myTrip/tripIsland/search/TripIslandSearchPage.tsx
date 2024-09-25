@@ -25,7 +25,7 @@ const TripIslandSearchPage = ({
   const [selectedIsland, setSelectedIsland] = useState<Island>();
   const [, setIslandId] = useAtom(islandIdAtom);
 
-  const { data: searchResult = [] } = useSearchIsland({ keyword: searchQuery });
+  const { data: searchResult = [], isLoading, error } = useSearchIsland({ keyword: searchQuery });
 
   const handleSubmit = (value: string) => {
     setSearchQuery(value);
@@ -64,33 +64,37 @@ const TripIslandSearchPage = ({
         />
         <SearchBar value={searchQuery} onValueChange={handleInputChange} onSearch={handleSubmit} />
         <Divider size="sm" />
-        <S.Container>
-          <S.ResultContainer>
-            {searchResult.length > 0 &&
-              searchResult.map((place: Island, index: number) => (
-                <ListComponent
-                  key={index}
-                  place={place}
-                  onClick={() => setSelectedIsland(place)}
-                  selected={!!(selectedIsland && selectedIsland.id === place.id)}
-                />
-              ))}
-          </S.ResultContainer>
-          {searchQuery && searchResult.length === 0 && <NoResult />}
-          {selectedIsland ? (
-            <Button
-              text="선택완료"
-              style={{ width: "calc(100% - 40px)", margin: "8px 20px" }}
-              size="lg"
-              onClick={handleSelectDone}
-            />
-          ) : (
-            <S.SpanContainer>
-              <S.Text>어떤 섬을 여행하고 싶은지 모를 땐?</S.Text>
-              <S.TextButton onClick={onRecClick}>추천 받기</S.TextButton>
-            </S.SpanContainer>
-          )}
-        </S.Container>
+        {isLoading && <>로딩중...</>}
+        {error && <>에러 발생</>}
+        {!isLoading && !error && (
+          <S.Container>
+            <S.ResultContainer>
+              {searchResult.length > 0 &&
+                searchResult.map((place: Island, index: number) => (
+                  <ListComponent
+                    key={index}
+                    place={place}
+                    onClick={() => setSelectedIsland(place)}
+                    selected={!!(selectedIsland && selectedIsland.id === place.id)}
+                  />
+                ))}
+            </S.ResultContainer>
+            {searchQuery && searchResult.length === 0 && <NoResult />}
+            {selectedIsland ? (
+              <Button
+                text="선택완료"
+                style={{ width: "calc(100% - 40px)", margin: "8px 20px" }}
+                size="lg"
+                onClick={handleSelectDone}
+              />
+            ) : (
+              <S.SpanContainer>
+                <S.Text>어떤 섬을 여행하고 싶은지 모를 땐?</S.Text>
+                <S.TextButton onClick={onRecClick}>추천 받기</S.TextButton>
+              </S.SpanContainer>
+            )}
+          </S.Container>
+        )}
       </div>
     </>
   );

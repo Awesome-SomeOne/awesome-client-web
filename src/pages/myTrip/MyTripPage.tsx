@@ -47,7 +47,7 @@ const MyTripPage = () => {
   const handleRecClick = () => {
     isSearching && setIsSearching(false);
     setRecommend(true);
-    setCurrentStep(4);
+    setCurrentStep(3);
   };
 
   return (

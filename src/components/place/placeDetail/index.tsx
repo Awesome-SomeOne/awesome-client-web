@@ -7,8 +7,10 @@ import { Theme } from "@/styles/theme";
 import { useParams } from "react-router-dom";
 // import { useGetPlace } from "@/apis/place/place.queries";
 import * as S from "./styles";
+import ErrorBoundary from "@/hooks/Errorboundary";
+import { Suspense } from "react";
 
-export const Detail = ({ onMoreClick }: { onMoreClick: () => void }) => {
+const Detail = ({ onMoreClick }: { onMoreClick: () => void }) => {
   const { placeId } = useParams<{ placeId: string }>();
   // const { businessName, address, xAddress, yAddress, imgUrl, reviews } = useGetPlace({ businessId: placeId });
   const businessName = "제주도 동문시장";
@@ -90,3 +92,15 @@ const Review = ({ onMoreClick }: { onMoreClick: () => void }) => {
     </S.ReviewContainer>
   );
 };
+
+const DetailPage = ({ onMoreClick }: { onMoreClick: () => void }) => {
+  return (
+    <ErrorBoundary fallback={<>에러 발생</>}>
+      <Suspense fallback={<>로딩중...</>}>
+        <Detail onMoreClick={onMoreClick} />
+      </Suspense>
+    </ErrorBoundary>
+  );
+};
+
+export default DetailPage;
