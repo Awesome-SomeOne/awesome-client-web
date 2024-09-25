@@ -61,7 +61,7 @@ const RecommendedIsland = ({
             description={`{${theme}} 테마에 맞는 섬을 추천해드릴게요!`}
             titleSize="md"
           />
-          <S.IslandCard src={"/src/assets/images/place.png"}>
+          <S.IslandCard src={recommendIsland.img_url}>
             <S.TextContainer>
               <S.IslandName>{recommendIsland?.islandName}</S.IslandName>
               <S.IslandAddress>{recommendIsland?.address}</S.IslandAddress>
