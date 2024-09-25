@@ -1,4 +1,3 @@
-import { Island, Place } from "@/types/myTrip";
 import CheckBox from "../../common/controller/CheckBox";
 import * as S from "./styles";
 
@@ -8,14 +7,19 @@ const ListComponent = ({
   checkbox = false,
   selected = false
 }: {
-  place: Place | Island;
+  place: {
+    name: string;
+    address: string;
+    img_url?: string;
+    category?: string;
+  };
   onClick: () => void;
   checkbox?: boolean;
   selected?: boolean;
 }) => {
   return (
     <S.ListContainer onClick={onClick} selected={selected}>
-      <S.PlaceImage src={"/src/assets/images/place.png"} />
+      <S.PlaceImage src={place.img_url} />
       <S.PlaceContainer>
         <S.UpperText>
           <S.PlaceName>{place.name}</S.PlaceName>
