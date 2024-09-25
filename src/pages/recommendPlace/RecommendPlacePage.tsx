@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import BackIcon from "@/assets/icons/BackIcon";
 import Appbar from "@/components/common/header/Appbar";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
-import PlaceComponent from "@/components/home/PlaceComponent/index";
+import PlaceComponent from "@/components/place/PlaceComponent/index";
 import { Suspense, useEffect, useState } from "react";
 import * as S from "./styles";
 import { PATH } from "@/constants/path";

@@ -4,7 +4,7 @@ import BackIcon from "@/assets/icons/BackIcon";
 import DropdownIcon from "@/assets/icons/DropdownIcon";
 import Chip from "@/components/common/chip/index";
 import Appbar from "@/components/common/header/Appbar";
-import { PlaceComponent } from "@/components/home/PopularPlacePage/index";
+import { PlaceComponent } from "@/components/place/PopularPlacePage/index";
 import { Suspense, useEffect } from "react";
 import * as S from "./styles";
 import { PATH } from "@/constants/path";

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import ClearIcon from "@/assets/icons/ClearIcon";
 import BottomSheet from "@/components/common/bottomSheet/index";
 import Appbar from "@/components/common/header/Appbar";
-import { Detail } from "@/components/home/DetailPage/index";
+import DetailPage from "@/components/place/placeDetail/index";
 import Toast from "@/components/myTrip/toast/index";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -56,7 +56,7 @@ const PlaceDetailPage = () => {
           </div>
         }
       />
-      <Detail onMoreClick={handleMoreClick} />
+      <DetailPage onMoreClick={handleMoreClick} />
       <BottomSheet isOpen={showDelete} close={() => setShowDelete(false)}>
         <S.BottomSheetContainer>
           <S.Delete
