@@ -4,7 +4,7 @@ import Appbar from "@/components/common/header/Appbar";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
 import PlaceComponent from "@/components/place/PlaceComponent/index";
 import { CATEGORY_LIST } from "@/constants/homePageConstants";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import * as S from "./styles";
 import { PATH } from "@/constants/path";
 import { useGetLikedPlaces } from "@/apis/place/place.queries";
@@ -14,10 +14,19 @@ const Like = ({ currentTab }: { currentTab: string }) => {
   const navigate = useNavigate();
 
   const { data: places = [] } = useGetLikedPlaces({ businessType: currentTab });
+  const [likedPlaces, setLikedPlaces] = useState(places);
+
+  useEffect(() => {
+    setLikedPlaces(places);
+  }, [places]);
+
+  const handleUnlike = (businessId: number) => {
+    setLikedPlaces((prevPlaces: any) => prevPlaces.filter((place: any) => place.businessId !== businessId));
+  };
 
   return (
     <>
-      {places.length ? (
+      {likedPlaces.length ? (
         <S.ComponentCol>
           {places.map(
             (
@@ -31,6 +40,7 @@ const Like = ({ currentTab }: { currentTab: string }) => {
             ) => (
               <PlaceComponent
                 key={index}
+                id={place.businessId}
                 image={place.imageUrl || "/images/accommodation.png"}
                 name={place.businessName}
                 rating={"5.0"}
@@ -38,6 +48,7 @@ const Like = ({ currentTab }: { currentTab: string }) => {
                 address={place.address}
                 like={true}
                 onClick={() => navigate(PATH.PLACE_DETAIL(place.businessId))}
+                onUnlike={() => handleUnlike(place.businessId)}
               />
             )
           )}

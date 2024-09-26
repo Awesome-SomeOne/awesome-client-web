@@ -1,5 +1,13 @@
-import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
-import { getLandmarkPlaces, getRecommendPlaces, getPlace, getLikedPlaces, searchPlaces } from "./place.apis";
+import { useSuspenseQuery, useQuery, useMutation } from "@tanstack/react-query";
+import {
+  getLandmarkPlaces,
+  getRecommendPlaces,
+  getPlace,
+  getLikedPlaces,
+  searchPlaces,
+  like,
+  unlike
+} from "./place.apis";
 import { GetLandmarkPlacesProps, GetRecommendPlacesProps, GetPlaceProps, GetLikedPlacesProps } from "./place.type";
 
 export const useGetLandmarkPlaces = (data: GetLandmarkPlacesProps) => {
@@ -35,5 +43,17 @@ export const useSearchPlaces = (data: { keyword: string }) => {
     queryKey: ["places", data.keyword],
     queryFn: () => searchPlaces(data),
     enabled: !!data.keyword
+  });
+};
+
+export const useLike = () => {
+  return useMutation({
+    mutationFn: (data: { businessId: number }) => like(data)
+  });
+};
+
+export const useUnlike = () => {
+  return useMutation({
+    mutationFn: (data: { businessId: number }) => unlike(data)
   });
 };

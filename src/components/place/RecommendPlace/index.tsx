@@ -34,10 +34,10 @@ const RecommendPlaceContent = ({ currentTab }: { currentTab: string }) => {
         ) => (
           <PlaceComponent
             key={index}
+            id={place.id}
             image={place.imgUrl || "/images/place_null.svg"}
             name={place.name}
             rating={place.rating.toString()}
-            count={1000}
             address={place.address}
             like={place.status}
             onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
