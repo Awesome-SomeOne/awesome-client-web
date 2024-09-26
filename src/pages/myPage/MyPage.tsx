@@ -4,16 +4,13 @@
  */
 
 import { PATH } from "@/constants/path";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 import BottomNavBar from "@/components/common/bottomNavBar";
 
 export default function MyPage() {
   const navigate = useNavigate();
-
-  // TO-DO :: 정보 가져오기 API 연동
-  useEffect(() => {}, []);
 
   const Buttons = [
     { text: "계정 정보", url: PATH.ACCOUNT_INFORMATION },
@@ -53,7 +50,9 @@ export default function MyPage() {
                 onClick={() => {
                   button.text === "문의하기"
                     ? (window.location.href = "https://forms.gle/6WSdBvPYiMocZtUM7")
-                    : navigate(button.url);
+                    : "이용 약관"
+                      ? (window.location.href = "https://yumin0630.notion.site/10d6da37b1e98007b976de2b324cf2bf?pvs=4")
+                      : navigate(button.url);
                 }}
               >
                 {button.text}
