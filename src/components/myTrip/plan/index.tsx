@@ -139,7 +139,7 @@ const Plan = ({
               {isPageEditing && index === placeList.length - 1 && (
                 <div style={{ display: "flex", gap: "4px", height: "96px" }}>
                   <div style={{ width: "24px", textAlign: "center", padding: "8px 0 56px 0" }}>
-                    <S.IconContainer bgUrl={`/src/assets/icons/placeIcon${index + 2}.svg`}>
+                    <S.IconContainer bgUrl={`/icons/placeIcon${index + 2}.svg`}>
                       <S.NumberCircle>{index + 2}</S.NumberCircle>
                     </S.IconContainer>
                   </div>

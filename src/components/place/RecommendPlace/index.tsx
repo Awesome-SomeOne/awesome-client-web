@@ -44,7 +44,7 @@ const RecommendPlace = () => {
         {places.map((place, index) => (
           <PlaceComponent
             key={index}
-            image={"src/assets/images/place_null.svg"}
+            image={"/images/place_null.svg"}
             name={place.name}
             rating={place.rating.toString()}
             count={1000}

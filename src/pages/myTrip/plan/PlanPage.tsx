@@ -203,11 +203,11 @@ const PlanContent = () => {
         date: place.date
       }));
       await updatePlace(editedPlaceData);
+      setPageState((prev) => ({ ...prev, isPageEditing: false }));
+      window.location.reload();
     } catch (error) {
       setPageState((prev) => ({ ...prev, showFailureToast: true }));
     }
-
-    setPageState((prev) => ({ ...prev, isPageEditing: false }));
   };
 
   const handleMore = () => {
@@ -305,7 +305,7 @@ const PlanContent = () => {
         </S.BottomSheetContainer>
       </BottomSheet>
       <SimpleModal
-        image="/src/assets/images/warning.svg"
+        image="/images/warning.svg"
         title="일정을 정말 삭제할까요?"
         content="삭제한 일정은 되돌릴 수 없어요"
         firstButtonText="취소"
@@ -316,7 +316,7 @@ const PlanContent = () => {
         close={() => setPageState((prev) => ({ ...prev, showDeleteModal: false }))}
       />
       <SimpleModal
-        image="/src/assets/images/warning.svg"
+        image="/images/warning.svg"
         title="정말 나가시겠습니까?"
         content="지금까지 수정된 일정이 전부 지워집니다!"
         firstButtonText="취소"

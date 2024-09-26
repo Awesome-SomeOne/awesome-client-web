@@ -6,7 +6,7 @@ const MiniMapComponent = ({ lat, lng }: { lat: number; lng: number }) => {
       <MapMarker
         position={{ lat, lng }}
         image={{
-          src: "/src/assets/images/mapMarker.svg",
+          src: "/images/mapMarker.svg",
           size: { width: 72, height: 73 }
         }}
       />

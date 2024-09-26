@@ -50,7 +50,7 @@ const TripIslandPage = ({
         <S.SearchBar onClick={onSearch}>가고 싶은 섬을 검색해주세요</S.SearchBar>
         <S.BoxContainer onClick={handleIslandClick}>
           {ISLAND_LIST.map((island) => (
-            <S.Box key={island.id} selected={selectedIsland === island.name} bgUrl={"/src/assets/images/island.png"}>
+            <S.Box key={island.id} selected={selectedIsland === island.name} bgUrl={"/images/island.png"}>
               {island.name}
             </S.Box>
           ))}
