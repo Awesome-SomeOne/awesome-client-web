@@ -1,3 +1,4 @@
+import LikeFillIcon from "@/assets/icons/LikeFillIcon";
 import LikeIcon from "@/assets/icons/LikeIcon";
 import MoreIcon from "@/assets/icons/MoreIcon";
 import GeneralHeader from "@/components/common/generalHeader/index";
@@ -7,10 +8,22 @@ import { Theme } from "@/styles/theme";
 import * as S from "./styles";
 const DetailPage = ({
   data,
-  onMoreClick
+  onMoreClick,
+  like,
+  handleLike
 }: {
-  data: { businessName: string; address: string; imgUrl: string; xAddress: string; yAddress: string; reviews: [] };
+  data: {
+    businessName: string;
+    address: string;
+    imgUrl: string;
+    xAddress: string;
+    yAddress: string;
+    status: boolean;
+    reviews: [];
+  };
   onMoreClick: () => void;
+  like: boolean;
+  handleLike: (event: any) => void;
 }) => {
   return (
     <S.DetailCotainer>
@@ -19,7 +32,11 @@ const DetailPage = ({
         <S.DetailHeader>
           <S.TopSection>
             <S.PlaceName>{data.businessName}</S.PlaceName>
-            <LineButton leadingIcon={<LikeIcon size="24" color={Theme.colors.Label_Primary_Default} />} text="찜하기" />
+            <LineButton
+              leadingIcon={like ? <LikeFillIcon /> : <LikeIcon size="24" color={Theme.colors.Label_Primary_Default} />}
+              text={like ? "찜 취소" : "찜하기"}
+              onClick={handleLike}
+            />
           </S.TopSection>
           {/* <S.Time>영업중 | 매일 08:00 - 21:00</S.Time> */}
         </S.DetailHeader>

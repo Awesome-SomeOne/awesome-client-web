@@ -5,7 +5,9 @@ import TabAnatomy from "@/components/common/tabAnatomy/index";
 import PlaceComponent from "@/components/place/PlaceComponent/index";
 import { NoResult } from "@/components/search/noResult/index";
 import { CATEGORY_LIST } from "@/constants/homePageConstants";
+import { PATH } from "@/constants/path";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 
 const SearchResultPage = ({
@@ -21,10 +23,12 @@ const SearchResultPage = ({
     businessName: string;
     address: string;
     imageUrl: string;
+    // status: boolean;
   }[];
   onPrev: () => void;
   onClose: () => void;
 }) => {
+  const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState(CATEGORY_LIST[0]);
 
   const handleClick = (event: any) => {
@@ -58,9 +62,12 @@ const SearchResultPage = ({
                 .map((result, index) => (
                   <PlaceComponent
                     key={index}
+                    id={result.businessId}
                     image={result.imageUrl}
                     name={result.businessName}
                     address={result.address}
+                    // like={result.status}
+                    onClick={() => navigate(PATH.PLACE_DETAIL(result.businessId))}
                   />
                 ))}
             </S.ComponentCol>

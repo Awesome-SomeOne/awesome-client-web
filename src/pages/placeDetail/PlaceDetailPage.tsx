@@ -8,7 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import { Suspense, useEffect, useState } from "react";
 import ReportPage from "./report/ReportPage";
 import { useParams } from "react-router-dom";
-import { useGetPlace } from "@/apis/place/place.queries";
+import { useGetPlace, useLike, useUnlike } from "@/apis/place/place.queries";
 import * as S from "./styles";
 import ErrorBoundary from "@/hooks/Errorboundary";
 
@@ -22,6 +22,17 @@ const PlaceDetail = () => {
   const { placeId } = useParams<{ placeId: string }>();
   const { data } = useGetPlace({ businessId: parseInt(placeId || "0") });
 
+  const { mutateAsync: likePlace } = useLike();
+  const { mutateAsync: unlikePlace } = useUnlike();
+
+  const [like, setLike] = useState(data.status);
+
+  useEffect(() => {
+    if (data) {
+      setLike(data.status);
+    }
+  }, [data]);
+
   useEffect(() => {
     if (!showToast) return;
     const timer = setTimeout(() => setShowToast(false), 1500);
@@ -30,10 +41,20 @@ const PlaceDetail = () => {
     };
   }, [showToast]);
 
-  const handleLike = () => {
-    // 찜하기 처리하기
-  };
+  const handleLike = async (event: any) => {
+    event.stopPropagation();
 
+    try {
+      if (like) {
+        await unlikePlace({ businessId: data.businessId });
+      } else {
+        await likePlace({ businessId: data.businessId });
+      }
+      setLike((prev: boolean) => !prev);
+    } catch (error) {
+      console.error("좋아요 처리 중 오류 발생:", error);
+    }
+  };
   const handleMoreClick = () => {
     // 내 리뷰일 때
     // setShowDelete(true);
@@ -49,7 +70,7 @@ const PlaceDetail = () => {
         textAlign="center"
         rightIcon1={
           <div onClick={handleLike}>
-            <img src="/icons/like.svg" alt="" />
+            <img src={like ? "/icons/like-fill.svg" : "/icons/like.svg"} />
           </div>
         }
         rightIcon2={
@@ -58,7 +79,7 @@ const PlaceDetail = () => {
           </div>
         }
       />
-      <DetailPage data={data} onMoreClick={handleMoreClick} />
+      <DetailPage data={data} onMoreClick={handleMoreClick} like={like} handleLike={handleLike} />
       <BottomSheet isOpen={showDelete} close={() => setShowDelete(false)}>
         <S.BottomSheetContainer>
           <S.Delete

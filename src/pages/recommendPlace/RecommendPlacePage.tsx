@@ -93,6 +93,7 @@ const RecommendPlace = () => {
             ) => (
               <PlaceComponent
                 key={index}
+                id={place.id}
                 image={place.imgUrl || "/images/place_null.svg"}
                 name={place.name}
                 rating={place.rating?.toString() || "5.0"}
@@ -135,7 +136,16 @@ const RecommendPlace = () => {
               )}
             </div>
           </div>
-          <S.Bottom>{selectedSubLocation && <Button text="선택완료" size="lg" onClick={handleSelectDone} />}</S.Bottom>
+          <S.Bottom>
+            {selectedSubLocation && (
+              <Button
+                text="선택완료"
+                size="lg"
+                onClick={handleSelectDone}
+                disabled={selectedSubLocation === ISLAND_LIST.find((island) => island.id === islandId)?.name}
+              />
+            )}
+          </S.Bottom>
         </>
       </BottomSheet>
     </>
