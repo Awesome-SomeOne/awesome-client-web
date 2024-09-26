@@ -24,7 +24,7 @@ const MyTrip = () => {
         spacingSize="md"
         titleSize="sm"
         subColor="#1A80E5"
-        subOnClick={() => navigate(PATH.MY_TRIP_LIST)}
+        subOnClick={() => navigate(PATH.MY_TRIP_RECORD_LIST)}
       />
       <S.MyTripContainer>
         <S.ImageBox>
