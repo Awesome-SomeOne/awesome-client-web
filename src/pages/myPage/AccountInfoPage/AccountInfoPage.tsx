@@ -16,9 +16,13 @@ export default function AccountInfoPage() {
 
   const [modalOpen, setModalOpen] = useState(false);
 
-  function logoutHandler() {}
+  function logoutHandler() {
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: "logout" }));
+  }
 
-  function removeAccountHandler() {}
+  function removeAccountHandler() {
+    window.ReactNativeWebView.postMessage(JSON.stringify({ type: "removeAccount" }));
+  }
 
   return (
     <>
