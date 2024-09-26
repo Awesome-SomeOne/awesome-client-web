@@ -5,6 +5,13 @@ import { PATH } from "@/constants/path";
 import CommunityPage from "@/pages/community/CommunityPage";
 import HomePage from "@/pages/home/HomePage";
 import MapPage from "@/pages/map/MapPage";
+import AccountInfoPage from "@/pages/myPage/AccountInfoPage/AccountInfoPage";
+import ContactPage from "@/pages/myPage/ContactPage/ContactPage";
+import MyPage from "@/pages/myPage/MyPage";
+import MyReviewPage from "@/pages/myPage/MyReviewPage/MyReviewPage";
+import NotificationSettingPage from "@/pages/myPage/NotificationSettingPage/NotificationSettingPage";
+import SettingProfile from "@/pages/myPage/SettingProfile";
+import TermsPage from "@/pages/myPage/TermsPage/TermsPage";
 import MyTripPage from "@/pages/myTrip/MyTripPage";
 import PlanPage from "@/pages/myTrip/plan/PlanPage";
 import MyTripListPage from "@/pages/myTripList/MyTripListPage";
@@ -88,6 +95,34 @@ const AppRouter = () => {
             {
               path: PATH.PLACE_DETAIL(),
               element: <PlaceDetailPage />
+            },
+            {
+              path: PATH.MY_PAGE,
+              element: <MyPage />
+            },
+            {
+              path: PATH.SETTING_PROFILE,
+              element: <SettingProfile />
+            },
+            {
+              path: PATH.ACCOUNT_INFORMATION,
+              element: <AccountInfoPage />
+            },
+            {
+              path: PATH.NOTIFICATION_SETTING,
+              element: <NotificationSettingPage />
+            },
+            {
+              path: PATH.MY_REVIEW,
+              element: <MyReviewPage />
+            },
+            {
+              path: PATH.TERMS,
+              element: <TermsPage />
+            },
+            {
+              path: PATH.CONTACT,
+              element: <ContactPage />
             }
           ]
         }
