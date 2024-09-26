@@ -340,10 +340,10 @@ const PlanPage = () => {
 
   return (
     <>
-      <div style={{ height: "100%", paddingTop: "56px", overflow: "hidden" }}>
-        <ErrorBoundary
-          fallback={
-            <>
+      <ErrorBoundary
+        fallback={
+          <>
+            <div style={{ height: "100%", paddingTop: "56px", overflow: "hidden" }}>
               <Appbar
                 title=""
                 textAlign="center"
@@ -354,14 +354,14 @@ const PlanPage = () => {
                 }
               />
               에러 발생
-            </>
-          }
-        >
-          <Suspense fallback={<>로딩중...</>}>
-            <PlanContent />
-          </Suspense>
-        </ErrorBoundary>
-      </div>
+            </div>
+          </>
+        }
+      >
+        <Suspense fallback={<>로딩중...</>}>
+          <PlanContent />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 };
