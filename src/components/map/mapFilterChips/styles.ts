@@ -3,9 +3,6 @@ import styled from "@emotion/styled";
 import { Theme } from "../../../styles/theme";
 
 export const ChipWrapper = styled.div`
-  position: absolute;
-  top: 50px; // TODO: 디자인에 따라 변경 필요
-  left: 0;
   display: flex;
   padding: 8px;
   gap: 8px;
