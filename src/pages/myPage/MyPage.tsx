@@ -17,7 +17,7 @@ export default function MyPage() {
 
   const Buttons = [
     { text: "계정 정보", url: PATH.ACCOUNT_INFORMATION },
-    { text: "알림 설정", url: PATH.NOTIFICATION_SETTING },
+    // { text: "알림 설정", url: PATH.NOTIFICATION_SETTING },
     { text: "내가 쓴 후기", url: PATH.MY_REVIEW },
     { text: "이용 약관", url: PATH.TERMS },
     { text: "문의하기", url: PATH.CONTACT }
@@ -42,14 +42,20 @@ export default function MyPage() {
           <S.StyledNickNameContainer>
             <S.StyledNickName>S좋아인간888</S.StyledNickName>
           </S.StyledNickNameContainer>
-          <S.ButtonContainer>
+          {/* <S.ButtonContainer>
             <S.StyledButton onClick={() => navigate(PATH.SETTING_PROFILE)}>수정하기</S.StyledButton>
-          </S.ButtonContainer>
+          </S.ButtonContainer> */}
         </S.ProfileSection>
         <S.ButtonSection>
           {Buttons.map((button) => (
             <S.CommonBtnContainer key={button.text}>
-              <S.CommonBtn onClick={() => navigate(button.url)}>
+              <S.CommonBtn
+                onClick={() => {
+                  button.text === "문의하기"
+                    ? (window.location.href = "https://forms.gle/6WSdBvPYiMocZtUM7")
+                    : navigate(button.url);
+                }}
+              >
                 {button.text}
                 <S.CommonImgContainer>{svg}</S.CommonImgContainer>
               </S.CommonBtn>
