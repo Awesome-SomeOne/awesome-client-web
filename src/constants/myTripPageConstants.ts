@@ -1,12 +1,14 @@
 export const ISLAND_LIST = [
-  { id: 1, name: "울릉도" },
-  { id: 2, name: "제주도" },
-  { id: 3, name: "거제도" },
-  { id: 4, name: "제주도2" },
-  { id: 5, name: "울릉도3" },
-  { id: 6, name: "제주도3" },
-  { id: 7, name: "울릉도4" },
-  { id: 8, name: "제주도4" }
+  { id: 1, name: "제주도" },
+  { id: 2, name: "영종도" },
+  { id: 3, name: "강화도" },
+  { id: 4, name: "거제도" },
+  { id: 5, name: "남해도" },
+  { id: 6, name: "욕지도" },
+  { id: 7, name: "진도" },
+  { id: 8, name: "완도" },
+  { id: 9, name: "선유도" },
+  { id: 10, name: "흑산도" }
 ];
 
 export const THEME_LIST = [

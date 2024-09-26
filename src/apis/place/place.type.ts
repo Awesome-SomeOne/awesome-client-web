@@ -10,3 +10,7 @@ export interface GetRecommendPlacesProps {
 export interface GetPlaceProps {
   businessId: number;
 }
+
+export interface GetLikedPlacesProps {
+  businessType: string;
+}

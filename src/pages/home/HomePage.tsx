@@ -7,7 +7,7 @@ import MyTripToday from "@/components/home/MyTripToday/index";
 import PopularPlace from "@/components/place/PopularPlace/index";
 import RecommendPlace from "@/components/place/RecommendPlace/index";
 import Ship from "@/components/home/Ship/index";
-import Weather from "@/components/home/Weather/index";
+// import Weather from "@/components/home/Weather/index";
 import * as S from "./styles";
 
 const HomePage = () => {
@@ -18,8 +18,8 @@ const HomePage = () => {
           <CurrentLocation />
           <AppBarIcons />
         </S.AppBar>
-        <Weather />
-        <MyTripToday />
+        {/* <Weather /> */}
+        {/* <MyTripToday /> */}
         <MyTrip />
         <CarouselComponent />
         <PopularPlace />
