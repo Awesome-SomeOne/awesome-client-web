@@ -1,7 +1,4 @@
 import ClearIcon from "@/assets/icons/ClearIcon";
-import DropdownIcon from "@/assets/icons/DropdownIcon";
-import Chip from "@/components/common/chip/index";
-import Dropdown from "@/components/common/dropdown/index";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import Appbar from "@/components/common/header/Appbar";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
@@ -9,7 +6,6 @@ import PlaceComponent from "@/components/place/PlaceComponent/index";
 import { NoResult } from "@/components/search/noResult/index";
 import { CATEGORY_LIST } from "@/constants/homePageConstants";
 import { useState } from "react";
-import { SearchResult } from "./SearchPage";
 import * as S from "./styles";
 
 const SearchResultPage = ({
@@ -19,15 +15,20 @@ const SearchResultPage = ({
   onClose
 }: {
   searchQuery: string;
-  searchResult: SearchResult[];
+  searchResult: {
+    businessId: number;
+    businessType: string;
+    businessName: string;
+    address: string;
+    imageUrl: string;
+  }[];
   onPrev: () => void;
   onClose: () => void;
 }) => {
-  const [currentTab, setCurrentTab] = useState("숙박");
+  const [currentTab, setCurrentTab] = useState(CATEGORY_LIST[0]);
 
   const handleClick = (event: any) => {
     setCurrentTab(event.target.innerText);
-    // tab 변경 처리하기
   };
 
   return (
@@ -50,23 +51,18 @@ const SearchResultPage = ({
         <GeneralHeader title={searchQuery} />
         <TabAnatomy tabs={CATEGORY_LIST} selectedTab={currentTab} onClick={handleClick} />
         <div style={{ height: "100%", overflow: "scroll", display: "flex", flexDirection: "column" }}>
-          <div style={{ padding: "8px 20px" }}>
-            <Dropdown text={"최신순"} />
-            <Chip text={"섬 전체"} shape="box" trailingIcon={<DropdownIcon />} />
-          </div>
           {searchResult.length ? (
             <S.ComponentCol>
-              {searchResult.map((result, index) => (
-                <PlaceComponent
-                  key={index}
-                  image={result.image}
-                  name={result.name}
-                  rating={result.rating.toString()}
-                  count={result.count}
-                  address={result.address}
-                  like={result.like}
-                />
-              ))}
+              {searchResult
+                .filter((result) => result.businessType === currentTab)
+                .map((result, index) => (
+                  <PlaceComponent
+                    key={index}
+                    image={result.imageUrl}
+                    name={result.businessName}
+                    address={result.address}
+                  />
+                ))}
             </S.ComponentCol>
           ) : (
             <NoResult />

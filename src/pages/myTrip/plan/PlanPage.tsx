@@ -44,7 +44,7 @@ const PlanContent = () => {
 
   const { tripId } = useParams<{ tripId: string }>();
   const { data: planData } = useGetPlan({ planId: parseInt(tripId as string) });
-  const { startDate, endDate, islandName, travelPlaceList, planName } = planData || {};
+  const { startDate, endDate, islandName, travelPlaceList, planName, temperature } = planData || {};
 
   const [, initializeDays] = useAtom(daysInitAtom);
   const [days] = useAtom(daysAtom);
@@ -278,6 +278,7 @@ const PlanContent = () => {
             positionList={positionList}
             startDate={startDate}
             endDate={endDate}
+            temperature={temperature}
             selectedDay={day}
             isPageEditing={pageState.isPageEditing}
             onPageEdit={onPageEdit}
@@ -331,13 +332,36 @@ const PlanContent = () => {
 };
 
 const PlanPage = () => {
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    navigate(PATH.ROOT);
+  };
+
   return (
     <>
-      <ErrorBoundary fallback={<>에러 발생</>}>
-        <Suspense fallback={<>로딩중...</>}>
-          <PlanContent />
-        </Suspense>
-      </ErrorBoundary>
+      <div style={{ height: "100%", paddingTop: "56px", overflow: "hidden" }}>
+        <ErrorBoundary
+          fallback={
+            <>
+              <Appbar
+                title=""
+                textAlign="center"
+                rightIcon1={
+                  <button onClick={handleClose}>
+                    <ClearIcon size="28" />
+                  </button>
+                }
+              />
+              에러 발생
+            </>
+          }
+        >
+          <Suspense fallback={<>로딩중...</>}>
+            <PlanContent />
+          </Suspense>
+        </ErrorBoundary>
+      </div>
     </>
   );
 };
