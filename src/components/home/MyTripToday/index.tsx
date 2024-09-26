@@ -15,7 +15,7 @@ const MyTripToday = () => {
               <S.Address>경상북도 울릉도</S.Address>
             </S.Info>
           </S.Left>
-          <img src="/src/assets/icons/right.svg" />
+          <img src="/icons/right.svg" />
         </S.Box>
       </S.GradientBorder>
     </S.TripLayout>

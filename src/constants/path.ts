@@ -14,7 +14,14 @@ export const PATH = {
   NOTIFICATION: "/notification", // 알림센터 페이지
   POPULAR_PLACE: "popular", // 인기 관광지 둘러보기 페이지
   RECOMMEND_PLACE: "recommend", // 추천 장소 더보기 페이지
-  PLACE_DETAIL: (placeId?: number) => `/place/${placeId ?? ":placeId"}` // 장소 상세 페이지
+  PLACE_DETAIL: (placeId?: number) => `/place/${placeId ?? ":placeId"}`, // 장소 상세 페이지
+  MY_PAGE: "/my-page", // 마이 페이지
+  SETTING_PROFILE: "/setting-profile", // 프로필 수정
+  ACCOUNT_INFORMATION: "/account-information", // 계정 정보
+  NOTIFICATION_SETTING: "/notification-setting", // 알림 설정
+  MY_REVIEW: "/my-review", // 내가 쓴 후기
+  TERMS: "/terms", // 이용 약관
+  CONTACT: "/contact" // 문의하기
 };
 
 Object.freeze(PATH);

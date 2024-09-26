@@ -39,7 +39,7 @@ const SearchPage = () => {
     setSearchResult([
       {
         id: 1,
-        image: "/src/assets/images/accommodation.png",
+        image: "/images/accommodation.png",
         name: "숙소이름",
         address: "주소",
         rating: 5.0,

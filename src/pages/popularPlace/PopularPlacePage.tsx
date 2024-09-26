@@ -25,7 +25,7 @@ const PopularPlace = () => {
       {places.map((place: Place, index: number) => (
         <PlaceComponent
           key={index}
-          image={place.imgUrl || "/src/assets/images/popular2.png"}
+          image={place.imgUrl || "/images/popular2.png"}
           name={place.name}
           onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
         />
