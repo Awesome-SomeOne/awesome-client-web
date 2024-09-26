@@ -1,6 +1,6 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { getLandmarkPlaces, getRecommendPlaces, getPlace } from "./place.apis";
-import { GetLandmarkPlacesProps, GetRecommendPlacesProps, GetPlaceProps } from "./place.type";
+import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
+import { getLandmarkPlaces, getRecommendPlaces, getPlace, getLikedPlaces, searchPlaces } from "./place.apis";
+import { GetLandmarkPlacesProps, GetRecommendPlacesProps, GetPlaceProps, GetLikedPlacesProps } from "./place.type";
 
 export const useGetLandmarkPlaces = (data: GetLandmarkPlacesProps) => {
   return useSuspenseQuery({
@@ -20,5 +20,20 @@ export const useGetPlace = (data: GetPlaceProps) => {
   return useSuspenseQuery({
     queryKey: ["place", data.businessId],
     queryFn: () => getPlace(data)
+  });
+};
+
+export const useGetLikedPlaces = (data: GetLikedPlacesProps) => {
+  return useSuspenseQuery({
+    queryKey: ["likedPlaces", data.businessType],
+    queryFn: () => getLikedPlaces(data)
+  });
+};
+
+export const useSearchPlaces = (data: { keyword: string }) => {
+  return useQuery({
+    queryKey: ["places", data.keyword],
+    queryFn: () => searchPlaces(data),
+    enabled: !!data.keyword
   });
 };

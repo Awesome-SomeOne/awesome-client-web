@@ -14,6 +14,7 @@ interface IPlanProps {
   positionList: { lat: number; lng: number }[];
   startDate: string;
   endDate: string;
+  temperature: number;
   selectedDay: number;
   isPageEditing: boolean;
   onPageEdit: () => void;
@@ -29,6 +30,7 @@ const Plan = ({
   positionList,
   startDate,
   endDate,
+  temperature,
   selectedDay,
   isPageEditing,
   onPageEdit,
@@ -116,7 +118,7 @@ const Plan = ({
           <S.Row>
             <S.Info>
               <S.Date>{dates[selectedDay - 1]}</S.Date>
-              <S.Weather>32℃ 맑음</S.Weather>
+              <S.Weather>{`${temperature}℃`}</S.Weather>
             </S.Info>
             {isPageEditing && <S.TextButton onClick={onEdit}>장소 편집</S.TextButton>}
           </S.Row>

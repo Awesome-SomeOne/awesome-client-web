@@ -3,7 +3,7 @@ import * as S from "./styles";
 const PlaceComponent = ({
   image,
   name,
-  rating,
+  rating = "5.0",
   count = 1000,
   address,
   like = false,
@@ -11,8 +11,8 @@ const PlaceComponent = ({
 }: {
   image: string;
   name: string;
-  rating: string;
-  count: number;
+  rating?: string;
+  count?: number;
   address: string;
   like?: boolean;
   onClick?: () => void;

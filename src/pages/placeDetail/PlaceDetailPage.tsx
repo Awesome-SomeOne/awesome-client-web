@@ -5,20 +5,22 @@ import Appbar from "@/components/common/header/Appbar";
 import DetailPage from "@/components/place/placeDetail/index";
 import Toast from "@/components/myTrip/toast/index";
 import { AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import ReportPage from "./report/ReportPage";
+import { useParams } from "react-router-dom";
+import { useGetPlace } from "@/apis/place/place.queries";
 import * as S from "./styles";
+import ErrorBoundary from "@/hooks/Errorboundary";
 
-const PlaceDetailPage = () => {
+const PlaceDetail = () => {
   const navigate = useNavigate();
   const [showDelete, setShowDelete] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [showReportPage, setShowReportPage] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const { placeId } = useParams<{ placeId: string }>();
+  const { data } = useGetPlace({ businessId: parseInt(placeId || "0") });
 
   useEffect(() => {
     if (!showToast) return;
@@ -56,7 +58,7 @@ const PlaceDetailPage = () => {
           </div>
         }
       />
-      <DetailPage onMoreClick={handleMoreClick} />
+      <DetailPage data={data} onMoreClick={handleMoreClick} />
       <BottomSheet isOpen={showDelete} close={() => setShowDelete(false)}>
         <S.BottomSheetContainer>
           <S.Delete
@@ -97,6 +99,37 @@ const PlaceDetailPage = () => {
       />
       <ReportPage onClose={() => setShowReportPage(false)} />
     </div>
+  );
+};
+
+const PlaceDetailPage = () => {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <div style={{ paddingTop: "56px" }}>
+        <ErrorBoundary
+          fallback={
+            <>
+              <Appbar
+                title=""
+                textAlign="center"
+                rightIcon1={
+                  <div onClick={() => navigate(-1)}>
+                    <ClearIcon size="28" />
+                  </div>
+                }
+              />
+              에러 발생
+            </>
+          }
+        >
+          <Suspense fallback={<>로딩중...</>}>
+            <PlaceDetail />
+          </Suspense>
+        </ErrorBoundary>
+      </div>
+    </>
   );
 };
 
