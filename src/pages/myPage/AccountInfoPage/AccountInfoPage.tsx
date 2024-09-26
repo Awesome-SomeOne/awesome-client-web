@@ -7,7 +7,7 @@ import BackIcon from "@/assets/icons/BackIcon";
 import Appbar from "@/components/common/header/Appbar";
 import SimpleModal from "@/components/common/simpleModal";
 import { useNavigate } from "react-router-dom";
-import Kakao from "../../../assets/images/kakao.png";
+import Kakao from "/images/kakao.png";
 import * as S from "./styles";
 import { useState } from "react";
 
@@ -23,7 +23,7 @@ export default function AccountInfoPage() {
   return (
     <>
       <SimpleModal
-        image="/src/assets/images/warning.svg"
+        image="/images/warning.svg"
         title="정말 탈퇴하시겠습니까?"
         content="탈퇴한 계정은 다시 복구할 수 없어요"
         firstButtonText="취소"

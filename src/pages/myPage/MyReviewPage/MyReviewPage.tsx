@@ -6,10 +6,10 @@
 import BackIcon from "@/assets/icons/BackIcon";
 import Appbar from "@/components/common/header/Appbar";
 import { useNavigate } from "react-router-dom";
-import Image from "../../../assets/images/island.png";
-import User from "../../../assets/images/user.png";
+import Image from "/images/place.png";
+import User from "/images/user.png";
 import * as S from "./styles";
-import Star from "../../../assets/icons/star.svg";
+import Star from "/icons/star.svg";
 
 export default function MyReviewPage() {
   const data = [
