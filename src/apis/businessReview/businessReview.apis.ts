@@ -1,5 +1,5 @@
 import { customAxios, customAxiosMultipart } from "../instance";
-import { PostIslandReviewReq } from "./businessReview.type";
+import { GetMyTripRecordDetailRes, PostIslandReviewReq } from "./businessReview.type";
 
 // 섬 리뷰 생성 또는 업데이트
 export const postIslandReview = async (req: PostIslandReviewReq) => {
@@ -10,5 +10,17 @@ export const postIslandReview = async (req: PostIslandReviewReq) => {
 // 추억 생성하기
 export const postCreateTravelRecord = async (req: FormData) => {
   const response = await customAxiosMultipart.post("/api/travel-records/create", req);
+  return response.data;
+};
+
+// 내 추억 기록 상세 페이지 조회
+export const getMyTripRecordDetail = async (recordId: number): Promise<GetMyTripRecordDetailRes> => {
+  const response = await customAxios.get(`/api/travel-records/view/${recordId}`);
+  return response.data;
+};
+
+// 추억 기록하기 - 여행 기록별 조회
+export const getTravelRecordByPlanId = async (planId: number) => {
+  const response = await customAxios.get(`/api/travel-records/view-plan/${planId}`);
   return response.data;
 };

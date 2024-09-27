@@ -2,7 +2,6 @@ import axios, { AxiosInstance } from "axios";
 
 const customAxios: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_REACT_APP_SERVER_HOST,
-  // TODO: 추후 토큰 값 생기면 참고해서 수정
   headers: {
     "Access-Control-Allow-Origin": "*",
     Authorization: ("Bearer " + localStorage.getItem("token")) as string
@@ -12,6 +11,8 @@ const customAxios: AxiosInstance = axios.create({
 const customAxiosMultipart: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_REACT_APP_SERVER_HOST,
   headers: {
+    "Access-Control-Allow-Origin": "*",
+    Authorization: ("Bearer " + localStorage.getItem("token")) as string,
     "Content-Type": "multipart/form-data"
   }
 });

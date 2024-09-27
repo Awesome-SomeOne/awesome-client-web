@@ -35,7 +35,12 @@ const TripCard = ({ id, imgSrc, status, location, startDate, endDate }: ITripCar
           size="sm"
           style={{ width: "100%" }}
         />
-        <LineButton text="편집하기" size="sm" style={{ width: "100%" }} />
+        <LineButton
+          text="자세히 보기"
+          onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(id))}
+          size="sm"
+          style={{ width: "100%" }}
+        />
       </S.ButtonWrapper>
     </S.TripCard>
   );

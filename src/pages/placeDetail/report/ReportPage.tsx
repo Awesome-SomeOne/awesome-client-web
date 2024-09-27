@@ -1,8 +1,10 @@
+import { useRef, useState } from "react";
+
 import Button from "@/components/common/button/index";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import Radio from "@/components/common/radio/index";
 import { REPORT_REASON_LIST } from "@/constants/homePageConstants";
-import { useRef, useState } from "react";
+
 import * as S from "./styles";
 
 const ReportPage = ({ onClose }: { onClose: () => void }) => {

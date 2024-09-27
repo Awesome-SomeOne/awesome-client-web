@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import ReportPage from "../home/detail/report/ReportPage";
+import { useGetMyTripRecordDetail } from "@/apis/businessReview/businessReview.queries";
 import Clear from "@/assets/icons/Clear";
+import ClearIcon from "@/assets/icons/ClearIcon";
 import MoreIcon from "@/assets/icons/MoreIcon";
 import BottomSheet from "@/components/common/bottomSheet";
 import Appbar from "@/components/common/header/Appbar";
@@ -16,10 +19,17 @@ const MyTripRecordDetailPage = () => {
   const [selectedTab, setSelectedTab] = useState("여행 추억");
   const { isOpen, close, toggle } = useOverlay();
   const navigate = useNavigate();
+  const [showReportPage, setShowReportPage] = useState(false);
 
-  const handleTab = (e: any) => {
-    setSelectedTab(e.target.innerText);
+  const handleTab = (e: React.MouseEvent<HTMLElement>) => {
+    setSelectedTab((e.target as HTMLElement).innerText);
   };
+
+  const { data, isLoading } = useGetMyTripRecordDetail(67);
+
+  if (!data || isLoading) {
+    return <div>로딩중...</div>;
+  }
 
   return (
     <>
@@ -36,7 +46,11 @@ const MyTripRecordDetailPage = () => {
           </button>
         }
         rightIcon2={
-          <button>
+          <button
+            onClick={() => {
+              navigate("/");
+            }}
+          >
             <Clear />
           </button>
         }
@@ -50,7 +64,15 @@ const MyTripRecordDetailPage = () => {
 
         <TabAnatomy tabs={["여행 추억", "일정"]} selectedTab={selectedTab} onClick={handleTab} />
 
-        {selectedTab === "여행 추억" ? <DetailTravelMemories /> : <DetailSchedule />}
+        {selectedTab === "여행 추억" ? (
+          <DetailTravelMemories
+            oneLineReview={data.oneLineReview}
+            overallReview={data.overallReview}
+            imageUrl={data.imageUrl}
+          />
+        ) : (
+          <DetailSchedule businessReviews={data.businessReviews} />
+        )}
       </S.MyTripRecordDetailPageContainer>
 
       <BottomSheet isOpen={isOpen} close={close} style={{ paddingTop: "16px" }}>
@@ -62,7 +84,29 @@ const MyTripRecordDetailPage = () => {
           수정하기
         </S.MenuButton>
         <S.MenuButton>삭제하기</S.MenuButton>
+        <S.MenuButton
+          onClick={() => {
+            setShowReportPage(true);
+            close();
+          }}
+        >
+          신고하기
+        </S.MenuButton>
       </BottomSheet>
+      {showReportPage && (
+        <div style={{ height: "100%", position: "absolute", top: 0, width: "100%", backgroundColor: "white" }}>
+          <Appbar
+            title="신고하기"
+            textAlign="center"
+            rightIcon1={
+              <div onClick={() => setShowReportPage(false)}>
+                <ClearIcon size="28" />
+              </div>
+            }
+          />
+          <ReportPage onClose={() => setShowReportPage(false)} />
+        </div>
+      )}
     </>
   );
 };

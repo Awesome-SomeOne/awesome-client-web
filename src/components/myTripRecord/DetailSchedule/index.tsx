@@ -1,9 +1,14 @@
+import SpotCard from "../SpotCard";
+import { BusinessReview } from "@/apis/businessReview/businessReview.type";
 import Divider from "@/components/common/divider";
 
-import SpotCard from "../SpotCard";
 import * as S from "./styles";
 
-const DetailSchedule = () => {
+interface DetailScheduleProps {
+  businessReviews: BusinessReview[];
+}
+const DetailSchedule = ({ businessReviews }: DetailScheduleProps) => {
+  console.log(businessReviews);
   return (
     <>
       {/* TODO: S.DayContainer 묶은거 Map돌리기 */}

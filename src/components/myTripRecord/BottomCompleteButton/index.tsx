@@ -1,6 +1,7 @@
 import * as S from "./styles";
 import Button from "@/components/common/button";
-import CheckBox from "@/components/common/controller/CheckBox";
+
+// import CheckBox from "@/components/common/controller/CheckBox";
 
 interface BottomCompleteButtonProps {
   isPublic: boolean;
@@ -8,15 +9,15 @@ interface BottomCompleteButtonProps {
 }
 
 const BottomCompleteButton = ({ isPublic, setIsPublic }: BottomCompleteButtonProps) => {
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsPublic(event.target.checked);
-  };
+  // const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setIsPublic(event.target.checked);
+  // };
 
   return (
     <S.BottomCompleteButtonWrapper>
-      <CheckBox name="shareWithCommunity" size="sm" checked={isPublic} onChange={handleCheckboxChange}>
+      {/* <CheckBox name="shareWithCommunity" size="sm" checked={isPublic} onChange={handleCheckboxChange}>
         커뮤니티에 공유하기
-      </CheckBox>
+      </CheckBox> */}
       <Button text="여행 추억 기록하기" size="lg" type="submit" />
     </S.BottomCompleteButtonWrapper>
   );
