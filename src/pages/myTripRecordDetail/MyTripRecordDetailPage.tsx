@@ -1,18 +1,21 @@
+import { useAtom } from "jotai";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import * as S from "./styles";
 import { useGetMyTripRecordDetail } from "@/apis/businessReview/businessReview.queries";
 import { useGetPlan } from "@/apis/myTrip/myTrip.queries";
 import Clear from "@/assets/icons/Clear";
 import ClearIcon from "@/assets/icons/ClearIcon";
 import MoreIcon from "@/assets/icons/MoreIcon";
+import { recordIdAtom } from "@/atoms/myTrip/planAtom";
 import BottomSheet from "@/components/common/bottomSheet";
 import Appbar from "@/components/common/header/Appbar";
 import TabAnatomy from "@/components/common/tabAnatomy";
 import DetailSchedule from "@/components/myTripRecord/DetailSchedule";
 import DetailTravelMemories from "@/components/myTripRecord/DetailTravelMemories";
 import useOverlay from "@/hooks/useOverlay";
+
+import * as S from "./styles";
 
 // import ReportPage from "../home/detail/report/ReportPage";
 
@@ -29,7 +32,9 @@ const MyTripRecordDetailPage = () => {
     setSelectedTab((e.target as HTMLElement).innerText);
   };
 
-  const { data, isLoading } = useGetMyTripRecordDetail(1);
+  const [recordId] = useAtom(recordIdAtom);
+  const { data, isLoading } = useGetMyTripRecordDetail(recordId!);
+  console.log(data);
 
   if (!data || isLoading) {
     return <div>로딩중...</div>;

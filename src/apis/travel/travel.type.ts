@@ -12,4 +12,5 @@ export interface MyTripItem {
   start_date: string;
   end_date: string;
   status: TravelStatus;
+  img_url: string;
 }

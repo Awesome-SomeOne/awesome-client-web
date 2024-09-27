@@ -32,8 +32,7 @@ function TextArea({
     fieldState: { isTouched }
   } = useController({
     name,
-    control,
-    defaultValue: ""
+    control
   });
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
