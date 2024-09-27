@@ -48,11 +48,17 @@ export default function MyPage() {
             <S.CommonBtnContainer key={button.text}>
               <S.CommonBtn
                 onClick={() => {
-                  button.text === "문의하기"
-                    ? (window.location.href = "https://forms.gle/6WSdBvPYiMocZtUM7")
-                    : "이용 약관"
-                      ? (window.location.href = "https://yumin0630.notion.site/10d6da37b1e98007b976de2b324cf2bf?pvs=4")
-                      : navigate(button.url);
+                  switch (button.text) {
+                    case "문의하기":
+                      window.location.href = "https://forms.gle/6WSdBvPYiMocZtUM7";
+                      break;
+                    case "이용 약관":
+                      window.location.href = "https://yumin0630.notion.site/10d6da37b1e98007b976de2b324cf2bf?pvs=4";
+                      break;
+                    default:
+                      navigate(button.url);
+                      break;
+                  }
                 }}
               >
                 {button.text}
