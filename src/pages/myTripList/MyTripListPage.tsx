@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +16,7 @@ const MyTripListContent = () => {
   const navigate = useNavigate();
   const { data: myTripListData } = useGetMyTripList();
 
-  if (!myTripListData) {
+  if (!myTripListData || myTripListData.length === 0) {
     return (
       <S.MyTripLayout>
         <img src="/src/assets/images/plane.svg" alt="비행기 이미지" />
@@ -35,16 +36,16 @@ const MyTripListContent = () => {
   return (
     <S.MyTripListPageWrapper>
       <Appbar title="내 여행 목록" textAlign="center" />
-      {/* {myTripListData.map((trip) => ( */}
-      <TripCard
-        id={1}
-        imgSrc="https://i.pinimg.com/564x/08/6d/00/086d0076f18503c3339ee3f7ad9c11cd.jpg"
-        status="여행완료"
-        location="경상북도 울릉도"
-        startDate="2021.09.01"
-        endDate="2021.09.05"
-      />
-      {/* ))} */}
+      {myTripListData.map((trip) => (
+        <TripCard
+          id={trip.planId}
+          imgSrc="https://i.pinimg.com/564x/08/6d/00/086d0076f18503c3339ee3f7ad9c11cd.jpg"
+          status={trip.status}
+          location={trip.address}
+          startDate={dayjs(trip.start_date).format("YYYY.MM.DD")}
+          endDate={dayjs(trip.end_date).format("YYYY.MM.DD")}
+        />
+      ))}
       <Button text="새로 만들기" size="lg" onClick={() => navigate(PATH.MY_TRIP_GENERATE)} />
     </S.MyTripListPageWrapper>
   );

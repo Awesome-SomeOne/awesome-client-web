@@ -18,3 +18,9 @@ export const getMyTripRecordDetail = async (recordId: number): Promise<GetMyTrip
   const response = await customAxios.get(`/api/travel-records/view/${recordId}`);
   return response.data;
 };
+
+// 추억 기록하기 - 여행 기록별 조회
+export const getTravelRecordByPlanId = async (planId: number) => {
+  const response = await customAxios.get(`/api/travel-records/view-plan/${planId}`);
+  return response.data;
+};

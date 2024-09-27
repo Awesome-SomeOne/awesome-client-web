@@ -1,7 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-import { getMyTripRecordDetail, postCreateTravelRecord, postIslandReview } from "./businessReview.apis";
+import {
+  getMyTripRecordDetail,
+  getTravelRecordByPlanId,
+  postCreateTravelRecord,
+  postIslandReview
+} from "./businessReview.apis";
 import { PostIslandReviewReq } from "./businessReview.type";
 
 // 섬 리뷰 생성 또는 업데이트
@@ -28,5 +33,13 @@ export const useGetMyTripRecordDetail = (recordId: number) => {
   return useQuery({
     queryKey: ["myTripRecordDetail"],
     queryFn: () => getMyTripRecordDetail(recordId)
+  });
+};
+
+// 추억 기록하기 - 여행 기록별 조회
+export const useGetTravelRecordByPlanId = (planId: number) => {
+  return useQuery({
+    queryKey: ["travelRecordByPlanId"],
+    queryFn: () => getTravelRecordByPlanId(planId)
   });
 };
