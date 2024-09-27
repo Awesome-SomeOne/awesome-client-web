@@ -17,6 +17,7 @@ interface TextFieldProps
   error?: boolean;
   control: Control<any>;
   name: string;
+  defaultValue?: string;
 }
 
 function TextField({ size, label, placeholder, disable, error, control, name, ...props }: TextFieldProps) {
@@ -25,8 +26,7 @@ function TextField({ size, label, placeholder, disable, error, control, name, ..
     field: { onChange, onBlur, value }
   } = useController({
     name,
-    control,
-    defaultValue: ""
+    control
   });
 
   return (

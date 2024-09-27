@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useGetTravelRecordByPlanId, usePostCreateTravelRecord } from "@/apis/businessReview/businessReview.queries";
@@ -19,24 +19,24 @@ const MyTripRecordPage = () => {
   const [pageOrder, setPageOrder] = useState(0);
   const [selectedTab, setSelectedTab] = useState("1");
   const navigate = useNavigate();
-  const { planId } = useParams<{ planId: string }>();
-  console.log(planId);
+  const { tripId } = useParams<{ tripId: string }>();
+  const planId = parseInt(tripId!);
   const handleTab = (e: React.MouseEvent<HTMLElement>) => {
     setSelectedTab(e.currentTarget.innerText);
   };
   const [isPublic, setIsPublic] = useState(false);
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
-  const { control, handleSubmit } = useForm({
+  const { mutate: postCreateTravelRecord } = usePostCreateTravelRecord(planId);
+  const { data: travelRecordByPlanId } = useGetTravelRecordByPlanId(planId);
+  console.log("travelRecordByPlanId", travelRecordByPlanId);
+
+  const methods = useForm({
     defaultValues: {
-      oneLineReview: "",
-      overallReview: ""
+      oneLineReview: travelRecordByPlanId?.oneLineReview ?? "",
+      overallReview: travelRecordByPlanId?.overallReview ?? ""
     }
   });
-
-  const { mutate: postCreateTravelRecord } = usePostCreateTravelRecord();
-  const { data: travelRecordByPlanId } = useGetTravelRecordByPlanId(1);
-  console.log("travelRecordByPlanId", travelRecordByPlanId);
 
   const onSubmit = async (data: { oneLineReview: string; overallReview: string }) => {
     const formData = new FormData();
@@ -136,46 +136,48 @@ const MyTripRecordPage = () => {
             </S.GoToGalleryButtonWrapper>
           </>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <S.DescriptionTextBox>여행이 어땠는 지 구체적으로 기록해보세요</S.DescriptionTextBox>
-            <S.WritingTextContainer>
-              <TextField
-                label="한줄평 작성"
-                placeholder="(선택) 한줄평을 작성해주세요"
-                size="sm"
-                control={control}
-                name="oneLineReview"
-              />
-              <TextArea
-                label="총평"
-                placeholder="(선택) 여행의 총평을 적어주세요"
-                maxLength={500}
-                isShowLength
-                control={control}
-                name="overallReview"
-              />
-            </S.WritingTextContainer>
+          <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <S.DescriptionTextBox>여행이 어땠는 지 구체적으로 기록해보세요</S.DescriptionTextBox>
+              <S.WritingTextContainer>
+                <TextField
+                  label="한줄평 작성"
+                  placeholder="(선택) 한줄평을 작성해주세요"
+                  size="sm"
+                  control={methods.control}
+                  name="oneLineReview"
+                />
+                <TextArea
+                  label="총평"
+                  placeholder="(선택) 여행의 총평을 적어주세요"
+                  maxLength={500}
+                  isShowLength
+                  control={methods.control}
+                  name="overallReview"
+                />
+              </S.WritingTextContainer>
 
-            <S.PhotoContainer>
-              <S.Text className="label">사진</S.Text>
-              <S.ImageContainer>
-                {selectedImages.map((data, index) => (
-                  <img
-                    key={index}
-                    src={data}
-                    alt={`Selected image ${index + 1}`}
-                    style={{ width: 64, height: 64, margin: 5 }}
-                  />
-                ))}
-              </S.ImageContainer>
-            </S.PhotoContainer>
+              <S.PhotoContainer>
+                <S.Text className="label">사진</S.Text>
+                <S.ImageContainer>
+                  {selectedImages.map((data, index) => (
+                    <img
+                      key={index}
+                      src={data}
+                      alt={`Selected image ${index + 1}`}
+                      style={{ width: 64, height: 64, margin: 5 }}
+                    />
+                  ))}
+                </S.ImageContainer>
+              </S.PhotoContainer>
 
-            <TabAnatomy tabs={["1", "2", "3"]} selectedTab={selectedTab} onClick={handleTab} />
+              {/* <TabAnatomy tabs={["1", "2", "3"]} selectedTab={selectedTab} onClick={handleTab} /> */}
 
-            <SpotCard />
+              {/* <SpotCard /> */}
 
-            <BottomCompleteButton isPublic={isPublic} setIsPublic={setIsPublic} />
-          </form>
+              <BottomCompleteButton isPublic={isPublic} setIsPublic={setIsPublic} />
+            </form>
+          </FormProvider>
         )}
       </S.MyTripRecordPageContainer>
     </>

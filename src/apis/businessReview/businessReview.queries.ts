@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -8,6 +9,7 @@ import {
   postIslandReview
 } from "./businessReview.apis";
 import { PostIslandReviewReq } from "./businessReview.type";
+import { recordIdAtom } from "@/atoms/myTrip/planAtom";
 
 // 섬 리뷰 생성 또는 업데이트
 export const usePostIslandReview = () => {
@@ -17,13 +19,15 @@ export const usePostIslandReview = () => {
 };
 
 // 추억 생성하기
-export const usePostCreateTravelRecord = () => {
+export const usePostCreateTravelRecord = (planId: number) => {
   const navigate = useNavigate();
+  const [, setRecordId] = useAtom(recordIdAtom);
 
   return useMutation({
     mutationFn: (req: FormData) => postCreateTravelRecord(req),
-    onSuccess: (req) => {
-      navigate(`/my-trip-record/${req.tripId}/detail`);
+    onSuccess: (res) => {
+      setRecordId(res.recordId);
+      navigate(`/my-trip-record/${planId}/detail`);
     }
   });
 };
@@ -40,6 +44,9 @@ export const useGetMyTripRecordDetail = (recordId: number) => {
 export const useGetTravelRecordByPlanId = (planId: number) => {
   return useQuery({
     queryKey: ["travelRecordByPlanId"],
-    queryFn: () => getTravelRecordByPlanId(planId)
+    queryFn: () => getTravelRecordByPlanId(planId),
+    select: (data) => {
+      return data[data.length - 1];
+    }
   });
 };

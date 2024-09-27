@@ -1,8 +1,10 @@
 import { atom, useAtom } from "jotai";
+
 import { Day, Place } from "@/types/myTrip";
 import { calculateDatesArray } from "@/utils/myTrip/myTrip.utils";
 
 export const islandIdAtom = atom<number | null>(null);
+export const recordIdAtom = atom<number | null>(null);
 export const startDateAtom = atom<string | null>(null);
 export const endDateAtom = atom<string | null>(null);
 export const planNameAtom = atom<string | null>(null);

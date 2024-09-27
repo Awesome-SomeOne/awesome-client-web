@@ -15,7 +15,6 @@ const DetailTravelMemories = ({ oneLineReview, overallReview, imageUrl }: Detail
         <S.Text className="content">{overallReview} </S.Text>
       </S.TextWrapper>
       <S.ImageFlexWrapper>{imageUrl?.map((url) => <S.Image src={url} />)}</S.ImageFlexWrapper>
-      좋아요 버튼
     </S.SectionWrapper>
   );
 };

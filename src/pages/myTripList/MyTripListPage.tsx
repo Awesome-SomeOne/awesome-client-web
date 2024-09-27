@@ -39,7 +39,7 @@ const MyTripListContent = () => {
       {myTripListData.map((trip) => (
         <TripCard
           id={trip.planId}
-          imgSrc="https://i.pinimg.com/564x/08/6d/00/086d0076f18503c3339ee3f7ad9c11cd.jpg"
+          imgSrc={trip.img_url}
           status={trip.status}
           location={trip.address}
           startDate={dayjs(trip.start_date).format("YYYY.MM.DD")}
