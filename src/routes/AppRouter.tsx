@@ -18,7 +18,7 @@ import MyTripListPage from "@/pages/myTripList/MyTripListPage";
 import MyTripRecordPage from "@/pages/myTripRecord/MyTripRecordPage";
 import MyTripRecordDetailPage from "@/pages/myTripRecordDetail/MyTripRecordDetailPage";
 import MyTripRecordList from "@/pages/myTripRecordList/MyTripRecordList";
-import PlaceDetailPage from "@/pages/placeDetail/PlaceDetailPage";
+import PlaceDetailPage from "@/pages/placeDetail/PlaceDetailPage";
 import SearchPage from "@/pages/home/search/SearchPage";
 import LikePage from "@/pages/home/like/LikePage";
 import NotificationPage from "@/pages/home/notification/NotificationPage";

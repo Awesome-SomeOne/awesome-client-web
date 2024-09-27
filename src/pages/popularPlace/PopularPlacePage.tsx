@@ -116,7 +116,16 @@ const PopularPlace = () => {
               )}
             </div>
           </div>
-          <S.Bottom>{selectedSubLocation && <Button text="선택완료" size="lg" onClick={handleSelectDone} />}</S.Bottom>
+          <S.Bottom>
+            {selectedSubLocation && (
+              <Button
+                text="선택완료"
+                size="lg"
+                onClick={handleSelectDone}
+                disabled={selectedSubLocation === ISLAND_LIST.find((island) => island.id === islandId)?.name}
+              />
+            )}
+          </S.Bottom>
         </>
       </BottomSheet>
     </>
