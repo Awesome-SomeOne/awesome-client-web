@@ -23,7 +23,7 @@ const SearchResultPage = ({
     businessName: string;
     address: string;
     imageUrl: string;
-    // status: boolean;
+    favorite: boolean;
   }[];
   onPrev: () => void;
   onClose: () => void;
@@ -66,7 +66,7 @@ const SearchResultPage = ({
                     image={result.imageUrl}
                     name={result.businessName}
                     address={result.address}
-                    // like={result.status}
+                    like={result.favorite}
                     onClick={() => navigate(PATH.PLACE_DETAIL(result.businessId))}
                   />
                 ))}
