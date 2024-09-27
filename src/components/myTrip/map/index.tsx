@@ -15,7 +15,7 @@ export const MapComponent = ({ positionList }: { positionList: { lat: number; ln
           key={index}
           position={{ lat: position.lat, lng: position.lng }}
           image={{
-            src: `/images/mapMarker${index + 1}.svg`,
+            src: `/icons/mapMarker/mapMarker${index + 1}.svg`,
             size: imageSize
           }}
         />
