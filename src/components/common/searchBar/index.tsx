@@ -95,7 +95,7 @@ const SearchBar = ({
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           onChange={handleInputChange}
-          onClick={onClick}
+          onClick={onClick as React.MouseEventHandler<HTMLInputElement> | undefined}
         />
         {showButton && <Button text={buttonText} type="submit" style={{ height: "32px" }} />}
       </S.SearchField>

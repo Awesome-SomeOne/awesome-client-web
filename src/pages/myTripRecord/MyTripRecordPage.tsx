@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { usePostCreateTravelRecord } from "@/apis/businessReview/businessReview.queries";
+import { useGetTravelRecordByPlanId, usePostCreateTravelRecord } from "@/apis/businessReview/businessReview.queries";
 import Clear from "@/assets/icons/Clear";
 import Button from "@/components/common/button";
 import Appbar from "@/components/common/header/Appbar";
@@ -19,6 +19,8 @@ const MyTripRecordPage = () => {
   const [pageOrder, setPageOrder] = useState(0);
   const [selectedTab, setSelectedTab] = useState("1");
   const navigate = useNavigate();
+  const { planId } = useParams<{ planId: string }>();
+  console.log(planId);
   const handleTab = (e: React.MouseEvent<HTMLElement>) => {
     setSelectedTab(e.currentTarget.innerText);
   };
@@ -33,6 +35,8 @@ const MyTripRecordPage = () => {
   });
 
   const { mutate: postCreateTravelRecord } = usePostCreateTravelRecord();
+  const { data: travelRecordByPlanId } = useGetTravelRecordByPlanId(1);
+  console.log("travelRecordByPlanId", travelRecordByPlanId);
 
   const onSubmit = async (data: { oneLineReview: string; overallReview: string }) => {
     const formData = new FormData();
@@ -118,7 +122,7 @@ const MyTripRecordPage = () => {
               <S.Text className="subtitle">최대 5개까지 등록할 수 있어요</S.Text>
             </S.DescriptionTextBox>
             <S.MainImageContainer>
-              <img src="/camera.jpg" alt="trip" width="160px" height="160px" />
+              <img src="/images/camera.jpg" alt="trip" width="160px" height="160px" />
             </S.MainImageContainer>
             <S.GoToGalleryButtonWrapper>
               <Button

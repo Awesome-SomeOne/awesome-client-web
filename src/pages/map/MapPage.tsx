@@ -37,7 +37,7 @@ const MapPage = () => {
             onSearch={handleSubmit}
             onClick={handleInputClick}
           />
-          <MapFilterChips />
+          {/* <MapFilterChips /> */}
         </S.UpperBarContainer>
         <MapMarker position={{ lat: 33.55635, lng: 126.795841 }}>
           <div style={{ color: "#000" }}>Hello World!</div>
