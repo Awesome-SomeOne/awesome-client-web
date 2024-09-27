@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import ReportPage from "../home/detail/report/ReportPage";
+import * as S from "./styles";
 import { useGetMyTripRecordDetail } from "@/apis/businessReview/businessReview.queries";
+import { useGetPlan } from "@/apis/myTrip/myTrip.queries";
 import Clear from "@/assets/icons/Clear";
 import ClearIcon from "@/assets/icons/ClearIcon";
 import MoreIcon from "@/assets/icons/MoreIcon";
@@ -13,19 +14,22 @@ import DetailSchedule from "@/components/myTripRecord/DetailSchedule";
 import DetailTravelMemories from "@/components/myTripRecord/DetailTravelMemories";
 import useOverlay from "@/hooks/useOverlay";
 
-import * as S from "./styles";
+// import ReportPage from "../home/detail/report/ReportPage";
 
 const MyTripRecordDetailPage = () => {
   const [selectedTab, setSelectedTab] = useState("여행 추억");
   const { isOpen, close, toggle } = useOverlay();
   const navigate = useNavigate();
   const [showReportPage, setShowReportPage] = useState(false);
+  // const { data: planData } = useGetPlan({ planId: 1 });
+  // const { startDate, endDate, islandName, travelPlaceList, planName } = planData || {};
+  // console.log(planData);
 
   const handleTab = (e: React.MouseEvent<HTMLElement>) => {
     setSelectedTab((e.target as HTMLElement).innerText);
   };
 
-  const { data, isLoading } = useGetMyTripRecordDetail(67);
+  const { data, isLoading } = useGetMyTripRecordDetail(1);
 
   if (!data || isLoading) {
     return <div>로딩중...</div>;
@@ -104,7 +108,7 @@ const MyTripRecordDetailPage = () => {
               </div>
             }
           />
-          <ReportPage onClose={() => setShowReportPage(false)} />
+          {/* <ReportPage onClose={() => setShowReportPage(false)} /> */}
         </div>
       )}
     </>
