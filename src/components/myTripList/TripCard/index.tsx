@@ -6,6 +6,7 @@ import LineButton from "../../common/lineButton";
 
 interface ITripCardProps {
   id: number;
+  recordId: number;
   imgSrc: string;
   status: string; // TODO: enum으로 변경
   location: string;
@@ -13,7 +14,7 @@ interface ITripCardProps {
   endDate: string;
 }
 
-const TripCard = ({ id, imgSrc, status, location, startDate, endDate }: ITripCardProps) => {
+const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate }: ITripCardProps) => {
   const navigate = useNavigate();
 
   return (
@@ -37,7 +38,7 @@ const TripCard = ({ id, imgSrc, status, location, startDate, endDate }: ITripCar
         />
         <LineButton
           text="자세히 보기"
-          onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(id))}
+          onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(recordId))}
           size="sm"
           style={{ width: "100%" }}
         />

@@ -39,6 +39,7 @@ const MyTripListContent = () => {
       {myTripListData.map((trip) => (
         <TripCard
           id={trip.planId}
+          recordId={trip.recordId}
           imgSrc={trip.img_url}
           status={trip.status}
           location={trip.address}

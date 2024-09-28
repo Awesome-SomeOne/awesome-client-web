@@ -7,6 +7,7 @@ export enum TravelStatus {
 
 export interface MyTripItem {
   planId: number;
+  recordId: number;
   name: string;
   address: string;
   start_date: string;
