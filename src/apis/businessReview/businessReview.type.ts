@@ -49,30 +49,3 @@ export interface GetMyTripPlaceRes {
   mapX: string;
   mapY: string;
 }
-
-
-address
-: 
-"주소2"
-businessId
-: 
-2
-businessName
-: 
-"이름2"
-businessType
-: 
-"숙박"
-favorite
-: 
-true
-imageUrl
-: 
-"a"
-mapX
-: 
-"127"
-mapY
-: 
-"32"
- */
