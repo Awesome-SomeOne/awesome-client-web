@@ -12,11 +12,10 @@ export const ISLAND_LIST = [
 ];
 
 export const THEME_LIST = [
-  { id: 1, name: "숙박" },
-  { id: 2, name: "식당" },
-  { id: 3, name: "관광지" },
-  { id: 4, name: "액티비티" },
-  { id: 5, name: "직접 입력" }
+  { id: 1, name: "액티비티" },
+  { id: 2, name: "포토스팟" },
+  { id: 3, name: "먹거리 탐방" },
+  { id: 4, name: "직접 입력" }
 ];
 
 Object.freeze(ISLAND_LIST);
