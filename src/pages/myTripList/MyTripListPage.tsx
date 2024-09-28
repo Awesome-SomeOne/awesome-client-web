@@ -1,5 +1,6 @@
+import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useGetMyTripList } from "@/apis/travel/travel.queries";
@@ -15,6 +16,7 @@ import * as S from "./styles";
 const MyTripListContent = () => {
   const navigate = useNavigate();
   const { data: myTripListData } = useGetMyTripList();
+  const queryClient = useQueryClient();
 
   if (!myTripListData || myTripListData.length === 0) {
     return (
@@ -33,20 +35,28 @@ const MyTripListContent = () => {
       </S.MyTripLayout>
     );
   }
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["getMyTripList"] });
+  }, []);
+
   return (
     <S.MyTripListPageWrapper>
       <Appbar title="내 여행 목록" textAlign="center" />
-      {myTripListData.map((trip) => (
-        <TripCard
-          id={trip.planId}
-          recordId={trip.recordId}
-          imgSrc={trip.img_url}
-          status={trip.status}
-          location={trip.address}
-          startDate={dayjs(trip.start_date).format("YYYY.MM.DD")}
-          endDate={dayjs(trip.end_date).format("YYYY.MM.DD")}
-        />
-      ))}
+      <S.MyTripListFlexContainer>
+        {myTripListData.map((trip) => (
+          <TripCard
+            id={trip.planId}
+            recordId={trip.recordId}
+            imgSrc={trip.img_url}
+            status={trip.status}
+            location={trip.address}
+            startDate={dayjs(trip.start_date).format("YYYY.MM.DD")}
+            endDate={dayjs(trip.end_date).format("YYYY.MM.DD")}
+          />
+        ))}
+      </S.MyTripListFlexContainer>
       <Button text="새로 만들기" size="lg" onClick={() => navigate(PATH.MY_TRIP_GENERATE)} />
     </S.MyTripListPageWrapper>
   );

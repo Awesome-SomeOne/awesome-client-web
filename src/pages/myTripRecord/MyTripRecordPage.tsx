@@ -62,7 +62,7 @@ const MyTripRecordPage = () => {
       }
     }
 
-    formData.append("planId", "1");
+    formData.append("planId", planId.toString());
     // formData.append("publicPrivate", isPublic.toString());
     formData.append("publicPrivate", "false");
     formData.append("oneLineReview", data.oneLineReview);

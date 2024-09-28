@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
 
 import {
+  getMyTripPlace,
   getMyTripRecordDetail,
   getTravelRecordByPlanId,
   postCreateTravelRecord,
@@ -48,5 +49,13 @@ export const useGetTravelRecordByPlanId = (planId: number) => {
     select: (data) => {
       return data[data.length - 1];
     }
+  });
+};
+
+// 지도 - 내 여행 장소 가져오기
+export const useGetMyTripPlace = () => {
+  return useQuery({
+    queryKey: ["getMyTripPlaceInMap"],
+    queryFn: () => getMyTripPlace()
   });
 };

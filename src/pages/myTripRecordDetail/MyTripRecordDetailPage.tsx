@@ -1,6 +1,7 @@
+import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useGetMyTripRecordDetail } from "@/apis/businessReview/businessReview.queries";
@@ -16,6 +17,7 @@ import DetailSchedule from "@/components/myTripRecord/DetailSchedule";
 import DetailTravelMemories from "@/components/myTripRecord/DetailTravelMemories";
 import useOverlay from "@/hooks/useOverlay";
 
+import ReportPage from "../placeDetail/report/ReportPage";
 import * as S from "./styles";
 
 // import ReportPage from "../home/detail/report/ReportPage";
@@ -35,7 +37,12 @@ const MyTripRecordDetailPage = () => {
 
   const [recordId] = useAtom(recordIdAtom);
   const { data, isLoading } = useGetMyTripRecordDetail(recordId!);
+  const queryClient = useQueryClient();
   console.log(data);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["myTripRecordDetail"] });
+  }, []);
 
   if (!data || isLoading) {
     return <div>로딩중...</div>;
@@ -116,7 +123,7 @@ const MyTripRecordDetailPage = () => {
               </div>
             }
           />
-          {/* <ReportPage onClose={() => setShowReportPage(false)} /> */}
+          <ReportPage onClose={() => setShowReportPage(false)} />
         </div>
       )}
     </>

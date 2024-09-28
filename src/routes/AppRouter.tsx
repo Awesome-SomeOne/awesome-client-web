@@ -1,9 +1,15 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "@/App";
+import BottomNavBar from "@/components/common/bottomNavBar";
 import { PATH } from "@/constants/path";
+import ErrorBoundary from "@/hooks/Errorboundary";
 import CommunityPage from "@/pages/community/CommunityPage";
 import HomePage from "@/pages/home/HomePage";
+import LikePage from "@/pages/home/like/LikePage";
+import LocationPage from "@/pages/home/location/LocationPage";
+import NotificationPage from "@/pages/home/notification/NotificationPage";
+import SearchPage from "@/pages/home/search/SearchPage";
 import MapPage from "@/pages/map/MapPage";
 import AccountInfoPage from "@/pages/myPage/AccountInfoPage/AccountInfoPage";
 import ContactPage from "@/pages/myPage/ContactPage/ContactPage";
@@ -19,10 +25,6 @@ import MyTripRecordPage from "@/pages/myTripRecord/MyTripRecordPage";
 import MyTripRecordDetailPage from "@/pages/myTripRecordDetail/MyTripRecordDetailPage";
 import MyTripRecordList from "@/pages/myTripRecordList/MyTripRecordList";
 import PlaceDetailPage from "@/pages/placeDetail/PlaceDetailPage";
-import SearchPage from "@/pages/home/search/SearchPage";
-import LikePage from "@/pages/home/like/LikePage";
-import NotificationPage from "@/pages/home/notification/NotificationPage";
-import LocationPage from "@/pages/home/location/LocationPage";
 import PopularPlacePage from "@/pages/popularPlace/PopularPlacePage";
 import RecommendPlacePage from "@/pages/recommendPlace/RecommendPlacePage";
 
@@ -50,7 +52,18 @@ const AppRouter = () => {
             },
             {
               path: PATH.MAP,
-              element: <MapPage />
+              element: (
+                <ErrorBoundary
+                  fallback={
+                    <div>
+                      에러가 발생했습니다. 다시 시도해 주세요.
+                      <BottomNavBar />
+                    </div>
+                  }
+                >
+                  <MapPage />
+                </ErrorBoundary>
+              )
             },
             {
               path: PATH.MY_TRIP_GENERATE,

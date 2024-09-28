@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import * as S from "./styles";
 import { PATH } from "../../../constants/path";
 import LineButton from "../../common/lineButton";
+import * as S from "./styles";
 
 interface ITripCardProps {
   id: number;
@@ -36,12 +36,14 @@ const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate }
           size="sm"
           style={{ width: "100%" }}
         />
-        <LineButton
-          text="자세히 보기"
-          onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(recordId))}
-          size="sm"
-          style={{ width: "100%" }}
-        />
+        {recordId && (
+          <LineButton
+            text="자세히 보기"
+            onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(recordId))}
+            size="sm"
+            style={{ width: "100%" }}
+          />
+        )}
       </S.ButtonWrapper>
     </S.TripCard>
   );
