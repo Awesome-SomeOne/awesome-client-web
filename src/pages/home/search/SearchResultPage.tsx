@@ -6,7 +6,7 @@ import PlaceComponent from "@/components/place/PlaceComponent/index";
 import { NoResult } from "@/components/search/noResult/index";
 import { CATEGORY_LIST } from "@/constants/homePageConstants";
 import { PATH } from "@/constants/path";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 
@@ -31,9 +31,21 @@ const SearchResultPage = ({
   const navigate = useNavigate();
   const [currentTab, setCurrentTab] = useState(CATEGORY_LIST[0]);
 
+  useEffect(() => {
+    const firstAvailableTab = CATEGORY_LIST.find((category) =>
+      searchResult.some((result) => result.businessType === category)
+    );
+
+    if (firstAvailableTab) {
+      setCurrentTab(firstAvailableTab);
+    }
+  }, [searchResult]);
+
   const handleClick = (event: any) => {
     setCurrentTab(event.target.innerText);
   };
+
+  const filteredResults = searchResult.filter((result) => result.businessType === currentTab);
 
   return (
     <>
@@ -55,21 +67,19 @@ const SearchResultPage = ({
         <GeneralHeader title={searchQuery} />
         <TabAnatomy tabs={CATEGORY_LIST} selectedTab={currentTab} onClick={handleClick} />
         <div style={{ height: "100%", overflow: "scroll", display: "flex", flexDirection: "column" }}>
-          {searchResult.length ? (
+          {filteredResults.length ? (
             <S.ComponentCol>
-              {searchResult
-                .filter((result) => result.businessType === currentTab)
-                .map((result, index) => (
-                  <PlaceComponent
-                    key={index}
-                    id={result.businessId}
-                    image={result.imageUrl}
-                    name={result.businessName}
-                    address={result.address}
-                    like={result.favorite}
-                    onClick={() => navigate(PATH.PLACE_DETAIL(result.businessId))}
-                  />
-                ))}
+              {filteredResults.map((result, index) => (
+                <PlaceComponent
+                  key={index}
+                  id={result.businessId}
+                  image={result.imageUrl}
+                  name={result.businessName}
+                  address={result.address}
+                  like={result.favorite}
+                  onClick={() => navigate(PATH.PLACE_DETAIL(result.businessId))}
+                />
+              ))}
             </S.ComponentCol>
           ) : (
             <NoResult />
