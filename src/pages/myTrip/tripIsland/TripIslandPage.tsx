@@ -5,6 +5,7 @@ import { ISLAND_LIST } from "@/constants/myTripPageConstants";
 import * as S from "./styles";
 import { useAtom } from "jotai";
 import { islandIdAtom } from "@/atoms/myTrip/planAtom";
+import { url } from "inspector";
 
 const TripIslandPage = ({
   onNext,
@@ -15,14 +16,11 @@ const TripIslandPage = ({
   onSearch: () => void;
   onRecClick: () => void;
 }) => {
-  const [selectedIsland, setSelectedIsland] = useState(null);
+  const [selectedIsland, setSelectedIsland] = useState<string | null>(null);
   const [, setIslandId] = useAtom(islandIdAtom);
 
-  const handleIslandClick = (event: any) => {
-    if (event.target.children.length === 0) {
-      const islandName = event.target.innerText;
-      setSelectedIsland(islandName);
-    }
+  const handleIslandClick = (name: string) => {
+    setSelectedIsland(name);
   };
 
   const handleClick = () => {
@@ -48,10 +46,16 @@ const TripIslandPage = ({
           titleSize="md"
         />
         <S.SearchBar onClick={onSearch}>가고 싶은 섬을 검색해주세요</S.SearchBar>
-        <S.BoxContainer onClick={handleIslandClick}>
+        <S.BoxContainer>
           {ISLAND_LIST.map((island) => (
-            <S.Box key={island.id} selected={selectedIsland === island.name} bgUrl={"/images/island.png"}>
+            <S.Box
+              key={island.id}
+              selected={selectedIsland === island.name}
+              bgUrl={`/images/island/${island.id}.svg`}
+              onClick={() => handleIslandClick(island.name)}
+            >
               {island.name}
+              {selectedIsland === island.name && <S.Credit>{island.credit}</S.Credit>}
             </S.Box>
           ))}
         </S.BoxContainer>

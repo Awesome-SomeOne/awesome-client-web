@@ -19,15 +19,23 @@ export const Box = styled.div<{ selected: boolean; bgUrl: string }>`
     props.selected
       ? `border: 2px solid ${Theme.colors.Border_Primary_Strong};
       background-color: #1a80e580;
-      background-blend-mode: soft-light;
+      background-blend-mode: multiply;
       `
       : `border: 1px solid ${Theme.colors.Border_Primary_Default}`};
   border-radius: 8px;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 0px 8px 0px #4899ea29;
   cursor: pointer;
+`;
+
+export const Credit = styled.p`
+  position: absolute;
+  bottom: 8px;
+  font-size: 8px;
+  color: ${Theme.colors.Label_Assitive};
 `;
 
 export const SpanContainer = styled.div`

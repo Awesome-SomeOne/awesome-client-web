@@ -19,7 +19,7 @@ const HomePage = () => {
           <AppBarIcons />
         </S.AppBar>
         {/* <Weather /> */}
-        {/* <MyTripToday /> */}
+        <MyTripToday />
         <MyTrip />
         <CarouselComponent />
         <PopularPlace />
