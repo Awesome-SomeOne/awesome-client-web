@@ -12,14 +12,19 @@ export interface PostCreateTravelRecordReq {
 }
 
 export interface GetMyTripRecordDetailRes {
-  businessReviews: BusinessReview[];
-  imageUrl: string[];
-  oneLineReview: string;
-  overallReview: string;
+  businessReviews: any;
+  imageUrls: string[];
+  recordTitle: string;
+  recordContent: string;
   planId: number;
   publicPrivate: boolean;
   recordId: number;
   userId: number;
+  islandName: string;
+  endDate: string;
+  startDate: string;
+  planName: string;
+  status: string;
 }
 
 export interface BusinessReview {
@@ -29,4 +34,7 @@ export interface BusinessReview {
   imageUrls: string[];
   rating: number;
   userId: number;
+  travelDateImages: any;
+  xaddress: string;
+  yaddress: string;
 }

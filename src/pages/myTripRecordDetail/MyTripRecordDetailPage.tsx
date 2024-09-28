@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -67,17 +68,19 @@ const MyTripRecordDetailPage = () => {
 
       <S.MyTripRecordDetailPageContainer>
         <S.SpotAndDateContainer>
-          <S.Text className="spot">울릉도</S.Text>
-          <S.Text className="date">2024.06.28 ~ 2024.06.30</S.Text>
+          <S.Text className="spot">{data.islandName}</S.Text>
+          <S.Text className="date">
+            {dayjs(data.startDate).format("YYYY.MM.DD")} ~ {dayjs(data.endDate).format("YYYY.MM.DD")}
+          </S.Text>
         </S.SpotAndDateContainer>
 
         <TabAnatomy tabs={["여행 추억", "일정"]} selectedTab={selectedTab} onClick={handleTab} />
 
         {selectedTab === "여행 추억" ? (
           <DetailTravelMemories
-            oneLineReview={data.oneLineReview}
-            overallReview={data.overallReview}
-            imageUrl={data.imageUrl}
+            oneLineReview={data.recordTitle}
+            overallReview={data.recordContent}
+            imageUrl={data.imageUrls}
           />
         ) : (
           <DetailSchedule businessReviews={data.businessReviews} />
