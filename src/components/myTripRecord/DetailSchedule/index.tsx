@@ -8,6 +8,18 @@ interface DetailScheduleProps {
   businessReviews: BusinessReview[];
 }
 const DetailSchedule = ({ businessReviews }: DetailScheduleProps) => {
+  const keysArray = Object.keys(businessReviews).sort((a, b) => a - b);
+
+  // const displayData = (keys) => {
+  //   keys.forEach((key) => {
+  //     console.log(`Date: ${key}`);
+  //     businessReviews[key].forEach((event) => {
+  //       console.log(`  - ${event.businessName}`);
+  //     });
+  //   });
+  // };
+  // displayData(keysArray);
+
   console.log(businessReviews);
   return (
     <>

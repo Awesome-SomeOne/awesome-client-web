@@ -1,5 +1,6 @@
+import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useGetMyTripList } from "@/apis/travel/travel.queries";
@@ -15,6 +16,7 @@ import * as S from "./styles";
 const MyTripListContent = () => {
   const navigate = useNavigate();
   const { data: myTripListData } = useGetMyTripList();
+  const queryClient = useQueryClient();
 
   if (!myTripListData || myTripListData.length === 0) {
     return (
@@ -33,6 +35,11 @@ const MyTripListContent = () => {
       </S.MyTripLayout>
     );
   }
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["getMyTripList"] });
+  }, []);
+
   return (
     <S.MyTripListPageWrapper>
       <Appbar title="내 여행 목록" textAlign="center" />
