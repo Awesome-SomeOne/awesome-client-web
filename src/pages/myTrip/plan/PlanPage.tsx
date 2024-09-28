@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import { useEffect, useState } from "react";
 import AddPlacePage from "@/pages/myTrip/addPlace/AddPlacePage";
@@ -263,7 +264,11 @@ const PlanContent = () => {
           {generated && (
             <AnimatePresence>{pageState.showToast && <Toast message={"일정 생성 완료!"} />}</AnimatePresence>
           )}
-          <GeneralHeader title={islandName} sub={`${startDate} ~ ${endDate}`} titleSize="md" />
+          <GeneralHeader
+            title={islandName}
+            sub={`${dayjs(startDate).format("YYYY.MM.DD")} ~ ${dayjs(endDate).format("YYYY.MM.DD")}`}
+            titleSize="md"
+          />
           {positionList.length ? (
             <MapComponent positionList={positionList} />
           ) : (
