@@ -39,6 +39,9 @@ const MapPage = () => {
   };
 
   const handleMyTripPlaceMarkerToggle = () => {
+    if (!isMyTripPlaceMarkerChecked) {
+      mapRef.current?.setLevel(13);
+    }
     setIsMyTripPlaceMarkerChecked(!isMyTripPlaceMarkerChecked);
   };
 

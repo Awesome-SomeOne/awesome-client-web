@@ -36,14 +36,14 @@ const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate }
           size="sm"
           style={{ width: "100%" }}
         />
-        {
+        {recordId && (
           <LineButton
             text="자세히 보기"
             onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(recordId))}
             size="sm"
             style={{ width: "100%" }}
           />
-        }
+        )}
       </S.ButtonWrapper>
     </S.TripCard>
   );

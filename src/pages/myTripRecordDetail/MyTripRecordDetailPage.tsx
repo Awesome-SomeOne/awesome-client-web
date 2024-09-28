@@ -17,6 +17,7 @@ import DetailSchedule from "@/components/myTripRecord/DetailSchedule";
 import DetailTravelMemories from "@/components/myTripRecord/DetailTravelMemories";
 import useOverlay from "@/hooks/useOverlay";
 
+import ReportPage from "../placeDetail/report/ReportPage";
 import * as S from "./styles";
 
 // import ReportPage from "../home/detail/report/ReportPage";
@@ -122,7 +123,7 @@ const MyTripRecordDetailPage = () => {
               </div>
             }
           />
-          {/* <ReportPage onClose={() => setShowReportPage(false)} /> */}
+          <ReportPage onClose={() => setShowReportPage(false)} />
         </div>
       )}
     </>

@@ -11,6 +11,13 @@ export const MyTripListPageWrapper = styled.div`
   padding: ${Theme.size.Header_Height} 20px calc(${Theme.size.BottomNavBar_Height} + 8px);
 `;
 
+export const MyTripListFlexContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+`;
+
 export const MyTripLayout = styled.div`
   background: linear-gradient(180deg, rgba(189, 227, 255, 0) 15.6%, rgba(189, 227, 255, 0.5) 100%);
   width: 100%;
