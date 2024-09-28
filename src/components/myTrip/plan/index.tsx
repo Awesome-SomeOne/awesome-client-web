@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import Button from "@/components/common/button/index";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
 import { Day, Place } from "@/types/myTrip";
@@ -117,7 +118,7 @@ const Plan = ({
         <S.PlaceContainer ref={ref} animate={{ height: height }}>
           <S.Row>
             <S.Info>
-              <S.Date>{dates[selectedDay - 1]}</S.Date>
+              <S.Date>{dayjs(dates[selectedDay - 1]).format("YYYY.MM.DD")}</S.Date>
               <S.Weather>{`${temperature}℃`}</S.Weather>
             </S.Info>
             {isPageEditing && <S.TextButton onClick={onEdit}>장소 편집</S.TextButton>}
