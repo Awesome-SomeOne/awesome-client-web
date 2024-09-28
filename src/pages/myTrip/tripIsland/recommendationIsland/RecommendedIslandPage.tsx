@@ -6,40 +6,37 @@ import { Place } from "@/types/myTrip";
 import * as S from "./styles";
 import { useGetRecommendIsland, useGetRecommendPlace } from "@/apis/myTrip/myTrip.queries";
 import { useAtom } from "jotai";
-import { islandIdAtom } from "@/atoms/myTrip/planAtom";
+import { islandIdAtom, planNameAtom } from "@/atoms/myTrip/planAtom";
 import ErrorBoundary from "@/hooks/Errorboundary";
 import { ISLAND_LIST } from "@/constants/myTripPageConstants";
+import { CATEGORY_LIST } from "@/constants/homePageConstants";
+import Chip from "@/components/common/chip/index";
 
 const RecommendedIsland = ({
-  theme,
   onPrev,
   onNext,
   setSelectedPlaces
 }: {
-  theme: string;
   onPrev: () => void;
   onNext: () => void;
   setSelectedPlaces: (selectedPlaces: Place[]) => void;
 }) => {
-  const [recommendPlace, setRecommendPlace] = useState<Place[]>([]);
+  const [step, setStep] = useState(1);
   const [selectedPlaces, setLocalSelectedPlaces] = useState<Place[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState(CATEGORY_LIST[0]);
 
   const { data: recommendIsland } = useGetRecommendIsland();
 
   const islandId = recommendIsland?.id;
-  const category = theme;
-  const { data: recommendPlaceList = [] } = useGetRecommendPlace({ islandId: islandId, category: category });
+  const { data: recommendPlaceList = [] } = useGetRecommendPlace({ islandId: islandId, category: selectedCategory });
 
   const [, setIslandId] = useAtom(islandIdAtom);
+  const [theme] = useAtom(planNameAtom);
 
   const handleSelect = () => {
     // 섬 선택 처리
     setIslandId(islandId);
-    // 추천 장소 없을 때
-    if (!recommendPlaceList.length) {
-      onNext();
-    }
-    setRecommendPlace(recommendPlaceList);
+    setStep(2);
   };
 
   const handleNext = () => {
@@ -55,13 +52,9 @@ const RecommendedIsland = ({
 
   return (
     <>
-      {recommendPlace.length === 0 && (
+      {step === 1 && (
         <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-          <GeneralHeader
-            title="최대여덟글자님을 위한 추천 섬"
-            description={`{${theme}} 테마에 맞는 섬을 추천해드릴게요!`}
-            titleSize="md"
-          />
+          <GeneralHeader title="추천 섬" description={`{${theme}} 테마에 맞는 섬을 추천해드릴게요!`} titleSize="md" />
           <S.IslandCard src={recommendIsland.img_url}>
             <S.TextContainer>
               <S.IslandName>{recommendIsland?.islandName}</S.IslandName>
@@ -75,7 +68,7 @@ const RecommendedIsland = ({
           </S.ButtonContainer>
         </div>
       )}
-      {recommendPlace.length > 0 && (
+      {step === 2 && (
         <>
           <GeneralHeader
             title="추천 장소"
@@ -83,8 +76,18 @@ const RecommendedIsland = ({
             spacingSize="sm"
             titleSize="md"
           />
+          <S.ChipRow>
+            {CATEGORY_LIST.map((category) => (
+              <Chip
+                text={category}
+                hierarchy="primary"
+                selected={selectedCategory === category}
+                onChipClick={() => setSelectedCategory(category)}
+              />
+            ))}
+          </S.ChipRow>
           <S.ListContainer>
-            {recommendPlace.map((place, index) => (
+            {recommendPlaceList.map((place: any, index: number) => (
               <ListComponent
                 key={index}
                 place={place}
@@ -118,7 +121,6 @@ const RecommendedIsland = ({
 const RecommendedIslandPage = ({
   ...props
 }: {
-  theme: string;
   onPrev: () => void;
   onNext: () => void;
   setSelectedPlaces: (selectedPlaces: Place[]) => void;
