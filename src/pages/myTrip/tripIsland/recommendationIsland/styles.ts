@@ -31,6 +31,15 @@ export const IslandAddress = styled.span`
   ${Theme.typo.Label_M};
 `;
 
+export const Credit = styled.p`
+  width: 100%;
+  position: absolute;
+  bottom: 8px;
+  font-size: 8px;
+  color: ${Theme.colors.Label_Assitive};
+  text-align: center;
+`;
+
 export const ButtonContainer = styled.div`
   background: ${Theme.colors.Bg_Default};
   width: 100%;

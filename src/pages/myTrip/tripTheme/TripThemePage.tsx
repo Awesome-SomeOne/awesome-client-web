@@ -85,7 +85,7 @@ const TripThemePage = ({
             <S.BoxContainer onClick={handleThemeClick}>
               {THEME_LIST.filter((theme) => !recommend || theme.name !== "직접 입력") // 추천 페이지인 경우 '직접 입력' 제외
                 .map((theme) => (
-                  <S.Box key={theme.id} selected={selectedTheme === theme.name}>
+                  <S.Box key={theme.id} selected={selectedTheme === theme.name} bgUrl={`/images/theme/${theme.id}.svg`}>
                     {theme.name}
                   </S.Box>
                 ))}

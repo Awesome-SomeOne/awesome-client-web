@@ -8,6 +8,7 @@ import { useGetRecommendIsland, useGetRecommendPlace } from "@/apis/myTrip/myTri
 import { useAtom } from "jotai";
 import { islandIdAtom } from "@/atoms/myTrip/planAtom";
 import ErrorBoundary from "@/hooks/Errorboundary";
+import { ISLAND_LIST } from "@/constants/myTripPageConstants";
 
 const RecommendedIsland = ({
   theme,
@@ -66,6 +67,7 @@ const RecommendedIsland = ({
               <S.IslandName>{recommendIsland?.islandName}</S.IslandName>
               <S.IslandAddress>{recommendIsland?.address}</S.IslandAddress>
             </S.TextContainer>
+            <S.Credit>{ISLAND_LIST.find((island) => island.name === recommendIsland.islandName)?.credit}</S.Credit>
           </S.IslandCard>
           <S.ButtonContainer>
             <Button text="일정에 추가하기" size="lg" onClick={handleSelect} />

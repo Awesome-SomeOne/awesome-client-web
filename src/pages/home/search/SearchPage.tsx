@@ -16,8 +16,6 @@ const SearchPageContent = () => {
 
   const { data: searchResult = [] } = useSearchPlaces({ keyword: searchQuery });
 
-  console.log(searchResult);
-
   // useEffect(() => {
   // 최근 검색어 불러오기
   // setKeywords(["테스트", "테스트", "테스트"]);
@@ -35,7 +33,7 @@ const SearchPageContent = () => {
 
   return (
     <>
-      {!searchResult.length ? (
+      {!searchQuery ? (
         <>
           <div style={{ height: "100%", paddingTop: "56px", overflow: "hidden" }}>
             <Appbar
