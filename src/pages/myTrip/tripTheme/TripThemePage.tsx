@@ -104,14 +104,7 @@ const TripThemePage = ({
           </BottomSheet>
         </div>
       ) : (
-        recommend && (
-          <RecommendedIslandPage
-            theme={selectedTheme}
-            onPrev={handlePrev}
-            onNext={onNext}
-            setSelectedPlaces={setSelectedPlaces}
-          />
-        )
+        recommend && <RecommendedIslandPage onPrev={handlePrev} onNext={onNext} setSelectedPlaces={setSelectedPlaces} />
       )}
     </>
   );

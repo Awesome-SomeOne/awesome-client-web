@@ -62,3 +62,12 @@ export const ListContainer = styled.div`
   overflow: auto;
   height: calc(100% - 64px);
 `;
+
+export const ChipRow = styled.div`
+  width: 100%;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: auto;
+`;

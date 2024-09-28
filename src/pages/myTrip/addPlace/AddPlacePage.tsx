@@ -15,30 +15,25 @@ import { useAtom } from "jotai";
 import { daysAtom, planAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
 import { useGetPopularPlace, useGetRecommendPlace, useSearchPlace } from "@/apis/myTrip/myTrip.queries";
 import { CATEGORY_LIST } from "@/constants/homePageConstants";
-import { ISLAND_LIST } from "@/constants/myTripPageConstants";
+import { ISLAND_LIST, THEME_LIST } from "@/constants/myTripPageConstants";
 import ErrorBoundary from "@/hooks/Errorboundary";
 
-const AddPlace = ({ onPrev, day, planName }: { onPrev: () => void; day: number; planName?: string }) => {
+const AddPlace = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [selectedPlaces, setSelectedPlaces] = useState<Place[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSelectedList, setShowSelectedList] = useState(false);
   const [keywords, setKeywords] = useState<string[]>([]);
-  const [{ islandId, planName: category }] = useAtom(planAtom);
+  const [{ islandId, planName: theme }] = useAtom(planAtom);
   const recommendedPlaces: Place[] = [];
+  const [selectedCategory, setSelectedCategory] = useState(CATEGORY_LIST[0]);
 
   if (islandId) {
-    if (planName && CATEGORY_LIST.includes(planName)) {
+    if (theme && THEME_LIST.find((t) => t.name === theme)) {
       const { data: places } = useGetRecommendPlace({
         islandId,
-        category: planName
-      });
-      places?.map((place: Place) => recommendedPlaces.push(place));
-    } else if (category && CATEGORY_LIST.includes(category)) {
-      const { data: places } = useGetRecommendPlace({
-        islandId,
-        category
+        category: selectedCategory
       });
       places?.map((place: Place) => recommendedPlaces.push(place));
     } else {
@@ -130,13 +125,23 @@ const AddPlace = ({ onPrev, day, planName }: { onPrev: () => void; day: number; 
         <>
           <GeneralHeader
             title={
-              planName && CATEGORY_LIST.includes(planName)
-                ? `${planName}에 추천하는 장소`
-                : category && CATEGORY_LIST.includes(category)
-                  ? `${category}에 추천하는 장소`
-                  : `${ISLAND_LIST.find((island) => island.id === islandId)?.name}의 인기장소`
+              theme && THEME_LIST.find((t) => t.name === theme)
+                ? `${theme}에 추천하는 장소`
+                : `${ISLAND_LIST.find((island) => island.id === islandId)?.name}의 인기장소`
             }
           />
+          {theme && THEME_LIST.find((t) => t.name === theme) && (
+            <S.ChipRow>
+              {CATEGORY_LIST.map((category) => (
+                <Chip
+                  text={category}
+                  hierarchy="primary"
+                  selected={selectedCategory === category}
+                  onChipClick={() => setSelectedCategory(category)}
+                />
+              ))}
+            </S.ChipRow>
+          )}
           <S.ListContainer isSelected={selectedPlaces.length > 0}>
             {recommendedPlaces.map((place, index) => (
               <ListComponent
@@ -216,7 +221,7 @@ const AddPlace = ({ onPrev, day, planName }: { onPrev: () => void; day: number; 
   );
 };
 
-const AddPlacePage = ({ ...props }: { onPrev: () => void; day: number; planName?: string }) => {
+const AddPlacePage = ({ ...props }: { onPrev: () => void; day: number }) => {
   return (
     <div
       style={{

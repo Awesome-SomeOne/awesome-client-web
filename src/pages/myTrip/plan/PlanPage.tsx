@@ -17,7 +17,7 @@ import { Map } from "react-kakao-maps-sdk";
 import { useParams } from "react-router-dom";
 import { useAtom } from "jotai";
 import * as S from "./styles";
-import { daysAtom, daysInitAtom, islandIdAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
+import { daysAtom, daysInitAtom, islandIdAtom, planNameAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
 import { differenceInCalendarDays, parseISO } from "date-fns";
 import { ISLAND_LIST } from "@/constants/myTripPageConstants";
 import { Day, Place } from "@/types/myTrip";
@@ -50,6 +50,7 @@ const PlanContent = () => {
   const [days] = useAtom(daysAtom);
   const addPlacesToDay = useUpdateDaysAtom();
   const [, setIslandId] = useAtom(islandIdAtom);
+  const [, setPlanName] = useAtom(planNameAtom);
 
   const [positionList, setPositionList] = useState([]);
   const [position, setPosition] = useState<{ lat: string; lng: string }>();
@@ -100,6 +101,7 @@ const PlanContent = () => {
     if (!islandName) return;
     const islandId = ISLAND_LIST.find((island) => island.name === islandName)?.id;
     islandId && setIslandId(islandId);
+    planName && setPlanName(planName);
     setPageState((prev) => ({ ...prev, showToast: true }));
     const timer = setTimeout(() => setPageState((prev) => ({ ...prev, showToast: false })), 1500);
     return () => {
@@ -290,7 +292,7 @@ const PlanContent = () => {
           />
         </div>
       )}
-      {pageState.isAdding && <AddPlacePage onPrev={onPrev} day={day} planName={planName} />}
+      {pageState.isAdding && <AddPlacePage onPrev={onPrev} day={day} />}
       {pageState.isEditing && <EditPlanPage onPrev={onPrev} />}
       <BottomSheet isOpen={pageState.showDelete} close={() => setPageState((prev) => ({ ...prev, showDelete: false }))}>
         <S.BottomSheetContainer>

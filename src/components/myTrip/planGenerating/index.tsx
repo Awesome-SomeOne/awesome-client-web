@@ -57,9 +57,10 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
 
   // Day 일정 불러오기
   useEffect(() => {
-    if (days.length === 0) return;
-    setTravelPlaceList(days[selectedDay - 1].places);
-  }, [selectedDay]);
+    if (days.length > 0) {
+      setTravelPlaceList(days[selectedDay - 1].places);
+    }
+  }, [days, selectedDay]);
 
   useEffect(() => {
     if (selectedPlace) {
@@ -99,19 +100,23 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
     onSelect(day);
   };
 
-  const addPlaces = (tripId: number) => {
+  const addPlaces = async (tripId: number) => {
     for (const day of days) {
-      if (!day.places.length) return;
-      addManyPlace({
-        travelPlanId: tripId,
-        businessIds: day.places.map((place: Place) => place.id),
-        date: day.date
-      });
+      if (!day.places.length) continue;
+      try {
+        await addManyPlace({
+          travelPlanId: tripId,
+          businessIds: day.places.map((place: Place) => place.id),
+          date: day.date
+        });
+      } catch (error) {
+        window.location.reload();
+      }
     }
   };
 
   // 일정 생성하기 버튼 클릭 시
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (recommendedPlaces?.length) {
       setModalOpen(true);
     } else {
@@ -119,17 +124,16 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
         return;
       }
       // 일정 생성하기 > tripId 받기 > 페이지 이동하기
-      generatePlan(
-        { islandId, startDate, endDate, planName },
-        {
-          onSuccess: (data: { islandId: number }) => {
-            const { islandId: tripId } = data;
-            addPlaces(tripId);
-            setDays([]);
-            navigate({ pathname: PATH.MY_TRIP(tripId) }, { state: { generated: true } });
-          }
-        }
-      );
+      try {
+        const data = await generatePlan({ islandId, startDate, endDate, planName });
+        const { islandId: tripId } = data;
+
+        await addPlaces(tripId);
+        setDays([]);
+        navigate({ pathname: PATH.MY_TRIP(tripId) }, { state: { generated: true } });
+      } catch (error) {
+        window.location.reload();
+      }
     }
   };
 
@@ -146,8 +150,9 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
 
   // 추천 장소 추가
   const handleAddPlace = () => {
-    // 선택한 Day에 장소 추가하기
     if (!selectedPlace) return;
+
+    // 선택한 Day에 장소 추가하기
     addPlacesToDay(parseInt(selectedBottomSheetDay.slice(4)), [selectedPlace]);
 
     // chip 목록에서 제거하기
@@ -232,7 +237,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
               {index === travelPlaceList.length - 1 && (
                 <div style={{ display: "flex", gap: "4px", height: "96px" }}>
                   <div style={{ width: "24px", textAlign: "center", padding: "8px 0 56px 0" }}>
-                    <S.IconContainer bgUrl={`/src/assets/icons/placeIcon${index + 2}.svg`}>
+                    <S.IconContainer bgUrl={`/icons/placeIcon${index + 2}.svg`}>
                       <S.NumberCircle>{index + 2}</S.NumberCircle>
                     </S.IconContainer>
                   </div>
@@ -285,7 +290,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
       )}
       {recommended && (
         <SimpleModal
-          image="/src/assets/images/warning.svg"
+          image="/images/warning.svg"
           title="일정에 넣지 않은 추천 장소가 있어요"
           content="일정에 추가하지 않으면 사라져요! 그래도 생성하시겠습니까?"
           firstButtonText="취소"

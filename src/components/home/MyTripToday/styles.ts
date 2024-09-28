@@ -41,6 +41,7 @@ export const Info = styled.div`
 export const Image = styled.img`
   width: 24px;
   aspect-ratio: 1;
+  border-radius: 4px;
 `;
 
 export const Address = styled.span`
