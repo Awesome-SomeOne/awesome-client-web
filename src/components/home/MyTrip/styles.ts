@@ -29,8 +29,8 @@ export const Paragraph = styled.p`
 `;
 
 // 다녀온 여행 있을 때
-export const ImageBox = styled.div`
-  background: url("/images/itinerary.png");
+export const ImageBox = styled.div<{ bgUrl: string; credit: string }>`
+  background: url(${(props) => props.bgUrl});
   background-size: cover;
   background-position: center;
   width: 100%;
@@ -39,6 +39,17 @@ export const ImageBox = styled.div`
   border: 1px solid #76b2ef80;
   border-radius: 8px;
   position: relative;
+
+  &::after {
+    content: "${(props) => props.credit}";
+    color: ${Theme.colors.Label_Assitive};
+    font-size: 8px;
+    width: 100%;
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    text-align: end;
+  }
 `;
 
 export const Chip = styled.div`
