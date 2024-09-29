@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "@/App";
 import BottomNavBar from "@/components/common/bottomNavBar";
+import Button from "@/components/common/button";
 import { PATH } from "@/constants/path";
 import ErrorBoundary from "@/hooks/Errorboundary";
 import CommunityPage from "@/pages/community/CommunityPage";
@@ -55,8 +56,17 @@ const AppRouter = () => {
               element: (
                 <ErrorBoundary
                   fallback={
-                    <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "1rem",
+                        padding: "60px 1rem"
+                      }}
+                    >
                       에러가 발생했습니다. 다시 시도해 주세요.
+                      <Button text="다시 시도" onClick={() => window.location.reload()} />
                       <BottomNavBar />
                     </div>
                   }
