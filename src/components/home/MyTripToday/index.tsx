@@ -54,7 +54,7 @@ const MyTripTodayContent = () => {
 
 const MyTripToday = () => {
   return (
-    <ErrorBoundary fallback={<>에러 발생</>}>
+    <ErrorBoundary fallback={<></>}>
       <Suspense fallback={<>로딩중...</>}>
         <MyTripTodayContent />
       </Suspense>
