@@ -60,7 +60,7 @@ const MyTrip = () => {
             subOnClick={() => navigate(PATH.MY_TRIP_RECORD_LIST)}
           />
           <S.MyTripContainer>
-            <S.ImageBox bgUrl={mostRecentPastPlan.img_url} credit={credit}>
+            <S.ImageBox bgUrl={mostRecentPastPlan.img_url} credit={credit || ""}>
               <S.Chip>{`${dayjs(mostRecentPastPlan.end_date).fromNow(true)}전`}</S.Chip>
               <S.Info>
                 <S.Title>{mostRecentPastPlan.name}</S.Title>
