@@ -8,6 +8,8 @@ import GeneralHeader from "@/components/common/generalHeader/index";
 import { PATH } from "@/constants/path";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
+import ErrorBoundary from "@/hooks/Errorboundary";
+import { Suspense } from "react";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -22,7 +24,7 @@ interface Plan {
   img_url: string;
 }
 
-const MyTrip = () => {
+const MyTripContent = () => {
   const navigate = useNavigate();
   const { data: plans = [] } = useGetPlans();
   const today = dayjs();
@@ -75,6 +77,16 @@ const MyTrip = () => {
         </div>
       )}
     </S.MyTripLayout>
+  );
+};
+
+const MyTrip = () => {
+  return (
+    <ErrorBoundary fallback={<></>}>
+      <Suspense fallback={<>로딩중...</>}>
+        <MyTripContent />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
