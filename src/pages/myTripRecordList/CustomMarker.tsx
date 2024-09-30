@@ -20,7 +20,7 @@ export default function CustomMarker({ position, image, isSelected, onClick }: m
   useEffect(() => {
     if (isSelected) {
       setMarker({
-        src: "/src/assets/images/ImageMarker/SelectedImageMarker.svg",
+        src: "/icons/mapMarker/selectedMarker.svg",
         size: { width: 36, height: 50 }
       });
     } else {

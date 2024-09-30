@@ -1,45 +1,40 @@
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/ko";
-import { ISLAND_LIST } from "@/constants/myTripPageConstants";
-import { useGetPlan, useGetPlans } from "@/apis/myTrip/myTrip.queries";
+import { useGetMyTripRecordList } from "@/apis/myTripRecordList/myTripRecordList.quaries";
 import Button from "@/components/common/button/index";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import { PATH } from "@/constants/path";
+import ErrorBoundary from "@/hooks/Errorboundary";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
-import ErrorBoundary from "@/hooks/Errorboundary";
-import { Suspense } from "react";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
-
-interface Plan {
+interface Records {
   planId: number;
-  name: string;
-  address: string;
-  start_date: string;
-  end_date: string;
-  status: string;
-  img_url: string;
+  islandName: string;
+  recordTitle: string;
+  recordContent: string;
+  imageUrls: string;
+  startDate: string;
+  endDate: string;
 }
 
 const MyTripContent = () => {
   const navigate = useNavigate();
-  const { data: plans = [] } = useGetPlans();
+  const { data: records = [] } = useGetMyTripRecordList();
   const today = dayjs();
 
-  const pastPlans = plans?.filter((plan: Plan) => dayjs(plan.end_date).isBefore(today));
-  const mostRecentPastPlan = pastPlans?.sort((a: Plan, b: Plan) => dayjs(b.end_date).diff(dayjs(a.end_date)))[0];
-
-  const {
-    data: { islandName }
-  } = useGetPlan({ planId: mostRecentPastPlan.planId });
-  const credit = ISLAND_LIST.find((island) => island.name === islandName)?.credit;
+  const pastRecords = records?.filter((record: Records) => dayjs(record.endDate).isBefore(today));
+  const mostRecentPastRecord = pastRecords?.sort((a: Records, b: Records) =>
+    dayjs(b.endDate).diff(dayjs(a.endDate))
+  )[0];
 
   return (
     <S.MyTripLayout>
-      {!plans.length ? (
+      {!records.length ? (
         /* 다녀온 여행 없을 때 */
         <>
           <GeneralHeader title="내 여행 추억" spacingSize="md" titleSize="sm" />
@@ -52,7 +47,7 @@ const MyTripContent = () => {
         </>
       ) : (
         /* 다녀온 여행 있을 때 */
-        <div onClick={() => navigate(PATH.MY_TRIP(mostRecentPastPlan.planId))}>
+        <div>
           <GeneralHeader
             title="내 여행 추억"
             sub="추억 모아보기"
@@ -61,15 +56,15 @@ const MyTripContent = () => {
             subColor="#1A80E5"
             subOnClick={() => navigate(PATH.MY_TRIP_RECORD_LIST)}
           />
-          <S.MyTripContainer>
-            <S.ImageBox bgUrl={mostRecentPastPlan.img_url} credit={credit || ""}>
-              <S.Chip>{`${dayjs(mostRecentPastPlan.end_date).fromNow(true)}전`}</S.Chip>
+          <S.MyTripContainer onClick={() => navigate(PATH.MY_TRIP(mostRecentPastRecord.planId))}>
+            <S.ImageBox bgUrl={mostRecentPastRecord.imageUrls[0]} credit={mostRecentPastRecord.islandName}>
+              <S.Chip>{`${dayjs(mostRecentPastRecord.end_date).fromNow(true)}전`}</S.Chip>
               <S.Info>
-                <S.Title>{mostRecentPastPlan.name}</S.Title>
+                <S.Title>{mostRecentPastRecord.recordTitle}</S.Title>
                 <S.Itinerary>
-                  {dayjs(mostRecentPastPlan.start_date).format("YYYY.MM.DD")}~
+                  {dayjs(mostRecentPastRecord.startDate).format("YYYY.MM.DD")}~
                   <br />
-                  {dayjs(mostRecentPastPlan.end_date).format("YYYY.MM.DD")}
+                  {dayjs(mostRecentPastRecord.endDate).format("YYYY.MM.DD")}
                 </S.Itinerary>
               </S.Info>
             </S.ImageBox>

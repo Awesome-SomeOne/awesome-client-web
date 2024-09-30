@@ -17,7 +17,8 @@ export default function MyTripRecordList() {
   const navigate = useNavigate();
   const [selectedMarkerId, setSelectedMarkerId] = useState(0);
 
-  const { data: items } = useGetMyTripRecordList();
+  // 추억 item
+  const { data: records } = useGetMyTripRecordList();
 
   const [content, setContent] = useState<null | {
     review: string;
@@ -31,8 +32,8 @@ export default function MyTripRecordList() {
     setSelectedMarkerId(item.recordId);
 
     setContent({
-      review: item.oneLineReview,
-      detailReview: item.overallReview,
+      review: item.recordTitle,
+      detailReview: item.recordContent,
       image1: item.businessReviews[0].imageUrls[0],
       image2: item.businessReviews[0].imageUrls[1],
       image3: item.businessReviews[0].imageUrls[2]
@@ -57,22 +58,33 @@ export default function MyTripRecordList() {
           level={13}
           style={{ width: "100%", height: "100%" }}
         >
-          {items &&
-            items.map((item: any) => (
-              <CustomMarker
-                key={item.recordId}
-                position={{ lat: item.businessReviews[0].yaddress, lng: item.businessReviews[0].xaddress }}
-                image={{
-                  src: "/images/ImageMarker/DefaultImageMarker.svg",
-                  size: {
-                    width: 24,
-                    height: 32
-                  }
-                }}
-                isSelected={item.recordId === selectedMarkerId}
-                onClick={() => handleMarkerClick(item)}
-              />
-            ))}
+          {records &&
+            records.map((record: any) => {
+              // 첫 번째 키
+              const firstKey = Object.keys(record.businessReviews)[0];
+              // 첫 번째 키에 해당하는 리뷰에서 yaddress 가져오기
+              // const lng = record.businessReviews[firstKey][0].xaddress;
+              // const lat = record.businessReviews[firstKey][0].yaddress;
+
+              const lng = 126.4880396;
+              const lat = 37.7465684;
+
+              return (
+                <CustomMarker
+                  key={record.recordId}
+                  position={{ lat, lng }}
+                  image={{
+                    src: "/icons/mapMarker/defaultMarker.svg",
+                    size: {
+                      width: 24,
+                      height: 32
+                    }
+                  }}
+                  isSelected={record.recordId === selectedMarkerId}
+                  onClick={() => handleMarkerClick(record)}
+                />
+              );
+            })}
         </Map>
       </S.MapContainer>
       {content && (
