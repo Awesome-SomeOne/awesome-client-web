@@ -27,7 +27,7 @@ const PopularPlaceContent = () => {
           index: number
         ) => (
           <Place
-            image={"/images/popular1.png"}
+            image={place.imgUrl || "/images/popular1.png"}
             ranking={index + 1}
             name={place.name}
             onClick={() => navigate(PATH.PLACE_DETAIL(place.id))}
