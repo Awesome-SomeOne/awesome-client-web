@@ -25,7 +25,13 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback;
+      return (
+        this.props.fallback ?? (
+          <div>
+            에러가 발생했습니다. <button onClick={() => window.location.reload()}>다시 시작</button>
+          </div>
+        )
+      );
     }
 
     return this.props.children;

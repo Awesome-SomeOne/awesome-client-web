@@ -2,14 +2,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useGetMyTripRecordDetail } from "@/apis/businessReview/businessReview.queries";
 import { useGetPlan } from "@/apis/myTrip/myTrip.queries";
 import Clear from "@/assets/icons/Clear";
 import ClearIcon from "@/assets/icons/ClearIcon";
 import MoreIcon from "@/assets/icons/MoreIcon";
-import { recordIdAtom } from "@/atoms/myTrip/planAtom";
 import BottomSheet from "@/components/common/bottomSheet";
 import Appbar from "@/components/common/header/Appbar";
 import TabAnatomy from "@/components/common/tabAnatomy";
@@ -35,7 +34,7 @@ const MyTripRecordDetailPage = () => {
     setSelectedTab((e.target as HTMLElement).innerText);
   };
 
-  const [recordId] = useAtom(recordIdAtom);
+  const recordId = Number(useParams().recordId);
   const { data, isLoading } = useGetMyTripRecordDetail(recordId!);
   const queryClient = useQueryClient();
   console.log(data);
@@ -81,7 +80,7 @@ const MyTripRecordDetailPage = () => {
           </S.Text>
         </S.SpotAndDateContainer>
 
-        <TabAnatomy tabs={["여행 추억", "일정"]} selectedTab={selectedTab} onClick={handleTab} />
+        <TabAnatomy tabs={["여행 추억"]} selectedTab={selectedTab} onClick={handleTab} />
 
         {selectedTab === "여행 추억" ? (
           <DetailTravelMemories

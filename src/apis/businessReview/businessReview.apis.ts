@@ -13,6 +13,12 @@ export const postCreateTravelRecord = async (req: FormData) => {
   return response.data;
 };
 
+// 추억 수정하기
+export const postUpdateTravelRecord = async (req: FormData) => {
+  const response = await customAxiosMultipart.post(`/api/travel-records/update/${req.get("recordId")}`, req);
+  return response.data;
+};
+
 // 내 추억 기록 상세 페이지 조회
 export const getMyTripRecordDetail = async (recordId: number): Promise<GetMyTripRecordDetailRes> => {
   const response = await customAxios.get(`/api/travel-records/view/${recordId}`);
