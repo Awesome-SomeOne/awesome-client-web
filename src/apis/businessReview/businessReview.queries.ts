@@ -7,10 +7,11 @@ import {
   getMyTripRecordDetail,
   getTravelRecordByPlanId,
   postCreateTravelRecord,
-  postIslandReview
+  postIslandReview,
+  postUpdateTravelRecord
 } from "./businessReview.apis";
 import { PostIslandReviewReq } from "./businessReview.type";
-import { recordIdAtom } from "@/atoms/myTrip/planAtom";
+import { PATH } from "@/constants/path";
 
 // 섬 리뷰 생성 또는 업데이트
 export const usePostIslandReview = () => {
@@ -19,16 +20,28 @@ export const usePostIslandReview = () => {
   });
 };
 
-// 추억 생성하기
+// 추억 기록 생성하기
 export const usePostCreateTravelRecord = (planId: number) => {
   const navigate = useNavigate();
-  const [, setRecordId] = useAtom(recordIdAtom);
 
   return useMutation({
     mutationFn: (req: FormData) => postCreateTravelRecord(req),
     onSuccess: (res) => {
-      setRecordId(res.recordId);
-      navigate(`/my-trip-record/${planId}/detail`);
+      navigate(PATH.MY_TRIP_RECORD_DETAIL(planId, res.recordId));
+    }
+  });
+};
+
+// 추억 기록 수정하기
+export const usePostUpdateTravelRecord = (planId: number) => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    // mutationFn: (req: FormData) => postUpdateTravelRecord(req, recordId),
+    mutationFn: (req: FormData) => postUpdateTravelRecord(req),
+    onSuccess: (res) => {
+      console.log("res", res);
+      navigate(PATH.MY_TRIP_RECORD_DETAIL(planId, res.recordId));
     }
   });
 };

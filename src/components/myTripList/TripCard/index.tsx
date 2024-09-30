@@ -32,14 +32,14 @@ const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate }
       <S.ButtonWrapper>
         <LineButton
           text="추억 기록하기"
-          onClick={() => navigate(PATH.MY_TRIP_RECORD(id))}
+          onClick={() => navigate(`${PATH.MY_TRIP_RECORD(id)}?recordId=${recordId}`)}
           size="sm"
           style={{ width: "100%" }}
         />
         {recordId && (
           <LineButton
             text="자세히 보기"
-            onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(recordId))}
+            onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(id, recordId))}
             size="sm"
             style={{ width: "100%" }}
           />

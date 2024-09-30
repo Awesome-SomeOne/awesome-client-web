@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
-import { useGetTravelRecordByPlanId, usePostCreateTravelRecord } from "@/apis/businessReview/businessReview.queries";
+import {
+  useGetTravelRecordByPlanId,
+  usePostCreateTravelRecord,
+  usePostUpdateTravelRecord
+} from "@/apis/businessReview/businessReview.queries";
 import Clear from "@/assets/icons/Clear";
 import Button from "@/components/common/button";
 import Appbar from "@/components/common/header/Appbar";
@@ -16,11 +20,15 @@ import SpotCard from "@/components/myTripRecord/SpotCard";
 import * as S from "./styles";
 
 const MyTripRecordPage = () => {
-  const [pageOrder, setPageOrder] = useState(0);
-  const [selectedTab, setSelectedTab] = useState("1");
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { tripId } = useParams<{ tripId: string }>();
   const planId = parseInt(tripId!);
+  const recordId = Number(searchParams.get("recordId"));
+
+  const [pageOrder, setPageOrder] = useState(recordId ? 1 : 0);
+  const [selectedTab, setSelectedTab] = useState("1");
+
   const handleTab = (e: React.MouseEvent<HTMLElement>) => {
     setSelectedTab(e.currentTarget.innerText);
   };
@@ -28,6 +36,7 @@ const MyTripRecordPage = () => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   const { mutate: postCreateTravelRecord } = usePostCreateTravelRecord(planId);
+  const { mutate: postUpdateTravelRecord } = usePostUpdateTravelRecord(planId);
   const { data: travelRecordByPlanId } = useGetTravelRecordByPlanId(planId);
   console.log("travelRecordByPlanId", travelRecordByPlanId);
 
@@ -40,35 +49,55 @@ const MyTripRecordPage = () => {
 
   const onSubmit = async (data: { oneLineReview: string; overallReview: string }) => {
     const formData = new FormData();
-    for (let i = 0; i < selectedImages.length; i++) {
-      try {
-        const [mimeType, base64Data] = selectedImages[i].split(",");
-        const type = mimeType.match(/:(.*?);/)?.[1] || "image/jpeg";
+    if (selectedImages.length > 0) {
+      for (let i = 0; i < selectedImages.length; i++) {
+        try {
+          const [mimeType, base64Data] = selectedImages[i].split(",");
+          const type = mimeType.match(/:(.*?);/)?.[1] || "image/jpeg";
 
-        const byteCharacters = atob(base64Data);
-        const byteNumbers = new Array(byteCharacters.length);
-        for (let j = 0; j < byteCharacters.length; j++) {
-          byteNumbers[j] = byteCharacters.charCodeAt(j);
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let j = 0; j < byteCharacters.length; j++) {
+            byteNumbers[j] = byteCharacters.charCodeAt(j);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type });
+
+          const fileName = `image_${Date.now()}_${i}.${type.split("/")[1]}`;
+          const file = new File([blob], fileName, { type });
+
+          formData.append("images", file);
+        } catch (error) {
+          console.error("Error processing image:", error);
         }
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type });
-
-        const fileName = `image_${Date.now()}_${i}.${type.split("/")[1]}`;
-        const file = new File([blob], fileName, { type });
-
-        formData.append("images", file);
-      } catch (error) {
-        console.error("Error processing image:", error);
+      }
+    } else {
+      console.log("travelRecordByPlanId?.imageUrls", travelRecordByPlanId?.imageUrls);
+      if (travelRecordByPlanId?.imageUrls) {
+        for (let i = 0; i < travelRecordByPlanId.imageUrls.length; i++) {
+          try {
+            const response = await fetch(travelRecordByPlanId.imageUrls[i]);
+            const blob = await response.blob();
+            const fileName = `image_${Date.now()}_${i}.jpg`;
+            const file = new File([blob], fileName, { type: "image/jpeg" });
+            console.log("file---------------", file);
+            formData.append("images", file);
+          } catch (error) {
+            console.error("이미지 처리 중 오류 발생:", error);
+          }
+        }
       }
     }
-
     formData.append("planId", planId.toString());
     // formData.append("publicPrivate", isPublic.toString());
     formData.append("publicPrivate", "false");
     formData.append("oneLineReview", data.oneLineReview);
     formData.append("overallReview", data.overallReview);
+    if (recordId) {
+      formData.append("recordId", recordId.toString());
+    }
 
-    postCreateTravelRecord(formData);
+    recordId ? postUpdateTravelRecord(formData) : postCreateTravelRecord(formData);
   };
 
   useEffect(() => {
@@ -160,14 +189,24 @@ const MyTripRecordPage = () => {
               <S.PhotoContainer>
                 <S.Text className="label">사진</S.Text>
                 <S.ImageContainer>
-                  {selectedImages.map((data, index) => (
-                    <img
-                      key={index}
-                      src={data}
-                      alt={`Selected image ${index + 1}`}
-                      style={{ width: 64, height: 64, margin: 5 }}
-                    />
-                  ))}
+                  {travelRecordByPlanId?.imageUrls &&
+                    travelRecordByPlanId?.imageUrls.map((data: any, index: number) => (
+                      <img
+                        key={index}
+                        src={data}
+                        alt={`Selected image ${index + 1}`}
+                        style={{ width: 64, height: 64, margin: 5 }}
+                      />
+                    ))}
+                  {selectedImages &&
+                    selectedImages.map((data, index) => (
+                      <img
+                        key={index}
+                        src={data}
+                        alt={`Selected image ${index + 1}`}
+                        style={{ width: 64, height: 64, margin: 5 }}
+                      />
+                    ))}
                 </S.ImageContainer>
               </S.PhotoContainer>
 
