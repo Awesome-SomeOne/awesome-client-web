@@ -328,7 +328,7 @@ const PlaceContainer = ({
   checked: boolean;
   onClick: () => void;
 }) => {
-  const { id, name, category, address } = place;
+  const { id, name, category, address, imgUrl } = place;
   return (
     <Draggable key={`day${day}-place${id}`} draggableId={`day${day}-place${id}`} index={index}>
       {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
@@ -342,7 +342,7 @@ const PlaceContainer = ({
         >
           <img src="/icons/handle.svg" {...provided.dragHandleProps} />
           <S.PlaceBox>
-            <S.PlaceImage src={"/images/place.png"} />
+            <S.PlaceImage src={imgUrl || "/images/place.png"} />
             <div style={{ width: "100%" }}>
               <S.UpperText>
                 <S.PlaceName>{name}</S.PlaceName>
