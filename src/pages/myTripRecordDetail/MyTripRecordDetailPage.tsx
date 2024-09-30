@@ -101,7 +101,7 @@ const MyTripRecordDetailPage = () => {
         >
           수정하기
         </S.MenuButton>
-        <S.MenuButton>삭제하기</S.MenuButton>
+        {/* <S.MenuButton>삭제하기</S.MenuButton>
         <S.MenuButton
           onClick={() => {
             setShowReportPage(true);
@@ -109,7 +109,7 @@ const MyTripRecordDetailPage = () => {
           }}
         >
           신고하기
-        </S.MenuButton>
+        </S.MenuButton> */}
       </BottomSheet>
       {showReportPage && (
         <div style={{ height: "100%", position: "absolute", top: 0, width: "100%", backgroundColor: "white" }}>
