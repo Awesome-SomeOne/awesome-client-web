@@ -3,11 +3,12 @@
  * @Author 백선우
  */
 
-import { PATH } from "@/constants/path";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import * as S from "./styles";
 import BottomNavBar from "@/components/common/bottomNavBar";
+import { PATH } from "@/constants/path";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function MyPage() {
   const Buttons = [
     { text: "계정 정보", url: PATH.ACCOUNT_INFORMATION },
     // { text: "알림 설정", url: PATH.NOTIFICATION_SETTING },
-    { text: "내가 쓴 후기", url: PATH.MY_REVIEW },
+    // { text: "내가 쓴 후기", url: PATH.MY_REVIEW },
     { text: "이용 약관", url: PATH.TERMS },
     { text: "문의하기", url: PATH.CONTACT }
   ];
