@@ -11,6 +11,7 @@ const ListComponent = ({
     name: string;
     address: string;
     img_url?: string;
+    imgUrl?: string;
     category?: string;
   };
   onClick: () => void;
@@ -19,7 +20,7 @@ const ListComponent = ({
 }) => {
   return (
     <S.ListContainer onClick={onClick} selected={selected}>
-      <S.PlaceImage src={place.img_url} />
+      <S.PlaceImage src={place.imgUrl || place.img_url} />
       <S.PlaceContainer>
         <S.UpperText>
           <S.PlaceName>{place.name}</S.PlaceName>

@@ -55,7 +55,7 @@ const AddPlace = ({ onPrev, day }: { onPrev: () => void; day: number }) => {
 
   useEffect(() => {
     // 최근 검색어 불러오기
-    setKeywords(["테스트", "테스트", "테스트"]);
+    // setKeywords(["테스트", "테스트", "테스트"]);
   }, []);
 
   const handleAddClick = () => {
