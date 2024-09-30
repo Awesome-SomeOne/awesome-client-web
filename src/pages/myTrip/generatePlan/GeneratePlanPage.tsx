@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import PlanGenerating from "@/components/myTrip/planGenerating/index";
 import { useEffect, useState } from "react";
@@ -65,7 +66,11 @@ const GeneratePlanPage = ({ recommended = [] }: { recommended?: Place[] }) => {
       {!isEditing && !isAdding && (
         <>
           <div style={{ height: "100%", paddingTop: "56px", overflow: "hidden" }}>
-            <GeneralHeader title={islandName} sub={`${startDate} ~ ${endDate}`} titleSize="md" />
+            <GeneralHeader
+              title={islandName}
+              sub={`${dayjs(startDate).format("YYYY.MM.DD")} ~ ${dayjs(endDate).format("YYYY.MM.DD")}`}
+              titleSize="md"
+            />
             {positionList.length ? (
               <MapComponent positionList={positionList} />
             ) : (

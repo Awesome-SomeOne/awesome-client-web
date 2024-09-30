@@ -1,15 +1,13 @@
-import { Map, MapMarker, Polyline } from "react-kakao-maps-sdk";
+import { Map, MapMarker, Polyline, useMap } from "react-kakao-maps-sdk";
+import { useEffect, useMemo } from "react";
 import { Theme } from "@/styles/theme";
 
 export const MapComponent = ({ positionList }: { positionList: { lat: number; lng: number }[] }) => {
   const imageSize = { width: 16, height: 16 };
-
-  const averageLat = positionList.reduce((sum, position) => sum + position.lat, 0) / positionList.length;
-  const averageLng = positionList.reduce((sum, position) => sum + position.lng, 0) / positionList.length;
-  const mapCenter = { lat: averageLat - 0.001, lng: averageLng };
+  const mapCenter = { lat: positionList[0].lat, lng: positionList[0].lng };
 
   return (
-    <Map center={mapCenter} style={{ width: "100%", height: "100%" }} level={3}>
+    <Map center={mapCenter} style={{ width: "100%", height: "70%" }} level={3}>
       {positionList.map((position, index) => (
         <MapMarker
           key={index}
@@ -37,8 +35,29 @@ export const MapComponent = ({ positionList }: { positionList: { lat: number; ln
         }
         return null;
       })}
+      <SetMapBounds positionList={positionList} />
     </Map>
   );
+};
+
+const SetMapBounds = ({ positionList }: { positionList: { lat: number; lng: number }[] }) => {
+  const map = useMap();
+
+  const bounds = useMemo(() => {
+    const bounds = new kakao.maps.LatLngBounds();
+    positionList.forEach((position) => {
+      bounds.extend(new kakao.maps.LatLng(position.lat, position.lng));
+    });
+    return bounds;
+  }, [positionList]);
+
+  useEffect(() => {
+    if (map && bounds) {
+      map.setBounds(bounds);
+    }
+  }, [map, bounds]);
+
+  return null;
 };
 
 export default MapComponent;
