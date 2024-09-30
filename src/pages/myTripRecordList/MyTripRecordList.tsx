@@ -8,6 +8,7 @@ import { Map } from "react-kakao-maps-sdk";
 import { useNavigate } from "react-router-dom";
 import CustomMarker from "./CustomMarker";
 import * as S from "./styles";
+import { PATH } from "@/constants/path";
 
 /**
  * 추억 모아보기 페이지
@@ -21,8 +22,12 @@ export default function MyTripRecordList() {
   const { data: records } = useGetMyTripRecordList();
 
   const [content, setContent] = useState<null | {
-    review: string;
+    planId: number;
+    recordId: number;
+    islandName: string;
     detailReview: string;
+    startDate: string;
+    endDate: string;
     image1: string;
     image2?: string;
     image3?: string;
@@ -32,11 +37,15 @@ export default function MyTripRecordList() {
     setSelectedMarkerId(item.recordId);
 
     setContent({
-      review: item.recordTitle,
+      planId: item.planId,
+      recordId: item.recordId,
+      islandName: item.islandName,
       detailReview: item.recordContent,
-      image1: item.businessReviews[0].imageUrls[0],
-      image2: item.businessReviews[0].imageUrls[1],
-      image3: item.businessReviews[0].imageUrls[2]
+      startDate: item.startDate,
+      endDate: item.endDate,
+      image1: item.imageUrls[0],
+      image2: item.imageUrls[1],
+      image3: item.imageUrls[2]
     });
   };
 
@@ -60,19 +69,10 @@ export default function MyTripRecordList() {
         >
           {records &&
             records.map((record: any) => {
-              // 첫 번째 키
-              const firstKey = Object.keys(record.businessReviews)[0];
-              // 첫 번째 키에 해당하는 리뷰에서 yaddress 가져오기
-              // const lng = record.businessReviews[firstKey][0].xaddress;
-              // const lat = record.businessReviews[firstKey][0].yaddress;
-
-              const lng = 126.4880396;
-              const lat = 37.7465684;
-
               return (
                 <CustomMarker
                   key={record.recordId}
-                  position={{ lat, lng }}
+                  position={{ lat: record.latitude, lng: record.longitude }}
                   image={{
                     src: "/icons/mapMarker/defaultMarker.svg",
                     size: {
@@ -88,10 +88,12 @@ export default function MyTripRecordList() {
         </Map>
       </S.MapContainer>
       {content && (
-        <S.CardArticle>
+        <S.CardArticle onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(content.planId, content.recordId))}>
           <RecordCard
-            review={content.review}
+            islandName={content.islandName}
             detailReview={content.detailReview}
+            startDate={content.startDate}
+            endDate={content.endDate}
             image1={content.image1}
             image2={content.image2}
             image3={content.image3}

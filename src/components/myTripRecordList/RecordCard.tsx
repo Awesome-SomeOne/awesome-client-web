@@ -1,22 +1,32 @@
 import * as S from "./styles";
 
 type RecordCard = {
-  review: string;
+  islandName: string;
   detailReview: string;
+  startDate: string;
+  endDate: string;
   image1: string;
   image2?: string;
   image3?: string;
 };
 
-export default function RecordCard({ review, detailReview, image1, image2, image3 }: RecordCard) {
+export default function RecordCard({
+  islandName,
+  detailReview,
+  startDate,
+  endDate,
+  image1,
+  image2,
+  image3
+}: RecordCard) {
   return (
     <S.Root>
       <S.TextSection>
         <S.TopSection>
-          <S.Area>{review}</S.Area>
-          {/* <S.Date>
+          <S.Area>{islandName}</S.Area>
+          <S.Date>
             {startDate} ~ {endDate}
-          </S.Date> */}
+          </S.Date>
         </S.TopSection>
         <S.StyledText>{detailReview}</S.StyledText>
       </S.TextSection>
