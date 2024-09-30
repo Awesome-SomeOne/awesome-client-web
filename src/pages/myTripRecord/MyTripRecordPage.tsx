@@ -36,7 +36,7 @@ const MyTripRecordPage = () => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   const { mutate: postCreateTravelRecord } = usePostCreateTravelRecord(planId);
-  const { mutate: postUpdateTravelRecord } = usePostUpdateTravelRecord(planId, recordId);
+  const { mutate: postUpdateTravelRecord } = usePostUpdateTravelRecord(planId);
   const { data: travelRecordByPlanId } = useGetTravelRecordByPlanId(planId);
   console.log("travelRecordByPlanId", travelRecordByPlanId);
 
@@ -190,7 +190,7 @@ const MyTripRecordPage = () => {
                 <S.Text className="label">사진</S.Text>
                 <S.ImageContainer>
                   {travelRecordByPlanId?.imageUrls &&
-                    travelRecordByPlanId?.imageUrls.map((data, index) => (
+                    travelRecordByPlanId?.imageUrls.map((data: any, index: number) => (
                       <img
                         key={index}
                         src={data}
