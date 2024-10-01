@@ -34,7 +34,8 @@ const MapPage = () => {
     setSearchQuery(value);
   };
 
-  const handleInputClick = () => {
+  const handleInputClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
     navigate(PATH.SEARCH);
   };
 
