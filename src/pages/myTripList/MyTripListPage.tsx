@@ -21,7 +21,7 @@ const MyTripListContent = () => {
   if (!myTripListData || myTripListData.length === 0) {
     return (
       <S.MyTripLayout>
-        <img src="/src/assets/images/plane.svg" alt="비행기 이미지" />
+        <img src="/images/plane.svg" alt="비행기 이미지" />
         <S.TextSection>
           <S.Title>섬으로 여행하실 건가요?</S.Title>
           <S.Paragraph>여행 장소를 직접 선택하거나, 추천 받고 일정을 세워봐요!</S.Paragraph>
