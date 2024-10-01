@@ -112,14 +112,6 @@ const PlanContent = () => {
     };
   }, [islandName]);
 
-  // useEffect(() => {
-  //   if (!pageState.showFailureToast) return;
-  //   const timer = setTimeout(() => setPageState((prev) => ({ ...prev, showFailureToast: false })), 1500);
-  //   return () => {
-  //     clearTimeout(timer);
-  //   };
-  // }, [pageState.showFailureToast]);
-
   const onAdd = () => {
     setPageState((prev) => ({ ...prev, isAdding: true }));
   };
@@ -208,13 +200,11 @@ const PlanContent = () => {
         date: place.date
       }));
       await updatePlace(editedPlaceData);
-      queryClient.invalidateQueries({ queryKey: ["plan", parseInt(tripId)] });
-      navigate(PATH.MY_TRIP(tripId));
-      // setPageState((prev) => ({ ...prev, isPageEditing: false }));
-      // window.location.reload();
-    } catch (error) {
-      // setPageState((prev) => ({ ...prev, showFailureToast: true }));
-    }
+      if (tripId) {
+        queryClient.invalidateQueries({ queryKey: ["plan", parseInt(tripId)] });
+        navigate(PATH.MY_TRIP(parseInt(tripId)));
+      }
+    } catch (error) {}
   };
 
   const handleMore = () => {
@@ -222,11 +212,7 @@ const PlanContent = () => {
   };
 
   const handleClose = () => {
-    if (pageState.isPageEditing && !pageState.showCloseModal) {
-      setPageState((prev) => ({ ...prev, showCloseModal: true }));
-    } else if (generated) {
-      navigate(PATH.MY_TRIP_LIST);
-    } else navigate(-1);
+    navigate(PATH.MY_TRIP_LIST);
   };
 
   const handleDelete = () => {
@@ -248,7 +234,6 @@ const PlanContent = () => {
 
   return (
     <>
-      {/* <AnimatePresence>{pageState.showFailureToast && <Toast message={"일정 수정 실패"} />}</AnimatePresence> */}
       <Appbar
         title=""
         textAlign="center"
