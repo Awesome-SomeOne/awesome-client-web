@@ -128,28 +128,26 @@ const PlaceDetailPage = () => {
 
   return (
     <>
-      <div style={{ paddingTop: "56px" }}>
-        <ErrorBoundary
-          fallback={
-            <>
-              <Appbar
-                title=""
-                textAlign="center"
-                rightIcon1={
-                  <div onClick={() => navigate(-1)}>
-                    <ClearIcon size="28" />
-                  </div>
-                }
-              />
-              에러 발생
-            </>
-          }
-        >
-          <Suspense fallback={<>로딩중...</>}>
-            <PlaceDetail />
-          </Suspense>
-        </ErrorBoundary>
-      </div>
+      <ErrorBoundary
+        fallback={
+          <div style={{ paddingTop: "56px" }}>
+            <Appbar
+              title=""
+              textAlign="center"
+              rightIcon1={
+                <div onClick={() => navigate(-1)}>
+                  <ClearIcon size="28" />
+                </div>
+              }
+            />
+            에러 발생
+          </div>
+        }
+      >
+        <Suspense fallback={<>로딩중...</>}>
+          <PlaceDetail />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 };
