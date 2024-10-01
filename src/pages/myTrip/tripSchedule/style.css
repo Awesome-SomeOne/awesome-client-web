@@ -33,3 +33,14 @@
 .rdrDayEndPreview {
   display: none;
 }
+
+/* --- width --- */
+
+.rdrCalendarWrapper,
+.rdrDateRangeWrapper {
+  width: 100%;
+}
+
+.rdrMonth {
+  width: 100%;
+}
