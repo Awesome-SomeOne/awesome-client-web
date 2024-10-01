@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import GeneralHeader from "@/components/common/generalHeader/index";
 import { useEffect, useState } from "react";
@@ -28,6 +29,7 @@ import { Suspense } from "react";
 import ErrorBoundary from "@/hooks/Errorboundary";
 
 const PlanContent = () => {
+  const queryClient = useQueryClient();
   const [day, setDay] = useState(1);
   const [pageState, setPageState] = useState({
     isAdding: false,
@@ -109,14 +111,6 @@ const PlanContent = () => {
       clearTimeout(timer);
     };
   }, [islandName]);
-
-  useEffect(() => {
-    if (!pageState.showFailureToast) return;
-    const timer = setTimeout(() => setPageState((prev) => ({ ...prev, showFailureToast: false })), 1500);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [pageState.showFailureToast]);
 
   const onAdd = () => {
     setPageState((prev) => ({ ...prev, isAdding: true }));
@@ -206,11 +200,12 @@ const PlanContent = () => {
         date: place.date
       }));
       await updatePlace(editedPlaceData);
-      setPageState((prev) => ({ ...prev, isPageEditing: false }));
+
+      if (tripId) {
+        queryClient.invalidateQueries({ queryKey: ["plan", parseInt(tripId)] });
+      }
       window.location.reload();
-    } catch (error) {
-      setPageState((prev) => ({ ...prev, showFailureToast: true }));
-    }
+    } catch (error) {}
   };
 
   const handleMore = () => {
@@ -218,11 +213,7 @@ const PlanContent = () => {
   };
 
   const handleClose = () => {
-    if (pageState.isPageEditing && !pageState.showCloseModal) {
-      setPageState((prev) => ({ ...prev, showCloseModal: true }));
-    } else if (generated) {
-      navigate(PATH.MY_TRIP_LIST);
-    } else navigate(-1);
+    navigate(PATH.MY_TRIP_LIST);
   };
 
   const handleDelete = () => {
@@ -244,7 +235,6 @@ const PlanContent = () => {
 
   return (
     <>
-      <AnimatePresence>{pageState.showFailureToast && <Toast message={"일정 수정 실패"} />}</AnimatePresence>
       <Appbar
         title=""
         textAlign="center"

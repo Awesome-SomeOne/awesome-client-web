@@ -256,7 +256,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
           />
         </div>
       </S.BottomSection>
-      {recommended && (
+      {recommended && selectedPlace && (
         <BottomSheet isOpen={isOpen} close={close}>
           <S.BottomSheetTopContainer>
             <S.Title>어느 일정에 등록할까요?</S.Title>
@@ -268,7 +268,9 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
               style={{ cursor: "default" }}
             />
             <div style={{ borderRadius: "8px", overflow: "hidden" }}>
-              <MiniMapComponent lat={33.55635} lng={126.795841} />
+              <MiniMapComponent
+                position={{ lat: parseFloat(selectedPlace.y_address), lng: parseFloat(selectedPlace.x_address) }}
+              />
             </div>
           </S.BottomSheetTopContainer>
           <S.DaysUl>
