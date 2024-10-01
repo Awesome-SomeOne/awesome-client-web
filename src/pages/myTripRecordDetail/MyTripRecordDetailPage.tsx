@@ -14,6 +14,7 @@ import Appbar from "@/components/common/header/Appbar";
 import TabAnatomy from "@/components/common/tabAnatomy";
 import DetailSchedule from "@/components/myTripRecord/DetailSchedule";
 import DetailTravelMemories from "@/components/myTripRecord/DetailTravelMemories";
+import { PATH } from "@/constants/path";
 import useOverlay from "@/hooks/useOverlay";
 
 import ReportPage from "../placeDetail/report/ReportPage";
@@ -94,11 +95,7 @@ const MyTripRecordDetailPage = () => {
       </S.MyTripRecordDetailPageContainer>
 
       <BottomSheet isOpen={isOpen} close={close} style={{ paddingTop: "16px" }}>
-        <S.MenuButton
-          onClick={() => {
-            navigate("/my-trip-record/1");
-          }}
-        >
+        <S.MenuButton onClick={() => navigate(`${PATH.MY_TRIP_RECORD(data.planId)}?recordId=${recordId}`)}>
           수정하기
         </S.MenuButton>
         {/* <S.MenuButton>삭제하기</S.MenuButton>

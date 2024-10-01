@@ -83,7 +83,7 @@ const SearchBar = ({
   };
 
   return (
-    <S.SearchLayout>
+    <S.SearchLayout onClick={onClick as React.MouseEventHandler<HTMLInputElement> | undefined}>
       {showBackIcon && <img src="/icons/BackIcon.svg" onClick={BackIconOnClick} />}
       <S.SearchField isFocused={isTyping} isFilled={!!value} onSubmit={handleSubmit} {...props}>
         <S.SearchInput
@@ -95,7 +95,6 @@ const SearchBar = ({
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           onChange={handleInputChange}
-          onClick={onClick as React.MouseEventHandler<HTMLInputElement> | undefined}
         />
         {showButton && <Button text={buttonText} type="submit" style={{ height: "32px" }} />}
       </S.SearchField>
