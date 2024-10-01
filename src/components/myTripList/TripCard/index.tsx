@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 import { PATH } from "../../../constants/path";
@@ -24,6 +25,7 @@ const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate, 
   const navigate = useNavigate();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { mutateAsync: deletePlan } = useDeleteTravel();
+  const queryClient = useQueryClient();
 
   const handleDelete = () => {
     if (!id) return;
@@ -32,7 +34,9 @@ const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate, 
         planId: id
       },
       {
-        onSuccess: () => navigate(PATH.MY_TRIP_LIST)
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["getMyTripList"] });
+        }
       }
     );
   };
