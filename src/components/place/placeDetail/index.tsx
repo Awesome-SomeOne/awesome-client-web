@@ -63,7 +63,7 @@ const DetailPage = ({
         }
       </S.Introduction> */}
       {/* 지도 */}
-      <MiniMapComponent lat={parseFloat(data.yAddress)} lng={parseFloat(data.xAddress)} />
+      <MiniMapComponent position={{ lat: parseFloat(data.yAddress), lng: parseFloat(data.xAddress) }} />
       {/* 후기 */}
       <GeneralHeader title="후기" spacingSize="md" />
       {data.reviews.map((review: any) => (
