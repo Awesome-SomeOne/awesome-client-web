@@ -41,7 +41,7 @@ const MyTripContent = () => {
           <S.MyTripContainer>
             <S.BlueBox>
               <S.Paragraph>아직 다녀온 여행이 없어요!</S.Paragraph>
-              <Button text="내 여행에서 추억 만들기" onClick={() => navigate(PATH.MY_TRIP_GENERATE)} />
+              <Button text="내 여행에서 추억 만들기" onClick={() => navigate(PATH.MY_TRIP_LIST)} />
             </S.BlueBox>
           </S.MyTripContainer>
         </>
