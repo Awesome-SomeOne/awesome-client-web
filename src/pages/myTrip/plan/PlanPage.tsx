@@ -200,10 +200,12 @@ const PlanContent = () => {
         date: place.date
       }));
       await updatePlace(editedPlaceData);
-      if (tripId) {
-        queryClient.invalidateQueries({ queryKey: ["plan", parseInt(tripId)] });
-        navigate(PATH.MY_TRIP(parseInt(tripId)));
-      }
+      setTimeout(() => {
+        if (tripId) {
+          queryClient.invalidateQueries({ queryKey: ["plan", parseInt(tripId)] });
+          window.location.reload();
+        }
+      }, 3000);
     } catch (error) {}
   };
 
