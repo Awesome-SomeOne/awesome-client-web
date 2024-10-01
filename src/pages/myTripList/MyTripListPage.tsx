@@ -54,6 +54,9 @@ const MyTripListContent = () => {
             location={trip.address}
             startDate={dayjs(trip.start_date).format("YYYY.MM.DD")}
             endDate={dayjs(trip.end_date).format("YYYY.MM.DD")}
+            onClick={() => {
+              navigate(PATH.MY_TRIP(trip.planId));
+            }}
           />
         ))}
       </S.MyTripListFlexContainer>

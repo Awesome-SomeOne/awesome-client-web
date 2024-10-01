@@ -10,6 +10,7 @@ export const TripCardList = styled.div`
 `;
 
 export const TripCard = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -58,4 +59,11 @@ export const ButtonWrapper = styled.div`
   display: flex;
   gap: 4px;
   width: 100%;
+`;
+
+export const MoreIconButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
 `;

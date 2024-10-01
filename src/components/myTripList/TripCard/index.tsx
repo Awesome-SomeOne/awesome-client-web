@@ -1,6 +1,11 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { PATH } from "../../../constants/path";
+import { useDeleteTravel } from "@/apis/myTrip/myTrip.queries";
+import MoreIcon from "@/assets/icons/MoreIcon";
+import SimpleModal from "@/components/common/simpleModal";
+
 import LineButton from "../../common/lineButton";
 import * as S from "./styles";
 
@@ -12,10 +17,25 @@ interface ITripCardProps {
   location: string;
   startDate: string;
   endDate: string;
+  onClick?: () => void;
 }
 
-const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate }: ITripCardProps) => {
+const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate, onClick }: ITripCardProps) => {
   const navigate = useNavigate();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { mutateAsync: deletePlan } = useDeleteTravel();
+
+  const handleDelete = () => {
+    if (!id) return;
+    deletePlan(
+      {
+        planId: id
+      },
+      {
+        onSuccess: () => navigate(PATH.MY_TRIP_LIST)
+      }
+    );
+  };
 
   return (
     <S.TripCard>
@@ -39,12 +59,35 @@ const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate }
         {recordId && (
           <LineButton
             text="자세히 보기"
-            onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(id, recordId))}
+            // onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(id, recordId))}
+            onClick={onClick}
             size="sm"
             style={{ width: "100%" }}
           />
         )}
       </S.ButtonWrapper>
+      <S.MoreIconButton
+        onClick={() => {
+          setShowDeleteModal(true);
+        }}
+      >
+        <MoreIcon size={"24px"} />
+      </S.MoreIconButton>
+      <SimpleModal
+        image="/images/warning.svg"
+        title="일정을 정말 삭제할까요?"
+        content="삭제한 일정은 되돌릴 수 없어요"
+        firstButtonText="취소"
+        secondButtonText="삭제하기"
+        firstButtonOnClick={() => {
+          setShowDeleteModal(false);
+        }}
+        secondButtonOnClick={handleDelete}
+        isOpen={showDeleteModal}
+        close={() => {
+          setShowDeleteModal(false);
+        }}
+      />
     </S.TripCard>
   );
 };
