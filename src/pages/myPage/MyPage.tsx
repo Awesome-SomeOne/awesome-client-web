@@ -3,15 +3,17 @@
  * @Author 백선우
  */
 
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import * as S from "./styles";
 import BottomNavBar from "@/components/common/bottomNavBar";
 import { PATH } from "@/constants/path";
+import * as S from "./styles";
+import { useGetUserInfo } from "@/apis/myPage/myPage.queries";
 
 export default function MyPage() {
   const navigate = useNavigate();
+
+  const { data: userInfo } = useGetUserInfo();
 
   const Buttons = [
     { text: "계정 정보", url: PATH.ACCOUNT_INFORMATION },
@@ -38,7 +40,7 @@ export default function MyPage() {
             <S.StyledImage></S.StyledImage>
           </S.ProfileImageContainer>
           <S.StyledNickNameContainer>
-            <S.StyledNickName>S좋아인간888</S.StyledNickName>
+            <S.StyledNickName>{userInfo}</S.StyledNickName>
           </S.StyledNickNameContainer>
           {/* <S.ButtonContainer>
             <S.StyledButton onClick={() => navigate(PATH.SETTING_PROFILE)}>수정하기</S.StyledButton>
