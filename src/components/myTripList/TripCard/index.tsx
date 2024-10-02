@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 
 import { PATH } from "../../../constants/path";
@@ -41,12 +42,26 @@ const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate, 
     );
   };
 
+  const getTripStatus = (startDate: string, endDate: string): string => {
+    const today = dayjs();
+    const start = dayjs(startDate);
+    const end = dayjs(endDate);
+
+    if (today.isBefore(start, "day")) {
+      return "여행전";
+    } else if (today.isAfter(end, "day")) {
+      return "여행완료";
+    } else {
+      return "여행중";
+    }
+  };
+
   return (
     <S.TripCard onClick={onClick}>
       <S.ImageAndTextContainer>
         <S.ImageWrapper src={imgSrc} />
         <S.TextWrapper>
-          <S.TripStatusText>{status}</S.TripStatusText>
+          <S.TripStatusText>{getTripStatus(startDate, endDate)}</S.TripStatusText>
           <S.TripLocationText>{location}</S.TripLocationText>
           <S.TripTimeText>
             {startDate} - {endDate}
