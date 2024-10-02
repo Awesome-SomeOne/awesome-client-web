@@ -60,8 +60,8 @@ const TripIslandPage = ({
           ))}
         </S.BoxContainer>
         <S.SpanContainer>
-          <S.Text>어떤 섬을 여행하고 싶은지 모를 땐?</S.Text>
-          <S.TextButton onClick={onRecClick}>추천 받기</S.TextButton>
+          {/* <S.Text>어떤 섬을 여행하고 싶은지 모를 땐?</S.Text>
+          <S.TextButton onClick={onRecClick}>추천 받기</S.TextButton> */}
         </S.SpanContainer>
         <Button
           text="선택완료"
