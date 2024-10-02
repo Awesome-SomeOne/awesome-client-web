@@ -1,29 +1,29 @@
-import { useQuery, useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 
 import {
   addPlace,
-  generatePlan,
   addPlaces,
-  getRecommendPlace,
-  getRecommendIsland,
-  getPlans,
-  getPlan,
-  searchPlace,
-  searchIsland,
-  getPopularPlace,
   deletePlace,
   deleteTravel,
+  generatePlan,
+  getPlan,
+  getPlans,
+  getPopularPlace,
+  getRecommendIsland,
+  getRecommendPlace,
+  searchIsland,
+  searchPlace,
   updatePlace
 } from "./myTrip.apis";
 import {
-  GeneratePlanData,
   AddPlaceData,
   AddPlacesData,
-  GetRecommendPlaceData,
-  UpdatePlaceData,
+  GeneratePlanData,
   GetPlanData,
+  GetPopularPlaceData,
+  GetRecommendPlaceData,
   SearchPlaceData,
-  GetPopularPlaceData
+  UpdatePlaceData
 } from "./myTrip.type";
 
 export const useGeneratePlan = () => {
@@ -68,7 +68,9 @@ export const useGetPlans = () => {
 export const useGetPlan = (data: GetPlanData) => {
   return useSuspenseQuery({
     queryKey: ["plan", data.planId],
-    queryFn: () => getPlan(data)
+    queryFn: () => getPlan(data),
+    staleTime: 0,
+    gcTime: 0
     // enabled: !!data.planId
   });
 };

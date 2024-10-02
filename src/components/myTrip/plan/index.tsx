@@ -1,13 +1,15 @@
 import dayjs from "dayjs";
+import { useMotionValueEvent, useScroll } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+
 import Button from "@/components/common/button/index";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
 import { Day, Place } from "@/types/myTrip";
-import { useScroll, useMotionValueEvent } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { calculateDaysBetween, calculateDistance, getDatesArray, getDaysArray } from "@/utils/myTrip/myTrip.utils";
+
 import AddBox from "../box/addBox/index";
 import EmptyBox from "../box/emptyBox/index";
 import PlaceBox from "../box/placeBox/index";
-import { calculateDistance, calculateDaysBetween, getDatesArray, getDaysArray } from "@/utils/myTrip/myTrip.utils";
 import * as S from "./styles";
 
 interface IPlanProps {
@@ -93,7 +95,7 @@ const Plan = ({
       });
     });
     setPositionList(positions);
-  }, [placeList]);
+  }, [placeList, selectedDay]);
 
   // Day 변경시
   const handleDayClick = (event: any) => {
@@ -128,7 +130,7 @@ const Plan = ({
           {placeList.map((place, index) => (
             <div key={index}>
               <PlaceBox order={index + 1} place={place} line={!isPageEditing ? placeList.length - 1 > index : true} />
-              {index < placeList.length - 1 && positionList.length > 1 && (
+              {positionList.length === placeList.length && index < placeList.length - 1 && positionList.length > 1 && (
                 <p style={{ fontSize: "14px", fontWeight: "600", lineHeight: "18px" }}>
                   {calculateDistance(
                     positionList[index].lat,

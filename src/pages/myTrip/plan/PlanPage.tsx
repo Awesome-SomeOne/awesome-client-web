@@ -1,32 +1,34 @@
 import { useQueryClient } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import GeneralHeader from "@/components/common/generalHeader/index";
-import { useEffect, useState } from "react";
-import AddPlacePage from "@/pages/myTrip/addPlace/AddPlacePage";
-import MapComponent from "@/components/myTrip/map/index";
-import { AnimatePresence } from "framer-motion";
-import Toast from "@/components/myTrip/toast/index";
-import Appbar from "@/components/common/header/Appbar";
-import { useNavigate, useLocation } from "react-router-dom";
-import ClearIcon from "@/assets/icons/ClearIcon";
-import { PATH } from "@/constants/path";
-import Plan from "@/components/myTrip/plan/index";
-import EditPlanPage from "../editPlan/EditPlanPage";
-import SimpleModal from "@/components/common/simpleModal/index";
-import MoreIcon from "@/assets/icons/MoreIcon";
-import BottomSheet from "@/components/common/bottomSheet/index";
-import { Map } from "react-kakao-maps-sdk";
-import { useParams } from "react-router-dom";
-import { useAtom } from "jotai";
-import * as S from "./styles";
-import { daysAtom, daysInitAtom, islandIdAtom, planNameAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
 import { differenceInCalendarDays, parseISO } from "date-fns";
-import { ISLAND_LIST } from "@/constants/myTripPageConstants";
-import { Day, Place } from "@/types/myTrip";
-import { useGetPlan, useAddPlace, useDeletePlace, useUpdatePlace, useDeleteTravel } from "@/apis/myTrip/myTrip.queries";
+import dayjs from "dayjs";
+import { AnimatePresence } from "framer-motion";
+import { useAtom } from "jotai";
 import { differenceWith, sortBy } from "lodash";
+import { useEffect, useState } from "react";
 import { Suspense } from "react";
+import { Map } from "react-kakao-maps-sdk";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
+import { useAddPlace, useDeletePlace, useDeleteTravel, useGetPlan, useUpdatePlace } from "@/apis/myTrip/myTrip.queries";
+import ClearIcon from "@/assets/icons/ClearIcon";
+import MoreIcon from "@/assets/icons/MoreIcon";
+import { daysAtom, daysInitAtom, islandIdAtom, planNameAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
+import BottomSheet from "@/components/common/bottomSheet/index";
+import GeneralHeader from "@/components/common/generalHeader/index";
+import Appbar from "@/components/common/header/Appbar";
+import SimpleModal from "@/components/common/simpleModal/index";
+import MapComponent from "@/components/myTrip/map/index";
+import Plan from "@/components/myTrip/plan/index";
+import Toast from "@/components/myTrip/toast/index";
+import { ISLAND_LIST } from "@/constants/myTripPageConstants";
+import { PATH } from "@/constants/path";
 import ErrorBoundary from "@/hooks/Errorboundary";
+import AddPlacePage from "@/pages/myTrip/addPlace/AddPlacePage";
+import { Day, Place } from "@/types/myTrip";
+
+import EditPlanPage from "../editPlan/EditPlanPage";
+import * as S from "./styles";
 
 const PlanContent = () => {
   const queryClient = useQueryClient();
