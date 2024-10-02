@@ -1,23 +1,25 @@
+import { useRef, useState } from "react";
+import { useMotionValueEvent, useScroll } from "framer-motion";
+import { useAtom } from "jotai";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import AddBox from "../box/addBox/index";
+import { useAddPlaces, useGeneratePlan } from "@/apis/myTrip/myTrip.queries";
+import { daysAtom, daysInitAtom, planAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
 import BottomSheet from "@/components/common/bottomSheet/index";
 import Button from "@/components/common/button/index";
 import Chip from "@/components/common/chip/index";
 import SimpleModal from "@/components/common/simpleModal/index";
 import TabAnatomy from "@/components/common/tabAnatomy/index";
-import { useScroll, useMotionValueEvent } from "framer-motion";
-import { useRef, useState } from "react";
-import useOverlay from "@/hooks/useOverlay";
-import * as S from "./styles";
-import { useEffect } from "react";
 import { PATH } from "@/constants/path";
-import { useNavigate } from "react-router-dom";
-import AddBox from "../box/addBox/index";
-import PlaceBox from "../box/placeBox/index";
+import useOverlay from "@/hooks/useOverlay";
 import { Place } from "@/types/myTrip";
-import MiniMapComponent from "../map/miniMap/index";
-import { useAtom } from "jotai";
-import { daysAtom, daysInitAtom, planAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
 import { calculateDistance, getDaysArray } from "@/utils/myTrip/myTrip.utils";
-import { useAddPlaces, useGeneratePlan } from "@/apis/myTrip/myTrip.queries";
+
+import PlaceBox from "../box/placeBox/index";
+import MiniMapComponent from "../map/miniMap/index";
+import * as S from "./styles";
 
 interface IPlanProps {
   selectedDay: number;

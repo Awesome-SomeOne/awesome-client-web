@@ -1,3 +1,4 @@
+import * as S from "./styles";
 import LikeFillIcon from "@/assets/icons/LikeFillIcon";
 import LikeIcon from "@/assets/icons/LikeIcon";
 import MoreIcon from "@/assets/icons/MoreIcon";
@@ -5,7 +6,7 @@ import GeneralHeader from "@/components/common/generalHeader/index";
 import LineButton from "@/components/common/lineButton/index";
 import MiniMapComponent from "@/components/myTrip/map/miniMap/index";
 import { Theme } from "@/styles/theme";
-import * as S from "./styles";
+
 const DetailPage = ({
   data,
   onMoreClick,
@@ -16,8 +17,8 @@ const DetailPage = ({
     businessName: string;
     address: string;
     imgUrl: string;
-    xAddress: string;
-    yAddress: string;
+    xaddress: string;
+    yaddress: string;
     status: boolean;
     reviews: [];
   };
@@ -63,12 +64,12 @@ const DetailPage = ({
         }
       </S.Introduction> */}
       {/* 지도 */}
-      <MiniMapComponent position={{ lat: parseFloat(data.yAddress), lng: parseFloat(data.xAddress) }} />
+      <MiniMapComponent position={{ lat: parseFloat(data.yaddress), lng: parseFloat(data.xaddress) }} />
       {/* 후기 */}
-      <GeneralHeader title="후기" spacingSize="md" />
+      {/* <GeneralHeader title="후기" spacingSize="md" />
       {data.reviews.map((review: any) => (
         <Review review={review} onMoreClick={onMoreClick} />
-      ))}
+      ))} */}
     </S.DetailCotainer>
   );
 };

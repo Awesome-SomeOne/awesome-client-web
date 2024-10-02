@@ -19,7 +19,7 @@ const BottomSheet = ({
   hasHandleBar = false,
   hasBackdrop = true
 }: IBottomSheetProps) => {
-  const [height, setHeight] = useState("50%");
+  const [height, setHeight] = useState("auto");
 
   const handleDrag = (_: unknown, info: PanInfo) => {
     if (info.offset.y > 100) {
@@ -43,7 +43,7 @@ const BottomSheet = ({
 
   useEffect(() => {
     if (!isOpen) {
-      setHeight("50%");
+      setHeight("auto");
     }
   }, [isOpen]);
 
