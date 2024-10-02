@@ -1,14 +1,13 @@
 import { useGetMyTripRecordList } from "@/apis/myTripRecordList/myTripRecordList.quaries";
 import BackIcon from "@/assets/icons/BackIcon";
-import ToggleButton from "@/assets/icons/ToggleButton";
 import Appbar from "@/components/common/header/Appbar";
 import RecordCard from "@/components/myTripRecordList/RecordCard";
+import { PATH } from "@/constants/path";
 import { useState } from "react";
 import { Map } from "react-kakao-maps-sdk";
 import { useNavigate } from "react-router-dom";
 import CustomMarker from "./CustomMarker";
 import * as S from "./styles";
-import { PATH } from "@/constants/path";
 
 /**
  * 추억 모아보기 페이지
@@ -59,7 +58,7 @@ export default function MyTripRecordList() {
             <BackIcon />
           </div>
         }
-        rightIcon1={<ToggleButton />}
+        // rightIcon1={<ToggleButton />}
       />
       <S.MapContainer>
         <Map
