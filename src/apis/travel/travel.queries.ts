@@ -7,7 +7,6 @@ import { MyTripItem } from "./travel.type";
 export const useGetMyTripList = () => {
   return useSuspenseQuery<MyTripItem[], Error>({
     queryKey: ["getMyTripList"],
-    queryFn: () => getMyTripList(),
-    staleTime: 1000 * 60 * 60
+    queryFn: () => getMyTripList()
   });
 };

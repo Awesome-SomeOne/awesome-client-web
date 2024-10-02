@@ -42,7 +42,7 @@ const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate, 
   };
 
   return (
-    <S.TripCard>
+    <S.TripCard onClick={onClick}>
       <S.ImageAndTextContainer>
         <S.ImageWrapper src={imgSrc} />
         <S.TextWrapper>
@@ -56,15 +56,20 @@ const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate, 
       <S.ButtonWrapper>
         <LineButton
           text="추억 기록하기"
-          onClick={() => navigate(`${PATH.MY_TRIP_RECORD(id)}?recordId=${recordId}`)}
+          onClick={(e: any) => {
+            e.stopPropagation();
+            navigate(`${PATH.MY_TRIP_RECORD(id)}?recordId=${recordId}`);
+          }}
           size="sm"
           style={{ width: "100%" }}
         />
         {recordId && (
           <LineButton
             text="자세히 보기"
-            // onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(id, recordId))}
-            onClick={onClick}
+            onClick={(e: any) => {
+              e.stopPropagation();
+              navigate(PATH.MY_TRIP_RECORD_DETAIL(id, recordId));
+            }}
             size="sm"
             style={{ width: "100%" }}
           />
