@@ -6,22 +6,24 @@
 import BackIcon from "@/assets/icons/BackIcon";
 import Appbar from "@/components/common/header/Appbar";
 import SimpleModal from "@/components/common/simpleModal";
-import { useNavigate } from "react-router-dom";
-import Kakao from "/images/kakao.png";
-import * as S from "./styles";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import * as S from "./styles";
+import Kakao from "/images/kakao.png";
+import { useDeleteAccount } from "@/apis/myPage/myPage.queries";
 
 export default function AccountInfoPage() {
   const navigate = useNavigate();
 
   const [modalOpen, setModalOpen] = useState(false);
+  const { mutateAsync: deleteAccount } = useDeleteAccount();
 
   function logoutHandler() {
     window.ReactNativeWebView.postMessage(JSON.stringify({ type: "logout" }));
   }
 
   function removeAccountHandler() {
-    window.ReactNativeWebView.postMessage(JSON.stringify({ type: "removeAccount" }));
+    deleteAccount();
   }
 
   return (
@@ -55,12 +57,12 @@ export default function AccountInfoPage() {
           <S.LeftContainer>
             <S.StyledButton onClick={logoutHandler}>로그아웃</S.StyledButton>
           </S.LeftContainer>
-          <svg width="2" height="12" viewBox="0 0 2 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* <svg width="2" height="12" viewBox="0 0 2 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1 0V12" stroke="#70737C" strokeOpacity="0.6" />
           </svg>
           <S.RightContainer>
             <S.StyledButton onClick={() => setModalOpen(true)}>회원 탈퇴</S.StyledButton>
-          </S.RightContainer>
+          </S.RightContainer> */}
         </S.BottomSection>
       </S.Root>
     </>
