@@ -95,6 +95,7 @@ const SearchBar = ({
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           onChange={handleInputChange}
+          readOnly={onClick ? true : false}
         />
         {showButton && <Button text={buttonText} type="submit" style={{ height: "32px" }} />}
       </S.SearchField>
