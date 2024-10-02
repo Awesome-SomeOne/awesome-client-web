@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 
 import { PATH } from "../../../constants/path";
@@ -41,12 +42,26 @@ const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate, 
     );
   };
 
+  const getTripStatus = (startDate: string, endDate: string): string => {
+    const today = dayjs();
+    const start = dayjs(startDate);
+    const end = dayjs(endDate);
+
+    if (today.isBefore(start, "day")) {
+      return "여행전";
+    } else if (today.isAfter(end, "day")) {
+      return "여행완료";
+    } else {
+      return "여행중";
+    }
+  };
+
   return (
-    <S.TripCard>
+    <S.TripCard onClick={onClick}>
       <S.ImageAndTextContainer>
         <S.ImageWrapper src={imgSrc} />
         <S.TextWrapper>
-          <S.TripStatusText>{status}</S.TripStatusText>
+          <S.TripStatusText>{getTripStatus(startDate, endDate)}</S.TripStatusText>
           <S.TripLocationText>{location}</S.TripLocationText>
           <S.TripTimeText>
             {startDate} - {endDate}
@@ -56,15 +71,20 @@ const TripCard = ({ id, recordId, imgSrc, status, location, startDate, endDate, 
       <S.ButtonWrapper>
         <LineButton
           text="추억 기록하기"
-          onClick={() => navigate(`${PATH.MY_TRIP_RECORD(id)}?recordId=${recordId}`)}
+          onClick={(e: any) => {
+            e.stopPropagation();
+            navigate(`${PATH.MY_TRIP_RECORD(id)}?recordId=${recordId}`);
+          }}
           size="sm"
           style={{ width: "100%" }}
         />
         {recordId && (
           <LineButton
             text="자세히 보기"
-            // onClick={() => navigate(PATH.MY_TRIP_RECORD_DETAIL(id, recordId))}
-            onClick={onClick}
+            onClick={(e: any) => {
+              e.stopPropagation();
+              navigate(PATH.MY_TRIP_RECORD_DETAIL(id, recordId));
+            }}
             size="sm"
             style={{ width: "100%" }}
           />
