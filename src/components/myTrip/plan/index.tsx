@@ -153,14 +153,14 @@ const Plan = ({
               )}
             </div>
           ))}
-          {!isPageEditing && (
+          {/* {!isPageEditing && (
             <Button
               text="일정 수정하기"
               isTertiaryButton
               style={{ width: "120px", margin: "0 auto" }}
               onClick={onPageEdit}
             />
-          )}
+          )} */}
         </S.PlaceContainer>
         {isPageEditing && (
           <Button
