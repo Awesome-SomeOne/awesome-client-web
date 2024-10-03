@@ -24,13 +24,22 @@ interface Plan {
 const MyTripTodayContent = () => {
   const navigate = useNavigate();
   const { data: plans = [] } = useGetPlans();
-  const today = dayjs();
+  const today = dayjs().format("YYYY-MM-DD");
 
   const currentPlans = plans.filter(
-    (plan: Plan) => dayjs(plan.start_date).isSameOrBefore(today) || dayjs(plan.end_date).isSameOrAfter(today)
+    (plan: Plan) => dayjs(plan.start_date).isSameOrBefore(today) && dayjs(plan.end_date).isSameOrAfter(today)
   );
 
-  const plan = currentPlans.sort((a: Plan, b: Plan) => dayjs(a.end_date).diff(dayjs(b.end_date)))[0];
+  console.log(currentPlans);
+  const plan = currentPlans.sort((a: Plan, b: Plan) => {
+    const startDateDiff = dayjs(a.start_date).diff(dayjs(b.start_date));
+
+    if (startDateDiff !== 0) {
+      return startDateDiff;
+    }
+
+    return dayjs(a.end_date).diff(dayjs(b.end_date));
+  })[0];
 
   if (!plan) return <></>;
 
