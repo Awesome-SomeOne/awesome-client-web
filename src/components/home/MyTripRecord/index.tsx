@@ -12,7 +12,8 @@ import * as S from "./styles";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
-interface Records {
+
+interface Record {
   planId: number;
   islandName: string;
   recordTitle: string;
@@ -22,15 +23,14 @@ interface Records {
   endDate: string;
 }
 
-const MyTripContent = () => {
+const MyTripRecordContent = () => {
   const navigate = useNavigate();
-  const { data: records = [] } = useGetMyTripRecordList();
-  const today = dayjs();
 
-  const pastRecords = records?.filter((record: Records) => dayjs(record.endDate).isBefore(today));
-  const mostRecentPastRecord = pastRecords?.sort((a: Records, b: Records) =>
-    dayjs(b.endDate).diff(dayjs(a.endDate))
-  )[0];
+  const { data: records = [] } = useGetMyTripRecordList();
+  const today = dayjs().format("YYYY-MM-DD");
+
+  const pastRecords = records?.filter((record: Record) => dayjs(record.endDate).isBefore(today));
+  const mostRecentPastRecord = pastRecords?.sort((a: Record, b: Record) => dayjs(b.endDate).diff(dayjs(a.endDate)))[0];
 
   return (
     <S.MyTripLayout>
@@ -58,7 +58,7 @@ const MyTripContent = () => {
           />
           <S.MyTripContainer onClick={() => navigate(PATH.MY_TRIP(mostRecentPastRecord.planId))}>
             <S.ImageBox bgUrl={mostRecentPastRecord.imageUrls[0]} credit={mostRecentPastRecord.islandName}>
-              <S.Chip>{`${dayjs(mostRecentPastRecord.end_date).fromNow(true)}전`}</S.Chip>
+              <S.Chip>{`${dayjs(mostRecentPastRecord.endDate).fromNow()}`}</S.Chip>
               <S.Info>
                 <S.Title>{mostRecentPastRecord.recordTitle}</S.Title>
                 <S.Itinerary>
@@ -75,14 +75,14 @@ const MyTripContent = () => {
   );
 };
 
-const MyTrip = () => {
+const MyTripRecord = () => {
   return (
     <ErrorBoundary fallback={<></>}>
       <Suspense fallback={<>로딩중...</>}>
-        <MyTripContent />
+        <MyTripRecordContent />
       </Suspense>
     </ErrorBoundary>
   );
 };
 
-export default MyTrip;
+export default MyTripRecord;

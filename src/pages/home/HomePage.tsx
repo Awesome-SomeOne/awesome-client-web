@@ -2,7 +2,7 @@ import BottomNavBar from "@/components/common/bottomNavBar";
 import AppBarIcons from "@/components/home/AppBarIcons/index";
 import CarouselComponent from "@/components/home/Carousel/index";
 import CurrentLocation from "@/components/home/CurrentLoaction/index";
-import MyTrip from "@/components/home/MyTrip/index";
+import MyTripRecord from "@/components/home/MyTripRecord/index";
 import MyTripToday from "@/components/home/MyTripToday/index";
 import PopularPlace from "@/components/place/PopularPlace/index";
 import RecommendPlace from "@/components/place/RecommendPlace/index";
@@ -20,7 +20,7 @@ const HomePage = () => {
         </S.AppBar>
         {/* <Weather /> */}
         <MyTripToday />
-        <MyTrip />
+        <MyTripRecord />
         <CarouselComponent />
         <PopularPlace />
         <RecommendPlace />
