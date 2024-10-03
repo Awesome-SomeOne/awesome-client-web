@@ -59,8 +59,8 @@ export const TextButton = styled.span`
 `;
 
 export const ListContainer = styled.div`
-  overflow: auto;
-  height: calc(100% - 64px);
+  overflow: scroll;
+  height: calc(100% - 73px - 52px - 64px);
 `;
 
 export const ChipRow = styled.div`

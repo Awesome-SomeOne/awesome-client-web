@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import AddBox from "../box/addBox/index";
 import { useAddPlaces, useGeneratePlan } from "@/apis/myTrip/myTrip.queries";
-import { daysAtom, daysInitAtom, planAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
+import { daysAtom, daysInitAtom, planAtom, recommendedPlacesAtom, useUpdateDaysAtom } from "@/atoms/myTrip/planAtom";
 import BottomSheet from "@/components/common/bottomSheet/index";
 import Button from "@/components/common/button/index";
 import Chip from "@/components/common/chip/index";
@@ -23,13 +23,12 @@ import * as S from "./styles";
 
 interface IPlanProps {
   selectedDay: number;
-  recommended: Place[];
   onAdd: () => void;
   onEdit: () => void;
   onSelect: (day: number) => void;
 }
 
-const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: IPlanProps) => {
+const PlanGenerating = ({ selectedDay, onAdd, onEdit, onSelect }: IPlanProps) => {
   const [{ islandId, startDate, endDate, planName }] = useAtom(planAtom);
   const [, initializeDays] = useAtom(daysInitAtom);
   const [days, setDays] = useAtom(daysAtom);
@@ -42,9 +41,9 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
 
   // Day별 일정
   const [travelPlaceList, setTravelPlaceList] = useState<Place[]>([]);
-  // 추천 장소
-  const [recommendedPlaces, setRecommendedPlaces] = useState<Place[]>(recommended);
   // 추천 장소 중 선택한 장소
+  const [recommendedPlaces, setRecommendedPlaces] = useAtom(recommendedPlacesAtom);
+  // 선택한 장소 중 클릭한 장소
   const [selectedPlace, setSelectedPlace] = useState<Place>();
   // 모달에서 선택된 Day
   const [selectedBottomSheetDay, setSelectedBottomSheetDay] = useState(daysArray[selectedDay - 1]);
@@ -157,8 +156,8 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
     // 선택한 Day에 장소 추가하기
     addPlacesToDay(parseInt(selectedBottomSheetDay.slice(4)), [selectedPlace]);
 
-    // chip 목록에서 제거하기
-    const filtered = recommendedPlaces.filter((place) => place !== selectedPlace);
+    // 선택한 장소 목록(chip 목록)에서 제거하기
+    const filtered = recommendedPlaces.filter((place: Place) => place !== selectedPlace);
     setRecommendedPlaces(filtered);
 
     // 초기화
@@ -172,9 +171,11 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
     setModalOpen(false);
     setRecommendedPlaces([]);
     // 일정 생성하기 > tripId 받기 > 페이지 이동하기
-    // const { tripId } = useGeneratePlan({ islandId, startDate, endDate, planName });
-    const tripId = 1;
-    addPlaces(tripId);
+    const data = await generatePlan({ islandId, startDate, endDate, planName });
+    const { islandId: tripId } = data;
+
+    await addPlaces(tripId);
+    setDays([]);
     navigate({ pathname: PATH.MY_TRIP(tripId) }, { state: { generated: true } });
   };
 
@@ -183,7 +184,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
       <S.BottomSection recommended={recommendedPlaces.length > 0}>
         {recommendedPlaces?.length > 0 && (
           <S.ChipsContainer>
-            {recommendedPlaces.map((place, index) => (
+            {recommendedPlaces.map((place: Place, index: number) => (
               <Chip
                 key={index}
                 text={place.name}
@@ -258,7 +259,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
           />
         </div>
       </S.BottomSection>
-      {recommended && selectedPlace && (
+      {recommendedPlaces && selectedPlace && (
         <BottomSheet isOpen={isOpen} close={close}>
           <S.BottomSheetTopContainer>
             <S.Title>어느 일정에 등록할까요?</S.Title>
@@ -292,7 +293,7 @@ const PlanGenerating = ({ selectedDay, recommended, onAdd, onEdit, onSelect }: I
           </S.DayButtonContainer>
         </BottomSheet>
       )}
-      {recommended && (
+      {recommendedPlaces && (
         <SimpleModal
           image="/images/warning.svg"
           title="일정에 넣지 않은 추천 장소가 있어요"

@@ -6,21 +6,13 @@ import { Place } from "@/types/myTrip";
 import * as S from "./styles";
 import { useGetRecommendIsland, useGetRecommendPlace } from "@/apis/myTrip/myTrip.queries";
 import { useAtom } from "jotai";
-import { islandIdAtom, planNameAtom } from "@/atoms/myTrip/planAtom";
+import { islandIdAtom, planNameAtom, recommendedPlacesAtom } from "@/atoms/myTrip/planAtom";
 import ErrorBoundary from "@/hooks/Errorboundary";
 import { ISLAND_LIST } from "@/constants/myTripPageConstants";
 import { CATEGORY_LIST } from "@/constants/homePageConstants";
 import Chip from "@/components/common/chip/index";
 
-const RecommendedIsland = ({
-  onPrev,
-  onNext,
-  setSelectedPlaces
-}: {
-  onPrev: () => void;
-  onNext: () => void;
-  setSelectedPlaces: (selectedPlaces: Place[]) => void;
-}) => {
+const RecommendedIsland = ({ onPrev, onNext }: { onPrev: () => void; onNext: () => void }) => {
   const [step, setStep] = useState(1);
   const [selectedPlaces, setLocalSelectedPlaces] = useState<Place[]>([]);
   const [selectedCategory, setSelectedCategory] = useState(CATEGORY_LIST[0]);
@@ -32,6 +24,7 @@ const RecommendedIsland = ({
 
   const [, setIslandId] = useAtom(islandIdAtom);
   const [theme] = useAtom(planNameAtom);
+  const [, setRecommendedPlaces] = useAtom(recommendedPlacesAtom);
 
   const handleSelect = () => {
     // 섬 선택 처리
@@ -42,7 +35,7 @@ const RecommendedIsland = ({
   const handleNext = () => {
     if (selectedPlaces.length > 0) {
       // 선택한 장소 있을 때
-      setSelectedPlaces(selectedPlaces);
+      setRecommendedPlaces(selectedPlaces);
       onNext();
     } else {
       // 선택한 장소 없을 때
@@ -118,13 +111,7 @@ const RecommendedIsland = ({
   );
 };
 
-const RecommendedIslandPage = ({
-  ...props
-}: {
-  onPrev: () => void;
-  onNext: () => void;
-  setSelectedPlaces: (selectedPlaces: Place[]) => void;
-}) => {
+const RecommendedIslandPage = ({ ...props }: { onPrev: () => void; onNext: () => void }) => {
   return (
     <div
       style={{
