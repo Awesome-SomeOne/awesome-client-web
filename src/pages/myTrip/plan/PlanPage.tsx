@@ -179,13 +179,18 @@ const PlanContent = () => {
 
     // 추가된 장소 처리
     try {
+      const updatedEditedPlaces = [...editedPlaces];
+
       for (const place of addedPlaces) {
         if (!tripId || !place.id || !place.date) return;
-        await addPlace({
+        const { placeId: newPlaceId } = await addPlace({
           travelPlanId: parseInt(tripId),
           businessId: place.id,
           date: place.date
         });
+
+        const index = updatedEditedPlaces.findIndex((p) => p.id === place.id);
+        updatedEditedPlaces[index].id = newPlaceId;
       }
 
       // 삭제된 장소 처리
@@ -196,11 +201,12 @@ const PlanContent = () => {
       }
 
       // 장소 순서 변경 처리
-      const editedPlaceData: any[] = editedPlaces.map((place) => ({
+      const editedPlaceData: any[] = updatedEditedPlaces.map((place) => ({
         travelPlaceId: place.id,
         order: place.order,
         date: place.date
       }));
+      console.log(editedPlaceData);
       await updatePlace(editedPlaceData);
 
       if (tripId) {
