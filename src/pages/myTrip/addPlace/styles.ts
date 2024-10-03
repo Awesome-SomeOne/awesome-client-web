@@ -4,7 +4,7 @@ import { Theme } from "@/styles/theme";
 export const ListContainer = styled.div<{ isSelected: boolean }>`
   overflow: auto;
   height: calc(100% - 104px);
-  padding-bottom: ${({ isSelected }) => (isSelected ? "164px" : "0")};
+  padding-bottom: ${({ isSelected }) => (isSelected ? "216px" : "0")};
 `;
 
 export const BottomContainer = styled.div`
