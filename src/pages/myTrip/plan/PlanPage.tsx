@@ -128,6 +128,10 @@ const PlanContent = () => {
 
   const sortPlaces = (places: Place[]) => sortBy(places, ["id", "date", "order"]);
 
+  const getDeletedPlaces = (original: Place[], updated: Place[]) => {
+    return original.filter((originalPlace) => !updated.some((updatedPlace) => updatedPlace.id === originalPlace.id));
+  };
+
   const getDifferences = (original: Place[], updated: Place[]) => {
     const sortedOriginal = sortPlaces(original);
     const sortedUpdated = sortPlaces(updated);
@@ -154,38 +158,35 @@ const PlanContent = () => {
       editedPlaces.push(...placeWithOrder);
     });
 
+    const addedPlaces = editedPlaces.filter(
+      (newPlace) => !originalPlaces.some((originalPlace) => originalPlace.id === newPlace.id)
+    );
+    const removedPlaces = getDeletedPlaces(originalPlaces, editedPlaces);
     const differences = getDifferences(originalPlaces, editedPlaces);
-    console.log("변경된 것 --- ");
-    console.log(differences);
-    if (!differences.length) {
+
+    console.log("추가된 장소 ---", addedPlaces);
+    console.log("삭제된 장소 ---", removedPlaces);
+    console.log("변경된 것 ---", differences);
+
+    if (!differences.length && !removedPlaces.length) {
       setPageState((prev) => ({ ...prev, isPageEditing: false }));
       return;
     }
 
-    // 추가된 장소 필터링
-    const addedPlaces = editedPlaces.filter(
-      (newPlace) => !originalPlaces.some((originalPlace) => originalPlace.id === newPlace.id)
-    );
-
-    // 삭제된 장소 필터링
-    const removedPlaces = originalPlaces.filter(
-      (originalPlace) => !editedPlaces.some((newPlace) => newPlace.id === originalPlace.id)
-    );
-
-    console.log("추가된 장소 --- ");
-    console.log(addedPlaces);
-    console.log("삭제된 장소 ---");
-    console.log(removedPlaces);
-
-    // 추가된 장소 처리
     try {
+      const updatedEditedPlaces = [...editedPlaces];
+
+      // 추가된 장소 처리
       for (const place of addedPlaces) {
         if (!tripId || !place.id || !place.date) return;
-        await addPlace({
+        const { placeId: newPlaceId } = await addPlace({
           travelPlanId: parseInt(tripId),
           businessId: place.id,
           date: place.date
         });
+
+        const index = updatedEditedPlaces.findIndex((p) => p.id === place.id);
+        updatedEditedPlaces[index].id = newPlaceId;
       }
 
       // 삭제된 장소 처리
@@ -196,11 +197,12 @@ const PlanContent = () => {
       }
 
       // 장소 순서 변경 처리
-      const editedPlaceData: any[] = editedPlaces.map((place) => ({
+      const editedPlaceData: any[] = updatedEditedPlaces.map((place) => ({
         travelPlaceId: place.id,
         order: place.order,
         date: place.date
       }));
+      console.log(editedPlaceData);
       await updatePlace(editedPlaceData);
 
       if (tripId) {
