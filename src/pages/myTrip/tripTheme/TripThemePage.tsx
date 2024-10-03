@@ -13,13 +13,11 @@ import { planNameAtom } from "@/atoms/myTrip/planAtom";
 const TripThemePage = ({
   onPrev,
   onNext,
-  isRecommend = false,
-  setSelectedPlaces
+  isRecommend = false
 }: {
   onPrev: () => void;
   onNext: () => void;
   isRecommend: boolean;
-  setSelectedPlaces: (selectedPlaces: Place[]) => void;
 }) => {
   const [selectedTheme, setSelectedTheme] = useState("");
   const [showInput, setShowInput] = useState(false);
@@ -104,7 +102,7 @@ const TripThemePage = ({
           </BottomSheet>
         </div>
       ) : (
-        recommend && <RecommendedIslandPage onPrev={handlePrev} onNext={onNext} setSelectedPlaces={setSelectedPlaces} />
+        recommend && <RecommendedIslandPage onPrev={handlePrev} onNext={onNext} />
       )}
     </>
   );

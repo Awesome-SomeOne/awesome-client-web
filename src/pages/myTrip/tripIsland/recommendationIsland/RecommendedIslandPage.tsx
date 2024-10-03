@@ -111,13 +111,7 @@ const RecommendedIsland = ({ onPrev, onNext }: { onPrev: () => void; onNext: () 
   );
 };
 
-const RecommendedIslandPage = ({
-  ...props
-}: {
-  onPrev: () => void;
-  onNext: () => void;
-  setSelectedPlaces: (selectedPlaces: Place[]) => void;
-}) => {
+const RecommendedIslandPage = ({ ...props }: { onPrev: () => void; onNext: () => void }) => {
   return (
     <div
       style={{

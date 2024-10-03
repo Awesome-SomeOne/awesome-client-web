@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import MyTripSchedulePage from "./tripSchedule/TripSchedulePage";
-import MyTripIslandPage from "./tripIsland/TripIslandPage";
-import MyTripThemePage from "./tripTheme/TripThemePage";
+import TripSchedulePage from "./tripSchedule/TripSchedulePage";
+import TripIslandPage from "./tripIsland/TripIslandPage";
+import TripThemePage from "./tripTheme/TripThemePage";
 import GeneratePlanPage from "./generatePlan/GeneratePlanPage";
 import Appbar from "@/components/common/header/Appbar";
 import BackIcon from "@/assets/icons/BackIcon";
@@ -10,14 +10,12 @@ import SimpleModal from "@/components/common/simpleModal/index";
 import useOverlay from "@/hooks/useOverlay";
 import TripIslandSearchPage from "./tripIsland/search/TripIslandSearchPage";
 import { useNavigate } from "react-router-dom";
-import { Place } from "@/types/myTrip";
 import { useAtom } from "jotai";
 import { daysAtom, useResetAtoms } from "@/atoms/myTrip/planAtom";
 
 const MyTripPage = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedPlaces, setSelectedPlaces] = useState<Place[]>([]);
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);
   const prevStep = () => {
@@ -65,18 +63,11 @@ const MyTripPage = () => {
                   </button>
                 }
               />
-              {currentStep === 1 && <MyTripSchedulePage onNext={nextStep} />}
+              {currentStep === 1 && <TripSchedulePage onNext={nextStep} />}
               {currentStep === 2 && (
-                <MyTripIslandPage onNext={nextStep} onSearch={() => setIsSearching(true)} onRecClick={handleRecClick} />
+                <TripIslandPage onNext={nextStep} onSearch={() => setIsSearching(true)} onRecClick={handleRecClick} />
               )}
-              {currentStep === 3 && (
-                <MyTripThemePage
-                  onPrev={prevStep}
-                  onNext={nextStep}
-                  isRecommend={recommend}
-                  setSelectedPlaces={setSelectedPlaces}
-                />
-              )}
+              {currentStep === 3 && <TripThemePage onPrev={prevStep} onNext={nextStep} isRecommend={recommend} />}
             </div>
           )}
 
@@ -106,7 +97,6 @@ const MyTripPage = () => {
               close();
               navigate(-1);
               setRecommend(false);
-              setSelectedPlaces([]);
               setDaysAtom([]);
             }}
             isOpen={isOpen}
