@@ -9,6 +9,7 @@ export const MyTripListPageWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   padding: ${Theme.size.Header_Height} 20px calc(${Theme.size.BottomNavBar_Height} + 8px);
+  overflow: scroll;
 `;
 
 export const MyTripListFlexContainer = styled.section`
@@ -16,6 +17,7 @@ export const MyTripListFlexContainer = styled.section`
   flex-direction: column;
   gap: 16px;
   width: 100%;
+  padding-bottom: 16px;
 `;
 
 export const MyTripLayout = styled.div`
