@@ -3,11 +3,11 @@ import { atom, useAtom } from "jotai";
 import { Day, Place } from "@/types/myTrip";
 import { calculateDatesArray } from "@/utils/myTrip/myTrip.utils";
 
-export const islandIdAtom = atom<number | null>(null);
+export const islandIdAtom = atom<number>(0);
 // export const recordIdAtom = atom<number | null>(null);
-export const startDateAtom = atom<string | null>(null);
-export const endDateAtom = atom<string | null>(null);
-export const planNameAtom = atom<string | null>(null);
+export const startDateAtom = atom<string>("");
+export const endDateAtom = atom<string>("");
+export const planNameAtom = atom<string>("");
 
 export const planAtom = atom((get) => {
   const islandId = get(islandIdAtom);
@@ -25,10 +25,10 @@ export const useResetAtoms = () => {
   const [, setPlanName] = useAtom(planNameAtom);
 
   const resetPlanAtom = () => {
-    setIslandId(null);
-    setStartDate(null);
-    setEndDate(null);
-    setPlanName(null);
+    setIslandId(0);
+    setStartDate("");
+    setEndDate("");
+    setPlanName("");
   };
 
   return resetPlanAtom;
@@ -75,3 +75,5 @@ export const useUpdateDaysAtom = () => {
 
   return addPlacesToDay;
 };
+
+export const recommendedPlacesAtom = atom<Place[]>([]);

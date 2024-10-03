@@ -11,7 +11,7 @@ import { daysAtom, planAtom } from "@/atoms/myTrip/planAtom";
 import { ISLAND_LIST } from "@/constants/myTripPageConstants";
 import { Map } from "react-kakao-maps-sdk";
 
-const GeneratePlanPage = ({ recommended = [] }: { recommended?: Place[] }) => {
+const GeneratePlanPage = () => {
   const [selectedDay, setSelectedDay] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -84,7 +84,6 @@ const GeneratePlanPage = ({ recommended = [] }: { recommended?: Place[] }) => {
             )}
             <PlanGenerating
               selectedDay={selectedDay}
-              recommended={recommended}
               onAdd={onAdd}
               onEdit={onEdit}
               onSelect={(day: number) => setSelectedDay(day)}

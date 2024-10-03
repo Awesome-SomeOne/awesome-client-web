@@ -91,7 +91,7 @@ const MyTripPage = () => {
                   </button>
                 }
               />
-              <GeneratePlanPage recommended={selectedPlaces} />
+              <GeneratePlanPage />
             </>
           )}
 
