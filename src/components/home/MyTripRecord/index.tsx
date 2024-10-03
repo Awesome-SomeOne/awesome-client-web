@@ -12,7 +12,8 @@ import * as S from "./styles";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
-interface Records {
+
+interface Record {
   planId: number;
   islandName: string;
   recordTitle: string;
@@ -22,20 +23,19 @@ interface Records {
   endDate: string;
 }
 
-const MyTripContent = () => {
+const MyTripRecordContent = () => {
   const navigate = useNavigate();
-  const { data: records = [] } = useGetMyTripRecordList();
-  const today = dayjs();
 
-  const pastRecords = records?.filter((record: Records) => dayjs(record.endDate).isBefore(today));
-  const mostRecentPastRecord = pastRecords?.sort((a: Records, b: Records) =>
-    dayjs(b.endDate).diff(dayjs(a.endDate))
-  )[0];
+  const { data: records = [] } = useGetMyTripRecordList();
+  const today = dayjs().format("YYYY-MM-DD");
+
+  const pastRecords = records?.filter((record: Record) => dayjs(record.endDate).isBefore(today));
+  const mostRecentPastRecord = pastRecords?.sort((a: Record, b: Record) => dayjs(b.endDate).diff(dayjs(a.endDate)))[0];
 
   return (
     <S.MyTripLayout>
-      {!records.length ? (
-        /* 다녀온 여행 없을 때 */
+      {!mostRecentPastRecord ? (
+        /* 여행 추억 없을 때 */
         <>
           <GeneralHeader title="내 여행 추억" spacingSize="md" titleSize="sm" />
           <S.MyTripContainer>
@@ -46,7 +46,7 @@ const MyTripContent = () => {
           </S.MyTripContainer>
         </>
       ) : (
-        /* 다녀온 여행 있을 때 */
+        /* 여행 추억 있을 때 */
         <div>
           <GeneralHeader
             title="내 여행 추억"
@@ -58,7 +58,7 @@ const MyTripContent = () => {
           />
           <S.MyTripContainer onClick={() => navigate(PATH.MY_TRIP(mostRecentPastRecord.planId))}>
             <S.ImageBox bgUrl={mostRecentPastRecord.imageUrls[0]} credit={mostRecentPastRecord.islandName}>
-              <S.Chip>{`${dayjs(mostRecentPastRecord.end_date).fromNow(true)}전`}</S.Chip>
+              <S.Chip>{`${dayjs(mostRecentPastRecord.endDate).fromNow()}`}</S.Chip>
               <S.Info>
                 <S.Title>{mostRecentPastRecord.recordTitle}</S.Title>
                 <S.Itinerary>
@@ -75,14 +75,30 @@ const MyTripContent = () => {
   );
 };
 
-const MyTrip = () => {
+const MyTripRecord = () => {
+  const navigate = useNavigate();
+
   return (
-    <ErrorBoundary fallback={<></>}>
+    <ErrorBoundary
+      fallback={
+        <>
+          <S.MyTripLayout>
+            <GeneralHeader title="내 여행 추억" spacingSize="md" titleSize="sm" />
+            <S.MyTripContainer>
+              <S.BlueBox>
+                <S.Paragraph>아직 다녀온 여행이 없어요!</S.Paragraph>
+                <Button text="내 여행에서 추억 만들기" onClick={() => navigate(PATH.MY_TRIP_LIST)} />
+              </S.BlueBox>
+            </S.MyTripContainer>
+          </S.MyTripLayout>
+        </>
+      }
+    >
       <Suspense fallback={<>로딩중...</>}>
-        <MyTripContent />
+        <MyTripRecordContent />
       </Suspense>
     </ErrorBoundary>
   );
 };
 
-export default MyTrip;
+export default MyTripRecord;
