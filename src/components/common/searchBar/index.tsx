@@ -97,7 +97,7 @@ const SearchBar = ({
           onChange={handleInputChange}
           readOnly={onClick ? true : false}
         />
-        {showButton && <Button text={buttonText} type="submit" style={{ height: "32px" }} />}
+        {showButton && <Button text={buttonText} type="submit" style={{ height: "32px", whiteSpace: "nowrap" }} />}
       </S.SearchField>
     </S.SearchLayout>
   );

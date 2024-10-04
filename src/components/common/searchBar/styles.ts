@@ -32,6 +32,7 @@ export const SearchField = styled.form<{ isFocused: boolean; isFilled: boolean }
 export const SearchInput = styled.input`
   background: inherit;
   color: ${Theme.colors.Label_Default};
+  width: 100%;
   padding-left: 8px;
   border: none;
   outline: none;
