@@ -52,7 +52,7 @@ const PlanContent = () => {
   const { startDate, endDate, islandName, travelPlaceList, planName, temperature } = planData || {};
 
   const [, initializeDays] = useAtom(daysInitAtom);
-  const [days] = useAtom(daysAtom);
+  const [days, setDays] = useAtom(daysAtom);
   const addPlacesToDay = useUpdateDaysAtom();
   const [, setIslandId] = useAtom(islandIdAtom);
   const [, setPlanName] = useAtom(planNameAtom);
@@ -217,6 +217,7 @@ const PlanContent = () => {
   };
 
   const handleClose = () => {
+    setDays([]);
     navigate(PATH.MY_TRIP_LIST);
   };
 
