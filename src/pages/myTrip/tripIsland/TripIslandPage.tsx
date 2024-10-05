@@ -51,7 +51,7 @@ const TripIslandPage = ({
             <S.Box
               key={island.id}
               selected={selectedIsland === island.name}
-              bgUrl={`/images/island/${island.id}.svg`}
+              bgUrl={`/images/island/${island.id}.webp`}
               onClick={() => handleIslandClick(island.name)}
             >
               {island.name}
